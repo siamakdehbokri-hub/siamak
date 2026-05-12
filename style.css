@@ -1442,7 +1442,14 @@ body.lang-en .split-title {
   transition:
     background 0.4s var(--ease),
     border-color 0.4s var(--ease),
-    box-shadow 0.4s var(--ease);
+    box-shadow 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+
+.site-header.is-scrolled {
+  border-color: rgba(255, 180, 94, 0.16);
+  background: rgba(5, 5, 4, 0.96);
+  box-shadow: 0 1.1rem 3.8rem rgba(0, 0, 0, 0.34);
 }
 
 .brand,
@@ -1472,6 +1479,14 @@ body.lang-en .split-title {
   border-color: rgba(255, 224, 163, 0.72);
   background: linear-gradient(135deg, var(--ink), var(--champagne));
   transform: translateY(-0.12rem);
+}
+
+.button:active,
+.ghost-link:active,
+.socials a:active,
+.project-media:active,
+.language-switcher button:active {
+  transform: translateY(0) scale(0.985);
 }
 
 .ghost-link:hover,
@@ -1720,5 +1735,228 @@ body:not(.lang-en) .case-item h3 {
 
   .project-copy {
     padding: clamp(1.2rem, 2.5vw, 1.75rem);
+  }
+}
+
+/* Studio polish pass: subtle motion, depth, and editorial rhythm */
+.manifesto.section-shell,
+.signature.section-shell,
+.capabilities.section-shell,
+.process.section-shell,
+.about.section-shell {
+  padding-block: clamp(3.45rem, 12.5vw, 5.95rem);
+}
+
+.manifesto.section-shell,
+.about.section-shell {
+  padding-block: clamp(3.65rem, 13vw, 6.35rem);
+}
+
+.work.section-shell {
+  padding-block: clamp(3.85rem, 14vw, 6.85rem);
+}
+
+.reel.section-shell {
+  padding-top: clamp(1rem, 4vw, 2.3rem);
+  padding-bottom: clamp(3.4rem, 9vw, 6.3rem);
+}
+
+.section-heading {
+  align-items: end;
+}
+
+.section-kicker,
+.eyebrow,
+.project-eyebrow {
+  opacity: 0.92;
+  font-weight: 600;
+}
+
+.split-title span,
+.manifesto h2,
+.section-heading h2,
+.about h2,
+.project-copy h3,
+.reel-card h3,
+.signature-grid h3,
+.capability-grid h3,
+.process-step h3 {
+  text-wrap: balance;
+}
+
+.hero-text,
+.manifesto p,
+.about-copy p,
+.project-summary,
+.capability-grid p,
+.signature-grid p,
+.process-step p,
+.case-hero p,
+.case-item p,
+.reel-card p {
+  max-width: 64ch;
+  letter-spacing: 0;
+}
+
+.reel-card,
+.signature-grid article,
+.capability-grid article,
+.process-step,
+.project-copy,
+.contact-panel,
+.case-item {
+  transition:
+    transform 0.72s var(--ease-soft),
+    border-color 0.72s var(--ease-soft),
+    background 0.72s var(--ease-soft),
+    box-shadow 0.72s var(--ease-soft);
+}
+
+.reel-card,
+.signature-grid article,
+.capability-grid article,
+.project-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+}
+
+.project-card::after {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: calc(var(--radius) + 0.9rem);
+  content: "";
+  background: radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(255, 224, 163, 0.16), transparent 18rem);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-soft);
+}
+
+.reel-card::before,
+.signature-grid article::before,
+.capability-grid article::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(255, 224, 163, 0.13), transparent 12rem);
+  opacity: 0;
+  transition: opacity 0.72s var(--ease-soft);
+}
+
+.project-media img,
+.hero-frame img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.project-copy h3,
+.reel-card h3,
+.signature-grid h3,
+.capability-grid h3 {
+  transition:
+    color 0.52s var(--ease-soft),
+    transform 0.52s var(--ease-soft);
+}
+
+.project-media {
+  transform-style: preserve-3d;
+}
+
+.project-media::after,
+.hero-frame::after,
+.reel-card::after,
+.signature-grid article::after,
+.capability-grid article::after {
+  background: linear-gradient(112deg, transparent 0 38%, rgba(255, 224, 163, 0.1) 50%, transparent 64%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover::after,
+  .reel-card:hover::before,
+  .signature-grid article:hover::before,
+  .capability-grid article:hover::before {
+    opacity: 1;
+  }
+
+  .reel-card:hover,
+  .signature-grid article:hover,
+  .capability-grid article:hover,
+  .process-step:hover {
+    border-color: rgba(255, 180, 94, 0.22);
+    box-shadow: 0 1.4rem 3.6rem rgba(0, 0, 0, 0.26);
+    transform: translateY(-0.16rem);
+  }
+
+  .project-card:hover .project-copy {
+    border-color: rgba(255, 180, 94, 0.22);
+    transform: translateY(-0.12rem);
+  }
+
+  .project-card:hover .project-copy h3,
+  .reel-card:hover h3,
+  .signature-grid article:hover h3,
+  .capability-grid article:hover h3 {
+    color: var(--champagne);
+    transform: translateY(-0.06rem);
+  }
+
+  .project-media:hover img,
+  .project-media:focus-visible img {
+    will-change: transform;
+    transform: scale(1.045);
+  }
+
+  .hero-frame:hover img {
+    will-change: transform;
+    transform: scale(1.018);
+  }
+}
+
+@media (max-width: 760px) {
+  .manifesto.section-shell,
+  .signature.section-shell,
+  .work.section-shell,
+  .capabilities.section-shell,
+  .process.section-shell,
+  .about.section-shell {
+    padding-block: clamp(3rem, 12vw, 4.9rem);
+  }
+
+  .reel.section-shell {
+    padding-top: 0.8rem;
+    padding-bottom: clamp(3rem, 10vw, 4.6rem);
+  }
+
+  .hero-text,
+  .manifesto p,
+  .about-copy p,
+  .project-summary,
+  .capability-grid p,
+  .signature-grid p,
+  .process-step p,
+  .case-hero p,
+  .case-item p,
+  .reel-card p {
+    line-height: 1.72;
+  }
+
+  .reel-card,
+  .signature-grid article,
+  .capability-grid article,
+  .process-step,
+  .project-copy,
+  .about-copy,
+  .contact-panel,
+  .case-item {
+    border-radius: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card::after,
+  .reel-card::before,
+  .signature-grid article::before,
+  .capability-grid article::before {
+    display: none;
   }
 }

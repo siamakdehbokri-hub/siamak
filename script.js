@@ -639,7 +639,7 @@ function renderProjects() {
         .join("");
       const title = escapeHTML(copy.title);
       return `
-        <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
+        <article class="project-card ${index % 2 ? "is-offset" : ""}">
           <button class="project-media magnetic" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
             <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${title}" />
           </button>
@@ -712,6 +712,7 @@ function updateLanguage(lang) {
   updateA11yLabels();
   initMagnetic();
   initResponsiveTilt();
+  initSignatureInteraction();
   initMotion(false);
   setActiveNav(location.hash || "#top");
   hasRenderedOnce = true;
@@ -785,22 +786,45 @@ function initAnchorNavigation() {
 function initActiveNavigation() {
   const links = $$(".nav a");
   const sections = links
-    .map((link) => document.getElementById(link.getAttribute("href").slice(1)))
-    .filter(Boolean);
+    .map((link) => ({
+      hash: link.getAttribute("href"),
+      node: document.getElementById(link.getAttribute("href").slice(1)),
+    }))
+    .filter((item) => item.node);
 
-  if (!("IntersectionObserver" in window) || !sections.length) return;
+  if (!sections.length) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target?.id) setActiveNav(`#${visible.target.id}`);
-    },
-    { rootMargin: "-36% 0px -52% 0px", threshold: [0.08, 0.24, 0.42] },
-  );
+  let ticking = false;
 
-  sections.forEach((section) => observer.observe(section));
+  const update = () => {
+    const firstSectionTop = sections[0].node.offsetTop;
+    const topSafeZone = Math.max(140, window.innerHeight * 0.34);
+
+    if (window.scrollY < Math.max(firstSectionTop - topSafeZone, 0)) {
+      setActiveNav("#top");
+      ticking = false;
+      return;
+    }
+
+    const probe = window.scrollY + window.innerHeight * 0.42;
+    const active = sections.reduce((current, section) => {
+      return section.node.offsetTop <= probe ? section : current;
+    }, sections[0]);
+
+    setActiveNav(active.hash);
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  lenis?.on("scroll", requestUpdate);
 }
 
 function initLanguage() {
@@ -822,11 +846,11 @@ function initSmoothScroll() {
   if (prefersReducedMotion || prefersLowMotionDevice || !window.Lenis) return;
 
   lenis = new Lenis({
-    duration: 1.28,
-    easing: (t) => 1 - Math.pow(1 - t, 3.2),
+    duration: 1.36,
+    easing: (t) => 1 - Math.pow(1 - t, 3.35),
     smoothWheel: true,
     syncTouch: false,
-    wheelMultiplier: 0.82,
+    wheelMultiplier: 0.78,
     touchMultiplier: 1,
   });
 
@@ -854,6 +878,7 @@ function initScrollProgress() {
     const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
     const value = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
     progress.style.transform = `scaleX(${value})`;
+    $(".site-header")?.classList.toggle("is-scrolled", window.scrollY > 18);
     ticking = false;
   };
 
@@ -909,22 +934,22 @@ function initMotion(refreshOnly = false) {
       yPercent: 0,
       rotate: 0,
       autoAlpha: 1,
-      duration: 1.34,
-      stagger: 0.075,
+      duration: 1.42,
+      stagger: 0.085,
       ease: "power3.out",
       delay: 0.12,
     });
   }
 
-  ScrollTrigger.batch("[data-reveal]", {
-    start: "top 88%",
+  ScrollTrigger.batch("[data-reveal]:not(.project-card)", {
+    start: "top 87%",
     once: true,
     onEnter: (batch) => {
       gsap.to(batch, {
         autoAlpha: 1,
         y: 0,
-        duration: 1.08,
-        stagger: 0.052,
+        duration: 1.14,
+        stagger: 0.06,
         ease: "power3.out",
       });
     },
@@ -939,6 +964,24 @@ function initMotion(refreshOnly = false) {
       overwrite: true,
     });
   }
+
+  $$(".project-card").forEach((card) => {
+    gsap.fromTo(
+      card,
+      { autoAlpha: 0, y: isCompact ? 18 : 28 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: isCompact ? 0.84 : 1.08,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: isCompact ? "top 90%" : "top 84%",
+          once: true,
+        },
+      },
+    );
+  });
 
   if (!isCompact) {
     $$(".parallax-card").forEach((card) => {
@@ -987,6 +1030,29 @@ function initMotion(refreshOnly = false) {
             start: "top bottom",
             end: "bottom top",
             scrub: 1.25,
+          },
+        },
+      );
+    });
+
+    $$(".project-card").forEach((card) => {
+      const media = $(".project-media", card);
+      const copy = $(".project-copy", card);
+      if (!media || !copy) return;
+
+      gsap.fromTo(
+        [media, copy],
+        { autoAlpha: 0.72, y: 18 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 82%",
+            once: true,
           },
         },
       );
@@ -1100,6 +1166,46 @@ function initResponsiveTilt() {
 
     item.addEventListener("pointerleave", () => {
       gsap.to(item, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "power2.out" });
+    });
+  });
+}
+
+function initSignatureInteraction() {
+  if (prefersReducedMotion || !supportsFinePointer) return;
+
+  $$(".project-card, .reel-card, .signature-grid article, .capability-grid article").forEach((item) => {
+    if (item.dataset.signatureReady) return;
+    item.dataset.signatureReady = "true";
+
+    let frame = null;
+    let latestEvent = null;
+
+    const updateSpotlight = () => {
+      if (!latestEvent) return;
+      const rect = item.getBoundingClientRect();
+      const x = ((latestEvent.clientX - rect.left) / rect.width) * 100;
+      const y = ((latestEvent.clientY - rect.top) / rect.height) * 100;
+      item.style.setProperty("--spot-x", `${Math.min(Math.max(x, 0), 100)}%`);
+      item.style.setProperty("--spot-y", `${Math.min(Math.max(y, 0), 100)}%`);
+      frame = null;
+    };
+
+    item.addEventListener(
+      "pointermove",
+      (event) => {
+        latestEvent = event;
+        if (frame) return;
+        frame = requestAnimationFrame(updateSpotlight);
+      },
+      { passive: true },
+    );
+
+    item.addEventListener("pointerleave", () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = null;
+      latestEvent = null;
+      item.style.setProperty("--spot-x", "50%");
+      item.style.setProperty("--spot-y", "50%");
     });
   });
 }
