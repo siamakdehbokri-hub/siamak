@@ -169,7 +169,8 @@ body.is-language-switching .site-footer {
 }
 
 .grain,
-.ambient {
+.ambient,
+.cursor-orb {
   position: fixed;
   pointer-events: none;
 }
@@ -183,6 +184,10 @@ body.is-language-switching .site-footer {
 }
 
 .ambient {
+  display: none;
+}
+
+.cursor-orb {
   display: none;
 }
 
@@ -938,6 +943,29 @@ body.lang-en .process::before {
     background: radial-gradient(circle, rgba(57, 213, 192, 0.07), transparent 68%);
   }
 
+  .cursor-orb {
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 21rem;
+    height: 21rem;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 46% 44%, rgba(255, 224, 163, 0.24), transparent 0 15%),
+      radial-gradient(circle, rgba(255, 180, 94, 0.16), rgba(57, 213, 192, 0.06) 34%, transparent 68%);
+    filter: blur(14px);
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity 0.55s var(--ease);
+    will-change: transform, opacity;
+  }
+
+  .cursor-orb.is-active {
+    opacity: 0.58;
+  }
+
   .site-header {
     position: fixed;
     top: 1rem;
@@ -1132,11 +1160,71 @@ body.lang-en .process::before {
   }
 
   .project-media {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     transition:
       border-color 0.55s var(--ease),
       filter 0.55s var(--ease);
+  }
+
+  .reel-card,
+  .signature-grid article,
+  .capability-grid article,
+  .process-step,
+  .project-copy,
+  .contact-panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reel-card::before,
+  .signature-grid article::before,
+  .capability-grid article::before,
+  .process-step::before,
+  .project-copy::before,
+  .project-media::before,
+  .contact-panel::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--hover-x, 50%) var(--hover-y, 50%),
+      rgba(255, 224, 163, 0.12),
+      transparent 35%
+    );
+    content: "";
+    opacity: 0;
+    transition: opacity 0.42s var(--ease);
+    pointer-events: none;
+  }
+
+  .reel-card > *,
+  .signature-grid article > *,
+  .capability-grid article > *,
+  .process-step > *,
+  .project-copy > *,
+  .project-media > *,
+  .contact-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .reel-card:hover::before,
+  .signature-grid article:hover::before,
+  .capability-grid article:hover::before,
+  .process-step:hover::before,
+  .project-copy:hover::before,
+  .project-media:hover::before,
+  .contact-panel:hover::before {
+    opacity: 1;
+  }
+
+  .project-media::before {
+    z-index: 2;
+    mix-blend-mode: screen;
   }
 
   .project-media:hover,
@@ -1234,5 +1322,9 @@ body.lang-en .process::before {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .cursor-orb {
+    display: none !important;
   }
 }

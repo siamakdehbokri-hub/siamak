@@ -2,8 +2,9 @@ const MOBILE_QUERY = "(max-width: 820px)";
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const prefersLowMotionDevice = window.matchMedia(`(hover: none), (pointer: coarse), ${MOBILE_QUERY}`).matches;
 const ENHANCEMENT_SCRIPTS = [
-  "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js",
   "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js",
+  "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js",
+  "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js",
 ];
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -544,8 +545,10 @@ let lenis;
 let hasRenderedOnce = false;
 let lastFocusedElement = null;
 let refreshActiveNavigation = () => {};
+let refreshScrollProgress = () => {};
 let currentActiveNavHash = "";
 let enhancementsRequested = false;
+let enhancedMotionReady = false;
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -905,6 +908,8 @@ function initSmoothScroll() {
 
   if (window.gsap && window.ScrollTrigger) {
     lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", refreshActiveNavigation);
+    lenis.on("scroll", refreshScrollProgress);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     return;
@@ -938,17 +943,85 @@ function initDeferredEnhancements() {
   enhancementsRequested = true;
 
   const loadEnhancements = () => {
-    Promise.all(ENHANCEMENT_SCRIPTS.map(loadScript))
-      .then(() => initSmoothScroll())
+    ENHANCEMENT_SCRIPTS.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve())
+      .then(() => {
+        initSmoothScroll();
+        const shouldPlayIntro = !enhancedMotionReady && window.scrollY < 120 && (!location.hash || location.hash === "#top");
+        enhancedMotionReady = true;
+        initMotion(!shouldPlayIntro);
+        requestAnimationFrame(refreshActiveNavigation);
+        requestAnimationFrame(refreshScrollProgress);
+      })
       .catch(() => {});
   };
 
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(loadEnhancements, { timeout: 2200 });
-    return;
-  }
+  const schedule = () => {
+    requestAnimationFrame(() => window.setTimeout(loadEnhancements, 120));
+  };
 
-  window.addEventListener("load", () => window.setTimeout(loadEnhancements, 800), { once: true });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", schedule, { once: true });
+  } else {
+    schedule();
+  }
+}
+
+function initPointerGlow() {
+  if (prefersReducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const orb = $(".cursor-orb");
+  if (!orb) return;
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  let isActive = false;
+  let frame = null;
+
+  const render = () => {
+    const deltaX = targetX - currentX;
+    const deltaY = targetY - currentY;
+
+    currentX += deltaX * 0.14;
+    currentY += deltaY * 0.14;
+    orb.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate3d(-50%, -50%, 0)`;
+    frame = isActive && Math.abs(deltaX) + Math.abs(deltaY) > 0.24 ? requestAnimationFrame(render) : null;
+  };
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+
+      if (!isActive) {
+        currentX = targetX;
+        currentY = targetY;
+        isActive = true;
+        orb.classList.add("is-active");
+      }
+
+      if (!frame) frame = requestAnimationFrame(render);
+
+      const eventTarget = event.target instanceof Element ? event.target : null;
+      const hoverTarget = eventTarget?.closest(
+        ".reel-card, .signature-grid article, .capability-grid article, .process-step, .project-copy, .project-media, .contact-panel",
+      );
+
+      if (hoverTarget) {
+        const rect = hoverTarget.getBoundingClientRect();
+        hoverTarget.style.setProperty("--hover-x", `${event.clientX - rect.left}px`);
+        hoverTarget.style.setProperty("--hover-y", `${event.clientY - rect.top}px`);
+      }
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("pointerleave", () => {
+    isActive = false;
+    orb.classList.remove("is-active");
+  });
 }
 
 function initScrollProgress() {
@@ -971,6 +1044,7 @@ function initScrollProgress() {
   };
 
   render();
+  refreshScrollProgress = requestRender;
   window.addEventListener("scroll", requestRender, { passive: true });
   window.addEventListener("resize", requestRender);
   lenis?.on("scroll", requestRender);
@@ -988,7 +1062,7 @@ function initMotion(refreshOnly = false) {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf("[data-reveal], .split-title span, .project-media img, section, .reel-card, .signature-grid article, .capability-grid article");
+  gsap.killTweensOf("[data-reveal], .split-title span, .project-media img, section, .ambient, .hero-frame img, .reel-card, .signature-grid article, .capability-grid article");
 
   const isMobile = window.matchMedia(MOBILE_QUERY).matches;
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
@@ -1025,6 +1099,30 @@ function initMotion(refreshOnly = false) {
       stagger: 0.085,
       ease: "power3.out",
       delay: 0.12,
+    });
+
+    gsap.fromTo(
+      ".hero-frame img",
+      { scale: 1.045, yPercent: 1.4 },
+      { scale: 1, yPercent: 0, duration: 1.7, ease: "power3.out", delay: 0.16 },
+    );
+
+    gsap.to(".ambient-a", {
+      x: 54,
+      y: 18,
+      duration: 18,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    gsap.to(".ambient-b", {
+      x: -46,
+      y: -24,
+      duration: 22,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
     });
   }
 
@@ -1259,4 +1357,5 @@ initCaseStudy();
 initLanguage();
 initAnchorNavigation();
 initActiveNavigation();
+initPointerGlow();
 initDeferredEnhancements();
