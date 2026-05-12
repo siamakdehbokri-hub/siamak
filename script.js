@@ -939,6 +939,33 @@ function initMotion(refreshOnly = false) {
   const isMobile = window.matchMedia("(max-width: 760px)").matches;
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
 
+  if (isMobile) {
+    gsap.set("[data-reveal], .site-header[data-reveal]", {
+      autoAlpha: 1,
+      y: 0,
+      clearProps: "transform",
+    });
+
+    if (!refreshOnly) {
+      gsap.fromTo(
+        ".split-title span",
+        { autoAlpha: 0, yPercent: 22 },
+        {
+          autoAlpha: 1,
+          yPercent: 0,
+          duration: 0.58,
+          stagger: 0.035,
+          ease: "power2.out",
+        },
+      );
+    } else {
+      gsap.set(".split-title span", { autoAlpha: 1, yPercent: 0, clearProps: "transform" });
+    }
+
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+    return;
+  }
+
   if (refreshOnly) {
     gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
   } else {
