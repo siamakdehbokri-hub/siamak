@@ -936,19 +936,24 @@ function initMotion(refreshOnly = false) {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   gsap.killTweensOf("[data-reveal], .split-title span, .parallax-card, [data-depth], .project-media img, section, .reel-card, .signature-grid article, .capability-grid article");
 
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
 
   if (refreshOnly) {
     gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
   } else {
-    gsap.set("[data-reveal]", { autoAlpha: 0, y: 24 });
+    gsap.set("[data-reveal]", { autoAlpha: 0, y: isMobile ? 12 : 24 });
   }
 
   gsap.set(".split-title span", {
-    yPercent: refreshOnly ? 0 : 68,
+    yPercent: refreshOnly ? 0 : isMobile ? 34 : 68,
     rotate: 0,
     autoAlpha: refreshOnly ? 1 : 0,
   });
+
+  if (isMobile) {
+    gsap.set(".site-header[data-reveal]", { autoAlpha: 1, y: 0, clearProps: "transform" });
+  }
 
   if (!refreshOnly) {
     gsap.to(".cursor-orb", {
@@ -962,28 +967,28 @@ function initMotion(refreshOnly = false) {
       yPercent: 0,
       rotate: 0,
       autoAlpha: 1,
-      duration: 1.42,
-      stagger: 0.085,
-      ease: "power3.out",
-      delay: 0.12,
+      duration: isMobile ? 0.72 : 1.42,
+      stagger: isMobile ? 0.045 : 0.085,
+      ease: isMobile ? "power2.out" : "power3.out",
+      delay: isMobile ? 0.04 : 0.12,
     });
   }
 
   ScrollTrigger.batch("[data-reveal]:not(.project-card)", {
-    start: "top 87%",
+    start: isMobile ? "top 94%" : "top 87%",
     once: true,
     onEnter: (batch) => {
       gsap.to(batch, {
         autoAlpha: 1,
         y: 0,
-        duration: 1.14,
-        stagger: 0.06,
-        ease: "power3.out",
+        duration: isMobile ? 0.52 : 1.14,
+        stagger: isMobile ? 0.025 : 0.06,
+        ease: isMobile ? "power2.out" : "power3.out",
       });
     },
   });
 
-  if (!refreshOnly) {
+  if (!refreshOnly && !isMobile) {
     gsap.to(".site-header[data-reveal]", {
       autoAlpha: 1,
       y: 0,
@@ -1006,12 +1011,12 @@ function initMotion(refreshOnly = false) {
 
     timeline.fromTo(
       card,
-      { autoAlpha: 0, y: isCompact ? 18 : 28 },
+      { autoAlpha: 0, y: isMobile ? 10 : isCompact ? 18 : 28 },
       {
         autoAlpha: 1,
         y: 0,
-        duration: isCompact ? 0.84 : 1.08,
-        ease: "power3.out",
+        duration: isMobile ? 0.58 : isCompact ? 0.84 : 1.08,
+        ease: isMobile ? "power2.out" : "power3.out",
       },
     );
 
