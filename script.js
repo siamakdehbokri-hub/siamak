@@ -546,6 +546,19 @@ function setText(selector, value) {
   if (node) node.textContent = value || "";
 }
 
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+    return entities[character];
+  });
+}
+
 function renderStaticText() {
   const { content } = languages[activeLanguage];
 
@@ -555,7 +568,7 @@ function renderStaticText() {
 
   $$("[data-i18n-lines]").forEach((node) => {
     const lines = getPath(content, node.dataset.i18nLines) || [];
-    node.innerHTML = lines.map((line) => `<span>${line}</span>`).join("");
+    node.innerHTML = lines.map((line) => `<span>${escapeHTML(line)}</span>`).join("");
   });
 }
 
@@ -566,9 +579,9 @@ function renderCards() {
     .map(
       (item) => `
         <article class="reel-card magnetic" data-reveal>
-          <span>${item.index}</span>
-          <h3>${item.title}</h3>
-          <p>${item.body}</p>
+          <span>${escapeHTML(item.index)}</span>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.body)}</p>
         </article>
       `,
     )
@@ -578,9 +591,9 @@ function renderCards() {
     .map(
       (item, index) => `
         <article data-reveal>
-          <span class="signature-index">${String(index + 1).padStart(2, "0")} / ${item.label}</span>
-          <h3>${item.title}</h3>
-          <p>${item.body}</p>
+          <span class="signature-index">${String(index + 1).padStart(2, "0")} / ${escapeHTML(item.label)}</span>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.body)}</p>
         </article>
       `,
     )
@@ -591,8 +604,8 @@ function renderCards() {
       (item, index) => `
         <article data-reveal>
           <span class="capability-index">${String(index + 1).padStart(2, "0")}</span>
-          <h3>${item.title}</h3>
-          <p>${item.body}</p>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.body)}</p>
         </article>
       `,
     )
@@ -602,15 +615,15 @@ function renderCards() {
     .map(
       (item) => `
         <div class="process-step" data-reveal>
-          <h3>${item.title}</h3>
-          <p>${item.body}</p>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.body)}</p>
         </div>
       `,
     )
     .join("");
 
   $("[data-identity-copy]").innerHTML = content.identity.paragraphs
-    .map((paragraph) => `<p data-reveal>${paragraph}</p>`)
+    .map((paragraph) => `<p data-reveal>${escapeHTML(paragraph)}</p>`)
     .join("");
 }
 
@@ -621,17 +634,20 @@ function renderProjects() {
   list.innerHTML = projects
     .map((project, index) => {
       const copy = project.copy[activeLanguage];
-      const tags = (project.tags[activeLanguage] || project.tags.en).map((tag) => `<span>${tag}</span>`).join("");
+      const tags = (project.tags[activeLanguage] || project.tags.en)
+        .map((tag) => `<span>${escapeHTML(tag)}</span>`)
+        .join("");
+      const title = escapeHTML(copy.title);
       return `
         <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
-          <button class="project-media magnetic" type="button" data-project-id="${project.id}" aria-label="${content.work.open}: ${copy.title}">
-            <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${copy.title}" />
+          <button class="project-media magnetic" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
+            <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${title}" />
           </button>
           <div class="project-copy">
-            <p class="project-eyebrow">${copy.category} / ${project.year}</p>
-            <h3>${copy.title}</h3>
-            <p class="project-summary">${copy.summary}</p>
-            <div class="project-meta">${tags}<span>${content.work.open}</span></div>
+            <p class="project-eyebrow">${escapeHTML(copy.category)} / ${escapeHTML(project.year)}</p>
+            <h3>${title}</h3>
+            <p class="project-summary">${escapeHTML(copy.summary)}</p>
+            <div class="project-meta">${tags}<span>${escapeHTML(content.work.open)}</span></div>
           </div>
         </article>
       `;
@@ -665,7 +681,16 @@ function updateA11yLabels() {
 }
 
 function updateLanguage(lang) {
-  activeLanguage = languages[lang] ? lang : "fa";
+  const nextLanguage = languages[lang] ? lang : "fa";
+  if (hasRenderedOnce && nextLanguage === activeLanguage) return;
+
+  const shouldAnimateLanguage = hasRenderedOnce && window.gsap && !prefersReducedMotion;
+  if (shouldAnimateLanguage) {
+    document.body.classList.add("is-language-switching");
+    gsap.killTweensOf("main, .site-footer");
+  }
+
+  activeLanguage = nextLanguage;
   const language = languages[activeLanguage];
   const metaDescription = $('meta[name="description"]');
 
@@ -687,9 +712,25 @@ function updateLanguage(lang) {
   updateA11yLabels();
   initMagnetic();
   initResponsiveTilt();
-  initMotion(hasRenderedOnce);
+  initMotion(false);
   setActiveNav(location.hash || "#top");
   hasRenderedOnce = true;
+
+  if (shouldAnimateLanguage) {
+    gsap.fromTo(
+      "main, .site-footer",
+      { autoAlpha: 0.64, y: 4 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.58,
+        ease: "power2.out",
+        onComplete: () => document.body.classList.remove("is-language-switching"),
+      },
+    );
+  } else {
+    document.body.classList.remove("is-language-switching");
+  }
 
   try {
     localStorage.setItem("preferred-language", activeLanguage);
@@ -781,11 +822,11 @@ function initSmoothScroll() {
   if (prefersReducedMotion || prefersLowMotionDevice || !window.Lenis) return;
 
   lenis = new Lenis({
-    duration: 1.16,
-    easing: (t) => 1 - Math.pow(1 - t, 3),
+    duration: 1.28,
+    easing: (t) => 1 - Math.pow(1 - t, 3.2),
     smoothWheel: true,
     syncTouch: false,
-    wheelMultiplier: 0.86,
+    wheelMultiplier: 0.82,
     touchMultiplier: 1,
   });
 
@@ -833,7 +874,6 @@ function initMotion(refreshOnly = false) {
     $$("[data-reveal]").forEach((item) => {
       item.style.opacity = 1;
       item.style.transform = "none";
-      item.style.clipPath = "none";
     });
     return;
   }
@@ -846,9 +886,9 @@ function initMotion(refreshOnly = false) {
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
 
   if (refreshOnly) {
-    gsap.set("[data-reveal]", { autoAlpha: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" });
+    gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
   } else {
-    gsap.set("[data-reveal]", { autoAlpha: 0, y: 26, clipPath: "inset(8% 0% 0% 0%)" });
+    gsap.set("[data-reveal]", { autoAlpha: 0, y: 24 });
   }
 
   gsap.set(".split-title span", {
@@ -860,7 +900,7 @@ function initMotion(refreshOnly = false) {
   if (!refreshOnly) {
     gsap.to(".cursor-orb", {
       autoAlpha: 1,
-      duration: 1.6,
+      duration: 1.8,
       delay: 0.45,
       ease: "power2.out",
     });
@@ -869,35 +909,33 @@ function initMotion(refreshOnly = false) {
       yPercent: 0,
       rotate: 0,
       autoAlpha: 1,
-      duration: 1.22,
-      stagger: 0.07,
-      ease: "power4.out",
+      duration: 1.34,
+      stagger: 0.075,
+      ease: "power3.out",
       delay: 0.12,
     });
   }
 
-  if (!refreshOnly) {
-    ScrollTrigger.batch("[data-reveal]", {
-      start: "top 90%",
-      once: true,
-      onEnter: (batch) => {
-        gsap.to(batch, {
-          autoAlpha: 1,
-          y: 0,
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.12,
-          stagger: 0.055,
-          ease: "power4.out",
-        });
-      },
-    });
+  ScrollTrigger.batch("[data-reveal]", {
+    start: "top 88%",
+    once: true,
+    onEnter: (batch) => {
+      gsap.to(batch, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1.08,
+        stagger: 0.052,
+        ease: "power3.out",
+      });
+    },
+  });
 
+  if (!refreshOnly) {
     gsap.to(".site-header[data-reveal]", {
       autoAlpha: 1,
       y: 0,
-      clipPath: "inset(0% 0% 0% 0%)",
       duration: 0.85,
-      ease: "power4.out",
+      ease: "power3.out",
       overwrite: true,
     });
   }
@@ -1001,18 +1039,18 @@ function initMagnetic() {
       const rect = item.getBoundingClientRect();
       const x = event.clientX - rect.left - rect.width / 2;
       const y = event.clientY - rect.top - rect.height / 2;
-      const transform = `translate3d(${x * 0.055}px, ${y * 0.075}px, 0)`;
+      const transform = `translate3d(${x * 0.035}px, ${y * 0.045}px, 0)`;
 
       if (window.gsap) {
-        gsap.to(item, { x: x * 0.055, y: y * 0.075, duration: 0.55, ease: "power2.out" });
+        gsap.to(item, { x: x * 0.035, y: y * 0.045, duration: 0.62, ease: "power2.out" });
       } else {
         item.style.transform = transform;
       }
-    });
+    }, { passive: true });
 
     item.addEventListener("pointerleave", () => {
       if (window.gsap) {
-        gsap.to(item, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.45)" });
+        gsap.to(item, { x: 0, y: 0, duration: 0.72, ease: "power3.out" });
       } else {
         item.style.transform = "translate3d(0, 0, 0)";
       }
@@ -1052,13 +1090,13 @@ function initResponsiveTilt() {
       const x = (event.clientX - rect.left) / rect.width - 0.5;
       const y = (event.clientY - rect.top) / rect.height - 0.5;
       gsap.to(item, {
-        rotateY: x * 3,
-        rotateX: y * -3,
+        rotateY: x * 1.8,
+        rotateX: y * -1.8,
         transformPerspective: 900,
-        duration: 0.55,
+        duration: 0.68,
         ease: "power2.out",
       });
-    });
+    }, { passive: true });
 
     item.addEventListener("pointerleave", () => {
       gsap.to(item, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "power2.out" });
@@ -1090,6 +1128,7 @@ function openCaseStudy(projectId) {
   const image = $("[data-case-image]");
   image.src = project.image;
   image.alt = copy.title;
+  $(".case-panel").scrollTop = 0;
 
   $("[data-case-grid]").innerHTML = [
     ["challenge", copy.challenge],
@@ -1098,7 +1137,7 @@ function openCaseStudy(projectId) {
     ["execution", copy.execution],
     ["outcome", copy.outcome],
   ]
-    .map(([key, value]) => `<section class="case-item"><h3>${labels[key]}</h3><p>${value}</p></section>`)
+    .map(([key, value]) => `<section class="case-item"><h3>${escapeHTML(labels[key])}</h3><p>${escapeHTML(value)}</p></section>`)
     .join("");
 
   drawer.classList.add("is-open");
@@ -1111,16 +1150,16 @@ function openCaseStudy(projectId) {
   });
 
   if (window.gsap && !prefersReducedMotion) {
-    gsap.fromTo(".case-backdrop", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.65, ease: "power2.out" });
+    gsap.fromTo(".case-backdrop", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.72, ease: "power2.out" });
     gsap.fromTo(
       ".case-panel",
-      { autoAlpha: 0, y: 54, scale: 0.985 },
-      { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out" },
+      { autoAlpha: 0, y: 42, scale: 0.992 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.98, ease: "power3.out" },
     );
     gsap.fromTo(
       ".case-item",
       { autoAlpha: 0, y: 18 },
-      { autoAlpha: 1, y: 0, duration: 0.75, stagger: 0.06, delay: 0.2, ease: "power2.out" },
+      { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.055, delay: 0.24, ease: "power2.out" },
     );
   }
 }
@@ -1137,8 +1176,8 @@ function closeCaseStudy() {
   };
 
   if (window.gsap && !prefersReducedMotion) {
-    gsap.to(".case-panel", { autoAlpha: 0, y: 42, scale: 0.985, duration: 0.5, ease: "power2.in" });
-    gsap.to(".case-backdrop", { autoAlpha: 0, duration: 0.5, ease: "power2.in", onComplete: close });
+    gsap.to(".case-panel", { autoAlpha: 0, y: 32, scale: 0.992, duration: 0.48, ease: "power2.inOut" });
+    gsap.to(".case-backdrop", { autoAlpha: 0, duration: 0.48, ease: "power2.inOut", onComplete: close });
   } else {
     close();
   }
