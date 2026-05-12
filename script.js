@@ -111,6 +111,7 @@ const languages = {
       contact: {
         kicker: "07 / تماس",
         title: "اگر برند باید دقیق‌تر دیده شود، از اینجا شروع کنیم.",
+        phone: "+۹۸۹۱۲۹۳۷۶۸۴۷",
       },
       case: {
         inPage: "مشاهده در همین صفحه",
@@ -232,6 +233,7 @@ const languages = {
       contact: {
         kicker: "07 / پەیوەندی",
         title: "ئەگەر براندەکە دەبێت ڕوونتر ببینرێت، لێرە دەست پێبکەین.",
+        phone: "+۹۸۹۱۲۹۳۷۶۸۴۷",
       },
       case: {
         inPage: "بینین لەم پەڕەیەدا",
@@ -353,6 +355,7 @@ const languages = {
       contact: {
         kicker: "07 / Contact",
         title: "If the brand needs to be seen more clearly, start here.",
+        phone: "+989129376847",
       },
       case: {
         inPage: "In-page case",
