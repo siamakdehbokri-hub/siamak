@@ -764,7 +764,11 @@ function setActiveNav(hash) {
     }
   });
 
-  if (didChange && activeLink && window.matchMedia("(max-width: 760px)").matches) {
+  const nav = activeLink?.closest(".nav");
+  const shouldCenterMobileNav =
+    didChange && activeLink && nav && window.matchMedia("(max-width: 760px)").matches && nav.scrollWidth > nav.clientWidth + 2;
+
+  if (shouldCenterMobileNav) {
     activeLink.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
   }
 }
