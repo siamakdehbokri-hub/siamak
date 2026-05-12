@@ -1,6 +1,10 @@
+const MOBILE_QUERY = "(max-width: 820px)";
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const prefersLowMotionDevice = window.matchMedia("(hover: none), (pointer: coarse), (max-width: 760px)").matches;
-const supportsFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const prefersLowMotionDevice = window.matchMedia(`(hover: none), (pointer: coarse), ${MOBILE_QUERY}`).matches;
+const ENHANCEMENT_SCRIPTS = [
+  "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js",
+  "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js",
+];
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
@@ -541,6 +545,7 @@ let hasRenderedOnce = false;
 let lastFocusedElement = null;
 let refreshActiveNavigation = () => {};
 let currentActiveNavHash = "";
+let enhancementsRequested = false;
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -579,62 +584,78 @@ function renderStaticText() {
 
 function renderCards() {
   const { content } = languages[activeLanguage];
+  const reelTrack = $("[data-reel-track]");
+  const signatureGrid = $("[data-signature-grid]");
+  const capabilityGrid = $("[data-capability-grid]");
+  const methodList = $("[data-method-list]");
+  const identityCopy = $("[data-identity-copy]");
 
-  $("[data-reel-track]").innerHTML = content.reel.items
-    .map(
-      (item) => `
-        <article class="reel-card" data-reveal>
-          <span>${escapeHTML(item.index)}</span>
-          <h3>${escapeHTML(item.title)}</h3>
-          <p>${escapeHTML(item.body)}</p>
-        </article>
-      `,
-    )
-    .join("");
+  if (reelTrack) {
+    reelTrack.innerHTML = content.reel.items
+      .map(
+        (item) => `
+          <article class="reel-card" data-reveal>
+            <span>${escapeHTML(item.index)}</span>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.body)}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
 
-  $("[data-signature-grid]").innerHTML = content.signature.items
-    .map(
-      (item, index) => `
-        <article data-reveal>
-          <span class="signature-index">${String(index + 1).padStart(2, "0")} / ${escapeHTML(item.label)}</span>
-          <h3>${escapeHTML(item.title)}</h3>
-          <p>${escapeHTML(item.body)}</p>
-        </article>
-      `,
-    )
-    .join("");
+  if (signatureGrid) {
+    signatureGrid.innerHTML = content.signature.items
+      .map(
+        (item, index) => `
+          <article data-reveal>
+            <span class="signature-index">${String(index + 1).padStart(2, "0")} / ${escapeHTML(item.label)}</span>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.body)}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
 
-  $("[data-capability-grid]").innerHTML = content.capabilities.items
-    .map(
-      (item, index) => `
-        <article data-reveal>
-          <span class="capability-index">${String(index + 1).padStart(2, "0")}</span>
-          <h3>${escapeHTML(item.title)}</h3>
-          <p>${escapeHTML(item.body)}</p>
-        </article>
-      `,
-    )
-    .join("");
+  if (capabilityGrid) {
+    capabilityGrid.innerHTML = content.capabilities.items
+      .map(
+        (item, index) => `
+          <article data-reveal>
+            <span class="capability-index">${String(index + 1).padStart(2, "0")}</span>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.body)}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
 
-  $("[data-method-list]").innerHTML = content.method.items
-    .map(
-      (item) => `
-        <div class="process-step" data-reveal>
-          <h3>${escapeHTML(item.title)}</h3>
-          <p>${escapeHTML(item.body)}</p>
-        </div>
-      `,
-    )
-    .join("");
+  if (methodList) {
+    methodList.innerHTML = content.method.items
+      .map(
+        (item) => `
+          <div class="process-step" data-reveal>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.body)}</p>
+          </div>
+        `,
+      )
+      .join("");
+  }
 
-  $("[data-identity-copy]").innerHTML = content.identity.paragraphs
-    .map((paragraph) => `<p data-reveal>${escapeHTML(paragraph)}</p>`)
-    .join("");
+  if (identityCopy) {
+    identityCopy.innerHTML = content.identity.paragraphs
+      .map((paragraph) => `<p data-reveal>${escapeHTML(paragraph)}</p>`)
+      .join("");
+  }
 }
 
 function renderProjects() {
   const { content } = languages[activeLanguage];
   const list = $("[data-project-list]");
+  if (!list) return;
 
   list.innerHTML = projects
     .map((project, index) => {
@@ -645,7 +666,7 @@ function renderProjects() {
       const title = escapeHTML(copy.title);
       return `
         <article class="project-card ${index % 2 ? "is-offset" : ""}">
-          <button class="project-media magnetic" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
+          <button class="project-media" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
             <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${title}" />
           </button>
           <div class="project-copy">
@@ -719,9 +740,6 @@ function updateLanguage(lang) {
   renderProjects();
   updateA11yLabels();
   initAnchorNavigation();
-  initMagnetic();
-  initResponsiveTilt();
-  initSignatureInteraction();
   initMotion(hasRenderedOnce);
   setActiveNav(location.hash || "#top");
   requestAnimationFrame(refreshActiveNavigation);
@@ -769,7 +787,7 @@ function setActiveNav(hash) {
 
   const nav = activeLink?.closest(".nav");
   const shouldCenterMobileNav =
-    didChange && activeLink && nav && window.matchMedia("(max-width: 760px)").matches && nav.scrollWidth > nav.clientWidth + 2;
+    didChange && activeLink && nav && window.matchMedia(MOBILE_QUERY).matches && nav.scrollWidth > nav.clientWidth + 2;
 
   if (shouldCenterMobileNav) {
     activeLink.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
@@ -874,7 +892,7 @@ function initLanguage() {
 }
 
 function initSmoothScroll() {
-  if (prefersReducedMotion || prefersLowMotionDevice || !window.Lenis) return;
+  if (lenis || prefersReducedMotion || prefersLowMotionDevice || !window.Lenis) return;
 
   lenis = new Lenis({
     duration: 1.36,
@@ -899,6 +917,40 @@ function initSmoothScroll() {
   requestAnimationFrame(raf);
 }
 
+function loadScript(src) {
+  const isLoaded = [...document.scripts].some((script) => script.src === src);
+  if (isLoaded) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.fetchPriority = "low";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.append(script);
+  });
+}
+
+function initDeferredEnhancements() {
+  if (enhancementsRequested || prefersReducedMotion || prefersLowMotionDevice) return;
+  enhancementsRequested = true;
+
+  const loadEnhancements = () => {
+    Promise.all(ENHANCEMENT_SCRIPTS.map(loadScript))
+      .then(() => initSmoothScroll())
+      .catch(() => {});
+  };
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(loadEnhancements, { timeout: 2200 });
+    return;
+  }
+
+  window.addEventListener("load", () => window.setTimeout(loadEnhancements, 800), { once: true });
+}
+
 function initScrollProgress() {
   const progress = $(".scroll-progress");
   if (!progress) return;
@@ -909,7 +961,6 @@ function initScrollProgress() {
     const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
     const value = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
     progress.style.transform = `scaleX(${value})`;
-    $(".site-header")?.classList.toggle("is-scrolled", window.scrollY > 18);
     ticking = false;
   };
 
@@ -937,9 +988,9 @@ function initMotion(refreshOnly = false) {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf("[data-reveal], .split-title span, .parallax-card, [data-depth], .project-media img, section, .reel-card, .signature-grid article, .capability-grid article");
+  gsap.killTweensOf("[data-reveal], .split-title span, .project-media img, section, .reel-card, .signature-grid article, .capability-grid article");
 
-  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const isMobile = window.matchMedia(MOBILE_QUERY).matches;
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
 
   if (isMobile) {
@@ -954,51 +1005,39 @@ function initMotion(refreshOnly = false) {
     return;
   }
 
-  if (refreshOnly) {
-    gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-  } else {
-    gsap.set("[data-reveal]", { autoAlpha: 0, y: isMobile ? 12 : 24 });
-  }
+  gsap.set("[data-reveal]", {
+    autoAlpha: refreshOnly ? 1 : 0,
+    y: refreshOnly ? 0 : 24,
+  });
 
   gsap.set(".split-title span", {
-    yPercent: refreshOnly ? 0 : isMobile ? 34 : 68,
+    yPercent: refreshOnly ? 0 : 68,
     rotate: 0,
     autoAlpha: refreshOnly ? 1 : 0,
   });
 
-  if (isMobile) {
-    gsap.set(".site-header[data-reveal]", { autoAlpha: 1, y: 0, clearProps: "transform" });
-  }
-
   if (!refreshOnly) {
-    gsap.to(".cursor-orb", {
-      autoAlpha: 1,
-      duration: 1.8,
-      delay: 0.45,
-      ease: "power2.out",
-    });
-
     gsap.to(".split-title span", {
       yPercent: 0,
       rotate: 0,
       autoAlpha: 1,
-      duration: isMobile ? 0.72 : 1.42,
-      stagger: isMobile ? 0.045 : 0.085,
-      ease: isMobile ? "power2.out" : "power3.out",
-      delay: isMobile ? 0.04 : 0.12,
+      duration: 1.42,
+      stagger: 0.085,
+      ease: "power3.out",
+      delay: 0.12,
     });
   }
 
   ScrollTrigger.batch("[data-reveal]:not(.project-card)", {
-    start: isMobile ? "top 94%" : "top 87%",
+    start: "top 87%",
     once: true,
     onEnter: (batch) => {
       gsap.to(batch, {
         autoAlpha: 1,
         y: 0,
-        duration: isMobile ? 0.52 : 1.14,
-        stagger: isMobile ? 0.025 : 0.06,
-        ease: isMobile ? "power2.out" : "power3.out",
+        duration: 1.14,
+        stagger: 0.06,
+        ease: "power3.out",
       });
     },
   });
@@ -1026,12 +1065,12 @@ function initMotion(refreshOnly = false) {
 
     timeline.fromTo(
       card,
-      { autoAlpha: 0, y: isMobile ? 10 : isCompact ? 18 : 28 },
+      { autoAlpha: 0, y: isCompact ? 18 : 28 },
       {
         autoAlpha: 1,
         y: 0,
-        duration: isMobile ? 0.58 : isCompact ? 0.84 : 1.08,
-        ease: isMobile ? "power2.out" : "power3.out",
+        duration: isCompact ? 0.84 : 1.08,
+        ease: "power3.out",
       },
     );
 
@@ -1049,37 +1088,6 @@ function initMotion(refreshOnly = false) {
       );
     }
   });
-
-  if (!isCompact) {
-    $$(".parallax-card").forEach((card) => {
-      gsap.to(card, {
-        yPercent: -7,
-        rotateX: 1.5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: card,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.8,
-        },
-      });
-    });
-
-    $$("[data-depth]").forEach((layer) => {
-      const depth = Number(layer.dataset.depth || 0.1);
-      gsap.to(layer, {
-        y: () => window.innerHeight * depth,
-        rotate: depth * 20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: layer.closest("section") || document.body,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 2,
-        },
-      });
-    });
-  }
 
   if (!isCompact) {
     $$(".project-card").forEach((card) => {
@@ -1124,140 +1132,13 @@ function initMotion(refreshOnly = false) {
   requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
-function initPointerGlow() {
-  const orb = $(".cursor-orb");
-  if (!orb || prefersReducedMotion || !supportsFinePointer || window.innerWidth < 1100 || !window.gsap) return;
-
-  const xTo = gsap.quickTo(orb, "x", { duration: 1.25, ease: "power2.out" });
-  const yTo = gsap.quickTo(orb, "y", { duration: 1.25, ease: "power2.out" });
-
-  window.addEventListener("pointermove", (event) => {
-    xTo(event.clientX);
-    yTo(event.clientY);
-  });
-}
-
-function initMagnetic() {
-  if (prefersReducedMotion || !supportsFinePointer) return;
-
-  $$(".magnetic").forEach((item) => {
-    if (item.dataset.magneticReady) return;
-    item.dataset.magneticReady = "true";
-
-    item.addEventListener("pointermove", (event) => {
-      if (prefersReducedMotion) return;
-      const rect = item.getBoundingClientRect();
-      const x = event.clientX - rect.left - rect.width / 2;
-      const y = event.clientY - rect.top - rect.height / 2;
-      const transform = `translate3d(${x * 0.035}px, ${y * 0.045}px, 0)`;
-
-      if (window.gsap) {
-        gsap.to(item, { x: x * 0.035, y: y * 0.045, duration: 0.62, ease: "power2.out" });
-      } else {
-        item.style.transform = transform;
-      }
-    }, { passive: true });
-
-    item.addEventListener("pointerleave", () => {
-      if (window.gsap) {
-        gsap.to(item, { x: 0, y: 0, duration: 0.72, ease: "power3.out" });
-      } else {
-        item.style.transform = "translate3d(0, 0, 0)";
-      }
-    });
-  });
-}
-
-function loadDeferredFontWeights() {
-  const load = () => {
-    if ($('link[href="fonts-extra.css"]')) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "fonts-extra.css";
-    link.media = "print";
-    link.onload = () => {
-      link.media = "all";
-    };
-    document.head.append(link);
-  };
-
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(load, { timeout: 3000 });
-  } else {
-    window.addEventListener("load", () => window.setTimeout(load, 1200), { once: true });
-  }
-}
-
-function initResponsiveTilt() {
-  if (prefersReducedMotion || !window.gsap || window.matchMedia("(max-width: 900px)").matches) return;
-
-  $$(".hero-frame, .project-media").forEach((item) => {
-    if (item.dataset.tiltReady) return;
-    item.dataset.tiltReady = "true";
-
-    item.addEventListener("pointermove", (event) => {
-      const rect = item.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(item, {
-        rotateY: x * 1.8,
-        rotateX: y * -1.8,
-        transformPerspective: 900,
-        duration: 0.68,
-        ease: "power2.out",
-      });
-    }, { passive: true });
-
-    item.addEventListener("pointerleave", () => {
-      gsap.to(item, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "power2.out" });
-    });
-  });
-}
-
-function initSignatureInteraction() {
-  if (prefersReducedMotion || !supportsFinePointer) return;
-
-  $$(".project-card, .reel-card, .signature-grid article, .capability-grid article").forEach((item) => {
-    if (item.dataset.signatureReady) return;
-    item.dataset.signatureReady = "true";
-
-    let frame = null;
-    let latestEvent = null;
-
-    const updateSpotlight = () => {
-      if (!latestEvent) return;
-      const rect = item.getBoundingClientRect();
-      const x = ((latestEvent.clientX - rect.left) / rect.width) * 100;
-      const y = ((latestEvent.clientY - rect.top) / rect.height) * 100;
-      item.style.setProperty("--spot-x", `${Math.min(Math.max(x, 0), 100)}%`);
-      item.style.setProperty("--spot-y", `${Math.min(Math.max(y, 0), 100)}%`);
-      frame = null;
-    };
-
-    item.addEventListener(
-      "pointermove",
-      (event) => {
-        latestEvent = event;
-        if (frame) return;
-        frame = requestAnimationFrame(updateSpotlight);
-      },
-      { passive: true },
-    );
-
-    item.addEventListener("pointerleave", () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = null;
-      latestEvent = null;
-      item.style.setProperty("--spot-x", "50%");
-      item.style.setProperty("--spot-y", "50%");
-    });
-  });
-}
-
 function getCaseFocusables() {
+  const drawer = $("[data-case-study]");
+  if (!drawer) return [];
+
   return $$(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    $("[data-case-study]"),
+    drawer,
   ).filter((node) => !node.disabled && node.offsetParent !== null);
 }
 
@@ -1268,6 +1149,10 @@ function openCaseStudy(projectId) {
   const copy = project.copy[activeLanguage];
   const labels = languages[activeLanguage].content.case;
   const drawer = $("[data-case-study]");
+  const panel = $(".case-panel");
+  const caseGrid = $("[data-case-grid]");
+  if (!drawer || !panel || !caseGrid) return;
+
   const activeElement = document.activeElement;
   lastFocusedElement = activeElement instanceof HTMLElement && activeElement !== document.body ? activeElement : null;
 
@@ -1277,11 +1162,13 @@ function openCaseStudy(projectId) {
   setText("[data-case-year]", project.year);
 
   const image = $("[data-case-image]");
-  image.src = project.image;
-  image.alt = copy.title;
-  $(".case-panel").scrollTop = 0;
+  if (image) {
+    image.src = project.image;
+    image.alt = copy.title;
+  }
+  panel.scrollTop = 0;
 
-  $("[data-case-grid]").innerHTML = [
+  caseGrid.innerHTML = [
     ["challenge", copy.challenge],
     ["strategy", copy.strategy],
     ["direction", copy.direction],
@@ -1297,7 +1184,7 @@ function openCaseStudy(projectId) {
   lenis?.stop();
 
   requestAnimationFrame(() => {
-    $(".case-panel")?.focus({ preventScroll: true });
+    panel.focus({ preventScroll: true });
   });
 
   if (window.gsap && !prefersReducedMotion) {
@@ -1317,6 +1204,8 @@ function openCaseStudy(projectId) {
 
 function closeCaseStudy() {
   const drawer = $("[data-case-study]");
+  if (!drawer) return;
+
   const close = () => {
     drawer.classList.remove("is-open");
     drawer.setAttribute("aria-hidden", "true");
@@ -1338,6 +1227,7 @@ function initCaseStudy() {
   $$("[data-close-case]").forEach((button) => button.addEventListener("click", closeCaseStudy));
   window.addEventListener("keydown", (event) => {
     const drawer = $("[data-case-study]");
+    if (!drawer) return;
     if (!drawer.classList.contains("is-open")) return;
 
     if (event.key === "Escape") {
@@ -1365,9 +1255,8 @@ function initCaseStudy() {
 
 initSmoothScroll();
 initScrollProgress();
-initPointerGlow();
 initCaseStudy();
 initLanguage();
 initAnchorNavigation();
 initActiveNavigation();
-loadDeferredFontWeights();
+initDeferredEnhancements();
