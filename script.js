@@ -578,7 +578,7 @@ function renderCards() {
   $("[data-reel-track]").innerHTML = content.reel.items
     .map(
       (item) => `
-        <article class="reel-card magnetic" data-reveal>
+        <article class="reel-card" data-reveal>
           <span>${escapeHTML(item.index)}</span>
           <h3>${escapeHTML(item.title)}</h3>
           <p>${escapeHTML(item.body)}</p>
@@ -710,10 +710,11 @@ function updateLanguage(lang) {
   renderCards();
   renderProjects();
   updateA11yLabels();
+  initAnchorNavigation();
   initMagnetic();
   initResponsiveTilt();
   initSignatureInteraction();
-  initMotion(false);
+  initMotion(hasRenderedOnce);
   setActiveNav(location.hash || "#top");
   hasRenderedOnce = true;
 
@@ -757,7 +758,9 @@ function scrollToTarget(hash, updateHistory = true) {
   setActiveNav(hash);
 
   if (lenis && !prefersReducedMotion) {
+    const headerHeight = $(".site-header")?.getBoundingClientRect().height || 0;
     lenis.scrollTo(target, {
+      offset: hash === "#top" ? 0 : -(headerHeight + 16),
       duration: 1.18,
       easing: (t) => 1 - Math.pow(1 - t, 3),
     });
@@ -966,7 +969,17 @@ function initMotion(refreshOnly = false) {
   }
 
   $$(".project-card").forEach((card) => {
-    gsap.fromTo(
+    const media = $(".project-media", card);
+    const copy = $(".project-copy", card);
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: card,
+        start: isCompact ? "top 90%" : "top 84%",
+        once: true,
+      },
+    });
+
+    timeline.fromTo(
       card,
       { autoAlpha: 0, y: isCompact ? 18 : 28 },
       {
@@ -974,13 +987,22 @@ function initMotion(refreshOnly = false) {
         y: 0,
         duration: isCompact ? 0.84 : 1.08,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: isCompact ? "top 90%" : "top 84%",
-          once: true,
-        },
       },
     );
+
+    if (!isCompact && media && copy) {
+      timeline.fromTo(
+        [media, copy],
+        { y: 14 },
+        {
+          y: 0,
+          duration: 0.78,
+          stagger: 0.07,
+          ease: "power2.out",
+        },
+        "<0.12",
+      );
+    }
   });
 
   if (!isCompact) {
@@ -1030,29 +1052,6 @@ function initMotion(refreshOnly = false) {
             start: "top bottom",
             end: "bottom top",
             scrub: 1.25,
-          },
-        },
-      );
-    });
-
-    $$(".project-card").forEach((card) => {
-      const media = $(".project-media", card);
-      const copy = $(".project-copy", card);
-      if (!media || !copy) return;
-
-      gsap.fromTo(
-        [media, copy],
-        { autoAlpha: 0.72, y: 18 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 82%",
-            once: true,
           },
         },
       );
@@ -1147,7 +1146,7 @@ function loadDeferredFontWeights() {
 function initResponsiveTilt() {
   if (prefersReducedMotion || !window.gsap || window.matchMedia("(max-width: 900px)").matches) return;
 
-  $$(".hero-frame, .project-media, .reel-card").forEach((item) => {
+  $$(".hero-frame, .project-media").forEach((item) => {
     if (item.dataset.tiltReady) return;
     item.dataset.tiltReady = "true";
 
@@ -1224,7 +1223,8 @@ function openCaseStudy(projectId) {
   const copy = project.copy[activeLanguage];
   const labels = languages[activeLanguage].content.case;
   const drawer = $("[data-case-study]");
-  lastFocusedElement = document.activeElement;
+  const activeElement = document.activeElement;
+  lastFocusedElement = activeElement instanceof HTMLElement && activeElement !== document.body ? activeElement : null;
 
   setText("[data-case-category]", copy.category);
   setText("[data-case-title]", copy.title);

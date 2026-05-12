@@ -7,7 +7,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 300;
-  unicode-range: U+0020, U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @font-face {
@@ -19,7 +19,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 400;
-  unicode-range: U+0020, U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @font-face {
@@ -31,7 +31,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 500;
-  unicode-range: U+0020, U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @font-face {
@@ -43,7 +43,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 600;
-  unicode-range: U+0020, U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @font-face {
@@ -55,7 +55,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 700;
-  unicode-range: U+0020, U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @font-face {
@@ -258,10 +258,6 @@ li {
   transform: scaleX(0);
   transform-origin: left center;
   transition: opacity 0.35s var(--ease);
-}
-
-body:not(.lang-en) .scroll-progress {
-  transform-origin: right center;
 }
 
 body.is-case-open .scroll-progress {
@@ -1573,6 +1569,10 @@ body.lang-en .split-title {
 
 .case-grid {
   align-items: stretch;
+}
+
+.case-item {
+  contain: none;
 }
 
 .case-item h3 {
