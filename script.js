@@ -539,6 +539,8 @@ let activeLanguage = "fa";
 let lenis;
 let hasRenderedOnce = false;
 let lastFocusedElement = null;
+let refreshActiveNavigation = () => {};
+let currentActiveNavHash = "";
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -719,6 +721,7 @@ function updateLanguage(lang) {
   initSignatureInteraction();
   initMotion(hasRenderedOnce);
   setActiveNav(location.hash || "#top");
+  requestAnimationFrame(refreshActiveNavigation);
   hasRenderedOnce = true;
 
   if (shouldAnimateLanguage) {
@@ -745,9 +748,25 @@ function updateLanguage(lang) {
 }
 
 function setActiveNav(hash) {
+  const didChange = hash !== currentActiveNavHash;
+  let activeLink = null;
+  currentActiveNavHash = hash;
+
   $$(".nav a").forEach((link) => {
-    link.classList.toggle("is-current", link.getAttribute("href") === hash);
+    const isCurrent = link.getAttribute("href") === hash;
+    link.classList.toggle("is-current", isCurrent);
+
+    if (isCurrent) {
+      link.setAttribute("aria-current", "page");
+      activeLink = link;
+    } else {
+      link.removeAttribute("aria-current");
+    }
   });
+
+  if (didChange && activeLink && window.matchMedia("(max-width: 760px)").matches) {
+    activeLink.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  }
 }
 
 function scrollToTarget(hash, updateHistory = true) {
@@ -784,6 +803,7 @@ function initAnchorNavigation() {
       const target = document.getElementById(hash.slice(1));
       if (!target) return;
       event.preventDefault();
+      if (event.detail > 0) link.blur();
       scrollToTarget(hash);
     });
   });
@@ -803,21 +823,17 @@ function initActiveNavigation() {
   let ticking = false;
 
   const update = () => {
-    const firstSectionTop = sections[0].node.offsetTop;
-    const topSafeZone = Math.max(140, window.innerHeight * 0.34);
+    const headerHeight = $(".site-header")?.getBoundingClientRect().height || 0;
+    const activationLine = headerHeight + window.innerHeight * 0.22;
+    let activeHash = "#top";
 
-    if (window.scrollY < Math.max(firstSectionTop - topSafeZone, 0)) {
-      setActiveNav("#top");
-      ticking = false;
-      return;
-    }
+    sections.forEach((section) => {
+      if (section.node.getBoundingClientRect().top <= activationLine) {
+        activeHash = section.hash;
+      }
+    });
 
-    const probe = window.scrollY + window.innerHeight * 0.42;
-    const active = sections.reduce((current, section) => {
-      return section.node.offsetTop <= probe ? section : current;
-    }, sections[0]);
-
-    setActiveNav(active.hash);
+    setActiveNav(activeHash);
     ticking = false;
   };
 
@@ -828,8 +844,10 @@ function initActiveNavigation() {
   };
 
   update();
+  refreshActiveNavigation = requestUpdate;
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
+  window.addEventListener("hashchange", requestUpdate);
   lenis?.on("scroll", requestUpdate);
 }
 

@@ -2020,6 +2020,15 @@ body:not(.lang-en) .case-item h3 {
   }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .nav a:hover:not(.is-current),
+  .nav a:focus:not(:focus-visible):not(.is-current) {
+    border-color: rgba(247, 241, 230, 0.1);
+    background: rgba(247, 241, 230, 0.035);
+    color: rgba(247, 241, 230, 0.78);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-card::after,
   .reel-card::before,
