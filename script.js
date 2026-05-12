@@ -653,6 +653,9 @@ function renderProjects() {
             <h3>${title}</h3>
             <p class="project-summary">${escapeHTML(copy.summary)}</p>
             <div class="project-meta">${tags}<span>${escapeHTML(content.work.open)}</span></div>
+            <button class="project-open" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
+              ${escapeHTML(content.work.open)}
+            </button>
           </div>
         </article>
       `;
@@ -940,27 +943,12 @@ function initMotion(refreshOnly = false) {
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
 
   if (isMobile) {
-    gsap.set("[data-reveal], .site-header[data-reveal]", {
+    gsap.set("[data-reveal], .site-header[data-reveal], .split-title span", {
       autoAlpha: 1,
       y: 0,
+      yPercent: 0,
       clearProps: "transform",
     });
-
-    if (!refreshOnly) {
-      gsap.fromTo(
-        ".split-title span",
-        { autoAlpha: 0, yPercent: 22 },
-        {
-          autoAlpha: 1,
-          yPercent: 0,
-          duration: 0.58,
-          stagger: 0.035,
-          ease: "power2.out",
-        },
-      );
-    } else {
-      gsap.set(".split-title span", { autoAlpha: 1, yPercent: 0, clearProps: "transform" });
-    }
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
     return;
