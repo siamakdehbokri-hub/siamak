@@ -1552,6 +1552,14 @@ function getMediaDimensions(src, fallback = [1800, 1040]) {
   return mediaDimensions[src] || fallback;
 }
 
+function getMediaOrientation(width, height) {
+  const ratio = height / width;
+  if (ratio > 1.65) return "is-tall";
+  if (ratio > 1.08) return "is-portrait";
+  if (width / height > 1.35) return "is-landscape";
+  return "is-square";
+}
+
 function updateCaseGallery(index) {
   const gallery = $("[data-case-gallery]");
   const track = gallery ? $("[data-case-gallery-track]", gallery) : null;
@@ -1593,8 +1601,11 @@ function renderCaseGallery(project, copy) {
       <div class="case-gallery-track" data-case-gallery-track>
         ${activeCaseGallerySlides
           .map(
-            (slide, index) => `
-              <figure class="case-slide">
+            (slide, index) => {
+              const slideArt = escapeHTML(slide.src.replace(/['"()\\]/g, ""));
+              const orientation = getMediaOrientation(slide.width, slide.height);
+              return `
+              <figure class="case-slide ${orientation}" style="--slide-art: url('${slideArt}')">
                 <img
                   src="${escapeHTML(slide.src)}"
                   width="${slide.width}"
@@ -1604,7 +1615,8 @@ function renderCaseGallery(project, copy) {
                   decoding="async"
                 />
               </figure>
-            `,
+            `;
+            },
           )
           .join("")}
       </div>
