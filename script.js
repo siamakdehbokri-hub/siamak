@@ -724,6 +724,10 @@ function escapeHTML(value = "") {
   });
 }
 
+function safeCSSUrl(value = "") {
+  return escapeHTML(String(value).replace(/['"()\\]/g, ""));
+}
+
 function renderStaticText() {
   const { content } = languages[activeLanguage];
 
@@ -838,7 +842,7 @@ function renderProjects() {
         .map((tag) => `<span>${escapeHTML(tag)}</span>`)
         .join("");
       const title = escapeHTML(copy.title);
-      const cover = escapeHTML((project.cover || project.image).replace(/['"()\\]/g, ""));
+      const cover = safeCSSUrl(project.cover || project.image);
       const layoutClass = project.imageLayout === "portrait" ? "is-portrait" : "";
       return `
         <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
@@ -1582,12 +1586,13 @@ function renderCaseGallery(project, copy) {
   if (!gallery) return;
 
   const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
+  const [primaryWidth, primaryHeight] = getMediaDimensions(project.image);
   activeCaseGalleryIndex = 0;
   activeCaseGallerySlides = [
     {
       src: project.image,
-      width: project.imageWidth || getMediaDimensions(project.image)[0],
-      height: project.imageHeight || getMediaDimensions(project.image)[1],
+      width: project.imageWidth || primaryWidth,
+      height: project.imageHeight || primaryHeight,
     },
     ...(project.gallery || []).map((src) => {
       const [width, height] = getMediaDimensions(src);
@@ -1602,7 +1607,7 @@ function renderCaseGallery(project, copy) {
         ${activeCaseGallerySlides
           .map(
             (slide, index) => {
-              const slideArt = escapeHTML(slide.src.replace(/['"()\\]/g, ""));
+              const slideArt = safeCSSUrl(slide.src);
               const orientation = getMediaOrientation(slide.width, slide.height);
               return `
               <figure class="case-slide ${orientation}" style="--slide-art: url('${slideArt}')">
