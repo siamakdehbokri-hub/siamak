@@ -557,6 +557,7 @@ let hasRenderedOnce = false;
 let lastFocusedElement = null;
 let refreshActiveNavigation = () => {};
 let refreshScrollProgress = () => {};
+let refreshSectionMood = () => {};
 let currentActiveNavHash = "";
 let enhancementsRequested = false;
 let enhancedMotionReady = false;
@@ -922,6 +923,7 @@ function initSmoothScroll() {
     lenis.on("scroll", ScrollTrigger.update);
     lenis.on("scroll", refreshActiveNavigation);
     lenis.on("scroll", refreshScrollProgress);
+    lenis.on("scroll", refreshSectionMood);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     return;
@@ -963,6 +965,7 @@ function initDeferredEnhancements() {
         initMotion(!shouldPlayIntro);
         requestAnimationFrame(refreshActiveNavigation);
         requestAnimationFrame(refreshScrollProgress);
+        requestAnimationFrame(refreshSectionMood);
       })
       .catch(() => {});
   };
@@ -1045,7 +1048,7 @@ function initScrollProgress() {
   const render = () => {
     const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
     const value = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
-    progress.style.transform = `scaleX(${value})`;
+    progress.style.setProperty("--scroll-progress", `${value * 100}%`);
     ticking = false;
   };
 
@@ -1150,25 +1153,40 @@ function initSectionMood() {
 
   if (!entries.length) return;
 
-  applySectionMood(entries[0].section, entries[0].mood);
+  let ticking = false;
+  let activeSection = null;
 
-  if (!("IntersectionObserver" in window)) return;
+  const update = () => {
+    const headerHeight = $(".site-header")?.getBoundingClientRect().height || 0;
+    const focusLine = headerHeight + window.innerHeight * 0.34;
+    let next = entries[0];
 
-  const observer = new IntersectionObserver(
-    (observed) => {
-      const visible = observed
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    entries.forEach((entry) => {
+      if (entry.section.getBoundingClientRect().top <= focusLine) {
+        next = entry;
+      }
+    });
 
-      if (!visible) return;
+    if (next.section !== activeSection) {
+      activeSection = next.section;
+      applySectionMood(next.section, next.mood);
+    }
 
-      const next = entries.find(({ section }) => section === visible.target);
-      if (next) applySectionMood(next.section, next.mood);
-    },
-    { rootMargin: "-24% 0px -48% 0px", threshold: [0.16, 0.32, 0.48, 0.64] },
-  );
+    ticking = false;
+  };
 
-  entries.forEach(({ section }) => observer.observe(section));
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  update();
+  refreshSectionMood = requestUpdate;
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  window.addEventListener("hashchange", requestUpdate);
+  lenis?.on("scroll", requestUpdate);
 }
 
 function initMotion(refreshOnly = false) {

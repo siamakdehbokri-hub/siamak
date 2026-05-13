@@ -1066,17 +1066,17 @@ body.lang-en .process::before {
     position: fixed;
     top: 0;
     right: 0;
-    left: 0;
+    left: auto;
     z-index: 90;
     display: block;
+    width: var(--scroll-progress, 0%);
     height: 2px;
     background: linear-gradient(90deg, var(--bronze), var(--champagne));
-    transform: scaleX(0);
-    transform-origin: left center;
   }
 
-  body:not(.lang-en) .scroll-progress {
-    transform-origin: right center;
+  body.lang-en .scroll-progress {
+    right: auto;
+    left: 0;
   }
 
   .ambient {
