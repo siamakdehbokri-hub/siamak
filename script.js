@@ -549,6 +549,7 @@ let refreshScrollProgress = () => {};
 let currentActiveNavHash = "";
 let enhancementsRequested = false;
 let enhancedMotionReady = false;
+let mobileRevealObserver = null;
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -581,7 +582,7 @@ function renderStaticText() {
 
   $$("[data-i18n-lines]").forEach((node) => {
     const lines = getPath(content, node.dataset.i18nLines) || [];
-    node.innerHTML = lines.map((line) => `<span>${escapeHTML(line)}</span>`).join("");
+    node.innerHTML = lines.map((line, index) => `<span style="--line-index: ${index}">${escapeHTML(line)}</span>`).join("");
   });
 }
 
@@ -668,7 +669,7 @@ function renderProjects() {
         .join("");
       const title = escapeHTML(copy.title);
       return `
-        <article class="project-card ${index % 2 ? "is-offset" : ""}">
+        <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
           <button class="project-media" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
             <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${title}" />
           </button>
@@ -1050,8 +1051,80 @@ function initScrollProgress() {
   lenis?.on("scroll", requestRender);
 }
 
+function isMobileRevealEnabled() {
+  return !prefersReducedMotion && window.matchMedia("(max-width: 899px)").matches;
+}
+
+function isAlreadyInView(node) {
+  const rect = node.getBoundingClientRect();
+  return rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+}
+
+function refreshMobileReveal() {
+  const items = $$("main [data-reveal], main [data-split-title]");
+
+  if (!isMobileRevealEnabled()) {
+    document.body.classList.remove("mobile-motion-ready");
+    mobileRevealObserver?.disconnect();
+    mobileRevealObserver = null;
+    items.forEach((item) => item.classList.add("is-revealed"));
+    return;
+  }
+
+  document.body.classList.add("mobile-motion-ready");
+  mobileRevealObserver?.disconnect();
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((item) => item.classList.add("is-revealed"));
+    return;
+  }
+
+  mobileRevealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-revealed");
+        mobileRevealObserver?.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -12% 0px", threshold: 0.08 },
+  );
+
+  items.forEach((item, index) => {
+    item.style.removeProperty("opacity");
+    item.style.removeProperty("transform");
+    item.style.setProperty("--reveal-delay", `${Math.min((index % 5) * 42, 168)}ms`);
+
+    if (isAlreadyInView(item)) {
+      item.classList.add("is-revealed");
+    } else {
+      item.classList.remove("is-revealed");
+      mobileRevealObserver.observe(item);
+    }
+  });
+}
+
+function initMobileRevealSystem() {
+  refreshMobileReveal();
+
+  let ticking = false;
+  window.addEventListener("resize", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      refreshMobileReveal();
+    });
+  });
+}
+
 function initMotion(refreshOnly = false) {
   if (!window.gsap || !window.ScrollTrigger || prefersReducedMotion) {
+    if (isMobileRevealEnabled()) {
+      refreshMobileReveal();
+      return;
+    }
+
     $$("[data-reveal]").forEach((item) => {
       item.style.opacity = 1;
       item.style.transform = "none";
@@ -1358,4 +1431,5 @@ initLanguage();
 initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
+initMobileRevealSystem();
 initDeferredEnhancements();
