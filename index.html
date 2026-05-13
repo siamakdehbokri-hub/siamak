@@ -8,7 +8,7 @@
       content="وب‌سایت سه‌زبانه سیامک دهبکری؛ مدیر برند و کارگردان تبلیغاتی در پیوند استراتژی، تصویر و ادراک برند."
     />
     <meta name="robots" content="index, follow" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="سیامک دهبکری | مدیر برند و کارگردان تبلیغاتی" />
     <meta
@@ -17,14 +17,29 @@
     />
     <meta property="og:image" content="assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#090807" />
+    <meta name="theme-color" content="#090807" data-theme-color />
     <title>سیامک دهبکری | مدیر برند و کارگردان تبلیغاتی</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem("site-theme") || "dark";
+      } catch {
+        document.documentElement.dataset.theme = "dark";
+      }
+    </script>
     <link rel="preload" href="assets/hero-perception.svg" as="image" />
     <link rel="preload" href="assets/fonts/iransans/IRANSans-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="assets/fonts/iransans/IRANSans-Medium.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="loading-screen" aria-hidden="true">
+      <div class="loading-mark">SD</div>
+      <p>
+        <span dir="rtl">ادراک، پیش از توضیح آغاز می‌شود.&rlm;</span>
+        <span dir="ltr">Perception begins before explanation.</span>
+        <span dir="rtl">هەستپێکردن پێش ڕوونکردنەوە دەست پێدەکات.&rlm;</span>
+      </p>
+    </div>
     <div class="grain" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -45,10 +60,16 @@
         <a href="#contact" data-i18n="nav.contact"></a>
       </nav>
 
-      <div class="language-switcher" aria-label="Language switcher">
-        <button type="button" data-lang="fa" aria-label="فارسی">فا</button>
-        <button type="button" data-lang="ku" aria-label="کوردی">KU</button>
-        <button type="button" data-lang="en" aria-label="English">EN</button>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle light mode" aria-pressed="false">
+          <span data-theme-label>Dark</span>
+          <i aria-hidden="true"></i>
+        </button>
+        <div class="language-switcher" aria-label="Language switcher">
+          <button type="button" data-lang="fa" aria-label="فارسی">فا</button>
+          <button type="button" data-lang="ku" aria-label="کوردی">KU</button>
+          <button type="button" data-lang="en" aria-label="English">EN</button>
+        </div>
       </div>
     </header>
 
@@ -159,6 +180,11 @@
             <a href="https://t.me/ciamakd" target="_blank" rel="noopener noreferrer" aria-label="Telegram">Telegram</a>
             <a href="https://www.linkedin.com/in/siamakdehbokri" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
           </div>
+          <div class="contact-signature" data-signature-draw aria-hidden="true">
+            <span>Siamak Dehbokri</span>
+            <i></i>
+            <small>Brand Direction / Advertising Film</small>
+          </div>
         </div>
       </section>
     </main>
@@ -194,6 +220,8 @@
         <div class="case-grid" data-case-grid></div>
       </article>
     </aside>
+
+    <div class="easter-egg" data-easter-egg role="status" aria-live="polite"></div>
 
     <script defer src="script.js"></script>
   </body>

@@ -531,23 +531,32 @@ const accessibilityText = {
   fa: {
     navigation: "ناوبری اصلی",
     closeCase: "بستن کیس‌استادی",
+    themeToLight: "تغییر به حالت روشن",
+    themeToDark: "تغییر به حالت تاریک",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
+    egg: "لایه پنهان فعال شد؛ ادراک همیشه یک قدم جلوتر از توضیح است.",
   },
   ku: {
     navigation: "ناوبەری سەرەکی",
     closeCase: "داخستنی کیس",
+    themeToLight: "گۆڕین بۆ دۆخی ڕووناک",
+    themeToDark: "گۆڕین بۆ دۆخی تاریک",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
+    egg: "چینی شاراوە چالاک بوو؛ هەستپێکردن هەمیشە پێش ڕوونکردنەوەیە.",
   },
   en: {
     navigation: "Primary navigation",
     closeCase: "Close case study",
+    themeToLight: "Switch to light mode",
+    themeToDark: "Switch to dark mode",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
+    egg: "Hidden layer unlocked; perception always arrives before explanation.",
   },
 };
 
@@ -562,6 +571,7 @@ let currentActiveNavHash = "";
 let enhancementsRequested = false;
 let enhancedMotionReady = false;
 let mobileRevealObserver = null;
+let activeTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -723,6 +733,8 @@ function updateA11yLabels() {
     const label = socialLabels[link.textContent.trim()];
     if (label) link.setAttribute("aria-label", label);
   });
+
+  syncThemeToggle();
 }
 
 function updateLanguage(lang) {
@@ -905,6 +917,41 @@ function initLanguage() {
   });
 
   updateLanguage(storedLanguage);
+}
+
+function syncThemeToggle() {
+  const toggle = $("[data-theme-toggle]");
+  const label = $("[data-theme-label]");
+  const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
+  if (!toggle) return;
+
+  toggle.setAttribute("aria-pressed", activeTheme === "light" ? "true" : "false");
+  toggle.setAttribute("aria-label", activeTheme === "light" ? labels.themeToDark : labels.themeToLight);
+  if (label) label.textContent = activeTheme === "light" ? "Light" : "Dark";
+}
+
+function applyTheme(theme, persist = false) {
+  activeTheme = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = activeTheme;
+  const themeColor = $("[data-theme-color]");
+  if (themeColor) themeColor.content = activeTheme === "light" ? "#fffaf1" : "#090807";
+  syncThemeToggle();
+
+  if (!persist) return;
+
+  try {
+    localStorage.setItem("site-theme", activeTheme);
+  } catch {
+    // Ignore storage failures in private browsing.
+  }
+}
+
+function initThemeToggle() {
+  applyTheme(activeTheme);
+
+  $("[data-theme-toggle]")?.addEventListener("click", () => {
+    applyTheme(activeTheme === "light" ? "dark" : "light", true);
+  });
 }
 
 function initSmoothScroll() {
@@ -1465,6 +1512,64 @@ function closeCaseStudy() {
   }
 }
 
+function initSignatureDraw() {
+  const signature = $("[data-signature-draw]");
+  if (!signature) return;
+
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    signature.classList.add("is-drawn");
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        signature.classList.add("is-drawn");
+        observer.disconnect();
+      });
+    },
+    { rootMargin: "0px 0px -18% 0px", threshold: 0.28 },
+  );
+
+  observer.observe(signature);
+}
+
+function initEasterEgg() {
+  const brand = $(".brand");
+  const message = $("[data-easter-egg]");
+  if (!brand || !message) return;
+
+  let clickCount = 0;
+  let resetTimer = null;
+  let hideTimer = null;
+
+  const showMessage = () => {
+    const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
+    message.textContent = labels.egg;
+    message.classList.add("is-visible");
+    document.body.classList.add("egg-active");
+
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(() => {
+      message.classList.remove("is-visible");
+      document.body.classList.remove("egg-active");
+    }, 3600);
+  };
+
+  brand.addEventListener("click", () => {
+    clickCount += 1;
+    window.clearTimeout(resetTimer);
+    resetTimer = window.setTimeout(() => {
+      clickCount = 0;
+    }, 1600);
+
+    if (clickCount < 5) return;
+    clickCount = 0;
+    showMessage();
+  });
+}
+
 function initCaseStudy() {
   $$("[data-close-case]").forEach((button) => button.addEventListener("click", closeCaseStudy));
   window.addEventListener("keydown", (event) => {
@@ -1495,6 +1600,7 @@ function initCaseStudy() {
   });
 }
 
+initThemeToggle();
 initSmoothScroll();
 initScrollProgress();
 initCaseStudy();
@@ -1504,4 +1610,6 @@ initActiveNavigation();
 initPointerGlow();
 initMobileRevealSystem();
 initSectionMood();
+initSignatureDraw();
+initEasterEgg();
 initDeferredEnhancements();
