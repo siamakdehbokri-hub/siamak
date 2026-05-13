@@ -13,7 +13,6 @@ const sectionMoods = [
     y: "17%",
     a: "rgba(255, 180, 94, 0.2)",
     b: "rgba(57, 213, 192, 0.06)",
-    light: { a: "rgba(184, 112, 38, 0.13)", b: "rgba(48, 137, 124, 0.055)" },
   },
   {
     selector: ".reel",
@@ -21,7 +20,6 @@ const sectionMoods = [
     y: "24%",
     a: "rgba(255, 224, 163, 0.15)",
     b: "rgba(255, 180, 94, 0.09)",
-    light: { a: "rgba(255, 247, 232, 0.5)", b: "rgba(181, 112, 42, 0.075)" },
   },
   {
     selector: ".manifesto",
@@ -29,7 +27,6 @@ const sectionMoods = [
     y: "48%",
     a: "rgba(57, 213, 192, 0.1)",
     b: "rgba(255, 224, 163, 0.09)",
-    light: { a: "rgba(43, 137, 124, 0.075)", b: "rgba(255, 247, 232, 0.48)" },
   },
   {
     selector: ".signature",
@@ -37,7 +34,6 @@ const sectionMoods = [
     y: "42%",
     a: "rgba(255, 180, 94, 0.17)",
     b: "rgba(255, 224, 163, 0.08)",
-    light: { a: "rgba(181, 112, 42, 0.105)", b: "rgba(255, 255, 255, 0.42)" },
   },
   {
     selector: ".work",
@@ -45,7 +41,6 @@ const sectionMoods = [
     y: "58%",
     a: "rgba(255, 180, 94, 0.22)",
     b: "rgba(57, 213, 192, 0.07)",
-    light: { a: "rgba(174, 96, 28, 0.13)", b: "rgba(43, 137, 124, 0.055)" },
   },
   {
     selector: ".capabilities",
@@ -53,7 +48,6 @@ const sectionMoods = [
     y: "56%",
     a: "rgba(255, 224, 163, 0.14)",
     b: "rgba(57, 213, 192, 0.1)",
-    light: { a: "rgba(255, 255, 255, 0.45)", b: "rgba(43, 137, 124, 0.08)" },
   },
   {
     selector: ".process",
@@ -61,7 +55,6 @@ const sectionMoods = [
     y: "68%",
     a: "rgba(57, 213, 192, 0.11)",
     b: "rgba(255, 180, 94, 0.08)",
-    light: { a: "rgba(43, 137, 124, 0.075)", b: "rgba(181, 112, 42, 0.07)" },
   },
   {
     selector: ".about",
@@ -69,7 +62,6 @@ const sectionMoods = [
     y: "70%",
     a: "rgba(255, 224, 163, 0.16)",
     b: "rgba(255, 180, 94, 0.08)",
-    light: { a: "rgba(255, 255, 255, 0.5)", b: "rgba(181, 112, 42, 0.07)" },
   },
   {
     selector: ".contact",
@@ -77,7 +69,6 @@ const sectionMoods = [
     y: "82%",
     a: "rgba(255, 180, 94, 0.2)",
     b: "rgba(255, 224, 163, 0.09)",
-    light: { a: "rgba(174, 96, 28, 0.12)", b: "rgba(255, 255, 255, 0.48)" },
   },
 ];
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -87,42 +78,42 @@ const languages = {
   fa: {
     lang: "fa",
     dir: "rtl",
-    title: "سیامک دهبکری مدیر برند",
-    meta: "سیامک دهبکری مدیر برند",
+    title: "سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی",
+    meta: "سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی",
     content: {
       brand: { name: "سیامک دهبکری" },
       nav: { work: "کارها", method: "روش", identity: "نگاه", contact: "تماس" },
       hero: {
         eyebrow: "مدیر برند / کارگردان تبلیغاتی",
-        title: ["سیامک", "دهبکری", "ادراک برند را", "دقیق می‌سازد."],
+        title: ["سیامک", "دهبکری", "ادراک برند را", "دقیق‌تر می‌سازد."],
         body:
-          "کار از جایی شروع می‌شود که ظاهر دیگر کافی نیست: جایگاه، لحن، تصویر و فیلم باید یک حس واحد بسازند؛ حسی که مخاطب قبل از توضیح بفهمد.",
+          "وقتی ظاهر کافی نیست، کار از جایگاه، لحن، تصویر و فیلم شروع می‌شود؛ تا برند پیش از توضیح، درست فهمیده شود.",
         primaryCta: "دیدن کارها",
-        secondaryCta: "نگاه کاری",
+        secondaryCta: "خواندن نگاه",
         caption: "سیامک / برند / فیلم / ادراک",
         metricOneLabel: "برند",
         metricOne: "جایگاه روشن",
         metricTwoLabel: "فیلم",
         metricTwo: "حس کنترل‌شده",
         metricThreeLabel: "اثر",
-        metricThree: "اثر ماندگار",
+        metricThree: "یادآوری ماندگار",
       },
       reel: {
         items: [
-          { index: "01", title: "منطق برند", body: "جایگاه، پیام و لحن؛ نه به‌عنوان فایل راهنما، بلکه به‌عنوان ابزار تصمیم." },
-          { index: "02", title: "کارگردانی تبلیغاتی", body: "فیلمی که فشار فروش ندارد، اما دلیل انتخاب را دقیق‌تر نشان می‌دهد." },
-          { index: "03", title: "طراحی ادراک", body: "هم‌راستا کردن تصویر، کلمه و تجربه تا برند یک حس قابل تشخیص داشته باشد." },
+          { index: "01", title: "منطق برند", body: "جایگاه، پیام و لحن وقتی ارزش دارند که تصمیم‌های روزمره برند را دقیق‌تر کنند." },
+          { index: "02", title: "کارگردانی تبلیغاتی", body: "فیلمی که با فشار نمی‌فروشد؛ انتخاب را طبیعی‌تر و قابل‌باورتر می‌کند." },
+          { index: "03", title: "طراحی برداشت", body: "هماهنگ کردن تصویر، کلمه و تجربه تا برند یک برداشت روشن بسازد." },
         ],
       },
       manifesto: {
         kicker: "01 / اصل کار",
-        title: "برند زمانی جدی می‌شود که همه‌چیز یک حس واحد بسازد.",
+        title: "برند وقتی جدی می‌شود که هر خروجی به یک برداشت مشترک برسد.",
         body:
-          "لوگو، رنگ، کلمه و فیلم فقط زمانی اثر دارند که به یک تصمیم واحد خدمت کنند. کار سیامک ساختن همین انسجام است: دقیق، کم‌اضافه، قابل تشخیص.",
+          "لوگو، رنگ، کلمه و فیلم جدا از هم اثر نمی‌گذارند. ارزش آن‌ها وقتی شروع می‌شود که یک تصمیم مشخص را تقویت کنند. کار سیامک ساختن همین انسجام است: دقیق، کم‌اضافه، قابل اعتماد.",
       },
       signature: {
         kicker: "02 / امضا",
-        title: "استراتژی با چشم سینما. فیلم با منطق برند.",
+        title: "استراتژی با چشم تصویر. فیلم با منطق برند.",
         items: [
           {
             label: "برند",
@@ -136,35 +127,35 @@ const languages = {
           },
           {
             label: "ادراک",
-            title: "طراحی ادراک",
-            body: "تصویر، کلمه و تجربه را به یک حس قابل تشخیص وصل می‌کند.",
+            title: "طراحی برداشت",
+            body: "تصویر، کلمه و تجربه را به یک برداشت روشن وصل می‌کند.",
           },
         ],
       },
       work: {
         kicker: "03 / پروژه‌ها",
-        title: "کارها باید دقیق دیده شوند؛ نه زیاد، نه پراکنده، نه بی‌دلیل.",
-        open: "دیدن کیس",
+        title: "کارهایی برای واضح‌تر دیده شدن؛ نه بلندتر، نه شلوغ‌تر.",
+        open: "مشاهده کیس",
       },
       capabilities: {
         kicker: "04 / خدمات دقیق",
-        title: "چیزهایی که برند را روشن‌تر، قابل‌اعتمادتر و قابل‌تشخیص‌تر می‌کنند.",
+        title: "خدماتی برای اینکه برند دقیق‌تر دیده، فهمیده و انتخاب شود.",
         items: [
           {
             title: "استراتژی برند",
-            body: "جایگاه، مخاطب، تمایز، پیام مرکزی و نقشه تصمیم‌گیری برند.",
+            body: "تعیین جایگاه، مخاطب، تفاوت و پیام مرکزی؛ تا برند بداند چه بگوید و چه چیزی را حذف کند.",
           },
           {
             title: "هویت بصری",
-            body: "زبان تصویری، تایپوگرافی، رنگ، تصویر و قواعدی که اجرا را یکدست نگه می‌دارد.",
+            body: "ساختن زبان دیداری که اجراها را یکدست، قابل تشخیص و قابل کنترل نگه دارد.",
           },
           {
             title: "فیلم تبلیغاتی",
-            body: "ایده، سناریو، ریتم، قاب و کارگردانی حسی که به برند خدمت کند.",
+            body: "تبدیل مزیت برند به روایت، قاب و ریتمی که دلیل انتخاب را روشن کند.",
           },
           {
             title: "کمپین و لانچ",
-            body: "ایده کمپین، ترتیب انتشار، محتوای اجتماعی و اتصال همه خروجی‌ها به یک روایت.",
+            body: "طراحی مسیر انتشار، پیام و محتوا برای اینکه کمپین پراکنده دیده نشود.",
           },
         ],
       },
@@ -179,16 +170,32 @@ const languages = {
       },
       identity: {
         kicker: "06 / بیانیه هویت خلاق",
-        title: "برند برای تزئین نیست؛ باید قابل فهم، قابل اعتماد و قابل یادآوری شود.",
+        title: "برند برای تزئین نیست؛ باید فهمیده، انتخاب و به‌یاد آورده شود.",
         paragraphs: [
-          "سیامک دهبکری میان استراتژی برند و کارگردانی تبلیغاتی کار می‌کند؛ جایی که تصمیم‌های دقیق به تصویر، لحن و تجربه تبدیل می‌شوند.",
-          "او به جای زیاد کردن نشانه‌ها، معنا را کم‌خطاتر می‌کند. هر قاب، کلمه و حرکت باید به ادراک برند کمک کند.",
-          "نگاه او سینمایی است، اما نمایش‌زده نیست؛ مینیمال، کنترل‌شده و متکی بر اثری که بعد از دیدن باقی می‌ماند.",
+          "سیامک دهبکری در نقطه‌ای کار می‌کند که استراتژی برند، تصویر، فیلم و اجرا به هم می‌رسند. تمرکز او ساختن برندی است که فقط دیده نشود؛ درست دیده شود.",
+          "تجربه او از هلدینگ‌های صنعتی و برندهای مصرفی تا آموزش آنلاین، ابزار، هوش مصنوعی، تولید محتوا و کمپین‌های فروش امتداد دارد.",
+          "او به جای اضافه کردن نشانه‌های بیشتر، معنا را دقیق‌تر می‌کند. هر کلمه، قاب و حرکت باید به یک برداشت روشن از برند کمک کند.",
+        ],
+        experienceKicker: "همکاری‌ها و نقش‌های منتخب",
+        experienceItems: [
+          { name: "صنایع توسعه شهد آذربایجان", role: "مدیر برند هلدینگ" },
+          { name: "مدرسه آنلاین کوردیا", role: "مدیر برند، استراتژیست و ویدیوگرافر" },
+          { name: "نیاز کالا", role: "مدیر برند و استراتژیست" },
+          { name: "میکاپ رز / آراز زاگرس", role: "برند آرتیست و طراح کمپین فروش" },
+          { name: "شرکت هوش مصنوعی زبرا کت", role: "UI Motion Designer و Editor" },
+          { name: "رونیکس", role: "تدوینگر" },
+          { name: "Gusscoinc", role: "تدوینگر و کارگردان تبلیغاتی" },
+          { name: "Elegant Hoopoe", role: "تدوینگر و موشن دیزاینر" },
+          { name: "Finland Q", role: "تدوینگر" },
+          { name: "Rupak Production", role: "تدوینگر" },
+          { name: "لیتاما", role: "برند آرتیست" },
+          { name: "مرغ هوگر", role: "برند آرتیست" },
         ],
       },
       contact: {
         kicker: "07 / تماس",
         title: "اگر برند باید دقیق‌تر دیده شود، از اینجا شروع کنیم.",
+        note: "برای همکاری، معرفی برند یا ساخت فیلم تبلیغاتی پیام بدهید.",
         phone: "+۹۸۹۱۲۹۳۷۶۸۴۷",
       },
       case: {
@@ -208,16 +215,16 @@ const languages = {
   ku: {
     lang: "ku",
     dir: "rtl",
-    title: "سیامه‌ک دیبوکری بەڕێوەبەری براند",
-    meta: "سیامه‌ک دیبوکری بەڕێوەبەری براند",
+    title: "سیامه‌ک دیبوکری، بەڕێوەبەری براند و دەرهێنەری فیلمی ڕیکلامی",
+    meta: "سیامه‌ک دیبوکری، بەڕێوەبەری براند و دەرهێنەری فیلمی ڕیکلامی",
     content: {
       brand: { name: "سیامه‌ک دیبوکری" },
       nav: { work: "کارەکان", method: "ڕێباز", identity: "دید", contact: "پەیوەندی" },
       hero: {
         eyebrow: "بەڕێوەبەری براند / دەرهێنەری فیلمی ڕیکلامی",
-        title: ["سیامه‌ک", "دیبوکری", "هەستپێکردنی براند", "بە وردی دەسازێنێت."],
+        title: ["سیامه‌ک", "دیبوکری", "هەستپێکردنی براند", "وردتر دەکات."],
         body:
-          "کار لەو شوێنە دەست پێدەکات کە ڕووکار بەس نییە: جێگە، تۆن، وێنە و فیلم دەبنە هەستێکی یەکگرتوو.",
+          "کاتێک ڕووکار بەس نییە، کار لە جێگە، تۆن، وێنە و فیلم دەست پێدەکات؛ بۆ ئەوەی براند پێش ڕوونکردنەوە تێبگەیەنرێت.",
         primaryCta: "بینینی کارەکان",
         secondaryCta: "خوێندنەوەی دید",
         caption: "سیامه‌ک / براند / فیلم / هەستپێکردن",
@@ -226,24 +233,24 @@ const languages = {
         metricTwoLabel: "هەست",
         metricTwo: "هەستی کۆنترۆڵکراو",
         metricThreeLabel: "کاریگەری",
-        metricThree: "کاریگەریی ماوەدار",
+        metricThree: "لەبیرماندنی ماوەدار",
       },
       reel: {
         items: [
-          { index: "01", title: "لۆژیکی براند", body: "جێگە، پەیام و تۆن وەک ئامرازی بڕیار، نە تەنها بەڵگە." },
-          { index: "02", title: "دەرهێنانی ڕیکلامی", body: "فیلمێک کە فشاری فرۆشتن نییە، بەڵام هۆکاری هەڵبژاردن ڕوونتر دەکات." },
-          { index: "03", title: "داڕشتنی هەستپێکردن", body: "هاوهەنگکردنی وێنە، وشە و ئەزموون بۆ هەستێکی ناسراو." },
+          { index: "01", title: "لۆژیکی براند", body: "جێگە، پەیام و تۆن کاتێک بەهادارن کە بڕیارە ڕۆژانەکانی براند وردتر بکەن." },
+          { index: "02", title: "دەرهێنانی ڕیکلامی", body: "فیلمێک کە بە فشار نافرۆشێت؛ هەڵبژاردن ڕوونتر و باوەڕپێکراوتر دەکات." },
+          { index: "03", title: "داڕشتنی وەرگرتن", body: "هاوهەنگکردنی وێنە، وشە و ئەزموون بۆ ئەوەی براند وەرگرتنێکی ڕوون دروست بکات." },
         ],
       },
       manifesto: {
         kicker: "01 / بنەمای کار",
-        title: "براند کاتێک جدی دەبێت کە هەموو شتێک هەستێکی یەکگرتوو دروست بکات.",
+        title: "براند کاتێک جدی دەبێت کە هەر دەرچوونێک بگاتە هەمان وەرگرتن.",
         body:
-          "لۆگۆ، ڕەنگ، وشە و فیلم کاتێک کاریگەرییان هەیە کە خزمەتی هەمان بڕیار بکەن. کاری سیامه‌ک دروستکردنی ئەو یەکگرتووییەیە: ورد، کەم‌زیادە، ناسراو.",
+          "لۆگۆ، ڕەنگ، وشە و فیلم بە تەنیا کاریگەری دروست ناکەن. بەهایان لەو کاتە دەست پێدەکات کە بڕیارێکی ڕوون بەهێز بکەن. کاری سیامه‌ک دروستکردنی ئەو هاوهەنگییەیە: ورد، کەم‌زیادە، متمانەپێکراو.",
       },
       signature: {
         kicker: "02 / واژۆ",
-        title: "ستراتیژی بە چاوی سینەما. فیلم بە لۆژیکی براند.",
+        title: "ستراتیژی بە چاوی وێنە. فیلم بە لۆژیکی براند.",
         items: [
           {
             label: "براند",
@@ -257,35 +264,35 @@ const languages = {
           },
           {
             label: "هەستپێکردن",
-            title: "داڕشتنی هەستپێکردن",
-            body: "وێنە، وشە و ئەزموون دەگەیەنێتە هەستێکی ناسراو.",
+            title: "داڕشتنی وەرگرتن",
+            body: "وێنە، وشە و ئەزموون دەگەیەنێتە وەرگرتنێکی ڕوون.",
           },
         ],
       },
       work: {
         kicker: "03 / کارەکان",
-        title: "کارەکان دەبێت ڕوون ببینرێن؛ نە زۆر، نە پەرشوباڵاو، نە بێ‌هۆکار.",
+        title: "کارەکان بۆ ئەوەی براند ڕوونتر ببینرێت؛ نە دەنگدارتر، نە شلوغتر.",
         open: "بینینی کیس",
       },
       capabilities: {
         kicker: "04 / خزمەتگوزارییە وردەکان",
-        title: "ئەو شتانەی براند ڕوونتر، متمانەپێکراوتر و ناسراوتر دەکەن.",
+        title: "خزمەتگوزارییەکان بۆ ئەوەی براند وردتر ببینرێت، تێبگەیەنرێت و هەڵبژێردرێت.",
         items: [
           {
             title: "ستراتیژی براند",
-            body: "جێگە، بینەر، جیاوازی، پەیامی ناوەندی و نەخشەی بڕیاری براند.",
+            body: "دیاریکردنی جێگە، بینەر، جیاوازی و پەیامی ناوەندی؛ بۆ ئەوەی براند بزانێت چی بڵێت و چی لاببات.",
           },
           {
             title: "ناسنامەی بینراو",
-            body: "زمانی بینراو، تایپۆگرافی، ڕەنگ، وێنە و ڕێساکان بۆ یەکدەستبوونی جێبەجێکردن.",
+            body: "دروستکردنی زمانێکی بینراو کە جێبەجێکردنەکان یەکدەست، ناسراو و کۆنترۆڵکراو بهێڵێتەوە.",
           },
           {
             title: "فیلمی ڕیکلامی",
-            body: "بیرۆکە، سیناریۆ، ڕیتم، چوارچێوە و دەرهێنانێک کە خزمەتی هەستی براند بکات.",
+            body: "گۆڕینی بەهێزی براند بۆ گێڕانەوە، چوارچێوە و ڕیتمێک کە هۆکاری هەڵبژاردن ڕوون بکات.",
           },
           {
             title: "کەمپەین و لانچ",
-            body: "بیرۆکەی کەمپەین، ڕیزبەندی بڵاوکردنەوە، ناوەڕۆکی سۆشیال و گێڕانەوەیەکی یەکگرتوو.",
+            body: "دیزاینی ڕێڕەوی بڵاوکردنەوە، پەیام و ناوەڕۆک بۆ ئەوەی کەمپەین پەرشوباڵاو نەبینرێت.",
           },
         ],
       },
@@ -300,16 +307,32 @@ const languages = {
       },
       identity: {
         kicker: "06 / بیانی ناسنامەی داهێنەرانە",
-        title: "براند بۆ ڕازاندنەوە نییە؛ دەبێت تێبگەیەنرێت، متمانەپێکراو بێت و لەبیر بمێنێتەوە.",
+        title: "براند بۆ ڕازاندنەوە نییە؛ دەبێت تێبگەیەنرێت، هەڵبژێردرێت و لەبیر بمێنێتەوە.",
         paragraphs: [
-          "سیامه‌ک دیبوکری لە نێوان ستراتیژیی براند و دەرهێنانی ڕیکلامیدا کار دەکات؛ ئەو شوێنەی بڕیارە وردەکان دەبنە وێنە، تۆن و ئەزموون.",
-          "لە جیاتی زیادکردنی نیشانەکان، واتا پاکتر دەکات. هەر چوارچێوە، وشە و جووڵە دەبێت خزمەتی هەستپێکردنی براند بکات.",
-          "دیدی ئەو سینەماییە، بەڵام نمایش‌زەدە نییە؛ مینیمال، کۆنترۆڵکراو و پشتیوان بەو کاریگەرییەی دوای بینین دەمێنێتەوە.",
+          "سیامه‌ک دیبوکری لەو خاڵەدا کار دەکات کە ستراتیژیی براند، وێنە، فیلم و جێبەجێکردن یەک دەگرن. سەرنجی ئەو تەنها بینراوبوونی براند نییە؛ بەڵکوو بە دروستی بینراوبوونیەتی.",
+          "ئەزموونی لە هۆڵدینگە پیشەسازییەکان و براندە بازاڕییەکانەوە تا فێرکاریی ئۆنلاین، ئامراز، زیرەکی دەستکرد، بەرهەمهێنانی ناوەڕۆک و کەمپەینی فرۆشتن دەڕوات.",
+          "لە جیاتی زیادکردنی نیشانەی زیاتر، واتا وردتر دەکات. هەر وشە، چوارچێوە و جووڵە دەبێت یارمەتیی وەرگرتنێکی ڕوونتری براند بدات.",
+        ],
+        experienceKicker: "هاوکاری و ڕۆڵە هەڵبژێردراوەکان",
+        experienceItems: [
+          { name: "صنایع توسعه شهد آذربایجان", role: "بەڕێوەبەری براندی هۆڵدینگ" },
+          { name: "قوتابخانەی ئۆنلاین کوردیا", role: "بەڕێوەبەری براند، ستراتیژیست و ڤیدیۆگرافەر" },
+          { name: "نیاز کالا", role: "بەڕێوەبەری براند و ستراتیژیست" },
+          { name: "میکاپ ڕۆز / ئاڕاز زاگرس", role: "براند ئارتیست و دیزاینەری کەمپەینی فرۆشتن" },
+          { name: "کۆمپانیای زیرەکی دەستکردی زبرا کت", role: "UI Motion Designer و Editor" },
+          { name: "رونیکس", role: "مۆنتاژکار" },
+          { name: "Gusscoinc", role: "مۆنتاژکار و دەرهێنەری ڕیکلامی" },
+          { name: "Elegant Hoopoe", role: "مۆنتاژکار و مووشن دیزاینەر" },
+          { name: "Finland Q", role: "مۆنتاژکار" },
+          { name: "Rupak Production", role: "مۆنتاژکار" },
+          { name: "لیتاما", role: "براند ئارتیست" },
+          { name: "مرغ هوگر", role: "براند ئارتیست" },
         ],
       },
       contact: {
         kicker: "07 / پەیوەندی",
         title: "ئەگەر براندەکە دەبێت ڕوونتر ببینرێت، لێرە دەست پێبکەین.",
+        note: "بۆ هاوکاری، ناساندنی براند یان دروستکردنی فیلمی ڕیکلامی پەیام بنێرن.",
         phone: "+۹۸۹۱۲۹۳۷۶۸۴۷",
       },
       case: {
@@ -329,16 +352,16 @@ const languages = {
   en: {
     lang: "en",
     dir: "ltr",
-    title: "Siamak Dehbokri Brand Director",
-    meta: "Siamak Dehbokri Brand Director",
+    title: "Siamak Dehbokri, Brand Director & Commercial Film Director",
+    meta: "Siamak Dehbokri, Brand Director & Commercial Film Director",
     content: {
       brand: { name: "Siamak Dehbokri" },
       nav: { work: "Work", method: "Method", identity: "View", contact: "Contact" },
       hero: {
-        eyebrow: "Brand Director / Advertising Film Director",
-        title: ["Siamak", "Dehbokri", "shapes brand", "perception with precision."],
+        eyebrow: "Brand Director / Commercial Film Director",
+        title: ["Siamak", "Dehbokri", "sharpens how brands", "are perceived."],
         body:
-          "The work begins where appearance stops being enough: position, tone, image, and film shaped into one clear feeling.",
+          "When appearance is not enough, the work begins with position, tone, image, and film, so the brand is understood before it is explained.",
         primaryCta: "View the work",
         secondaryCta: "Read the view",
         caption: "Siamak / Brand / Film / Perception",
@@ -347,24 +370,24 @@ const languages = {
         metricTwoLabel: "Film",
         metricTwo: "Controlled feeling",
         metricThreeLabel: "Effect",
-        metricThree: "Lasting recall",
+        metricThree: "Lasting memory",
       },
       reel: {
         items: [
-          { index: "01", title: "Brand Logic", body: "Position, message, and tone as decision tools, not documents." },
-          { index: "02", title: "Commercial Direction", body: "Films that avoid pressure and make the reason to choose clearer." },
-          { index: "03", title: "Perception Design", body: "Aligning image, words, and experience into one recognizable feeling." },
+          { index: "01", title: "Brand Logic", body: "Position, message, and tone matter when they make daily brand decisions sharper." },
+          { index: "02", title: "Commercial Direction", body: "Film that does not pressure the sale; it makes the choice feel clearer and more believable." },
+          { index: "03", title: "Perception Design", body: "Aligning image, words, and experience so the brand leaves a clear impression." },
         ],
       },
       manifesto: {
         kicker: "01 / Principle",
-        title: "A brand becomes serious when every part creates one feeling.",
+        title: "A brand becomes serious when every output leads to the same impression.",
         body:
-          "Logos, colors, words, and films matter only when they serve the same decision. Siamak’s work is to build that coherence: precise, restrained, recognizable.",
+          "Logos, colors, words, and films do not work in isolation. Their value begins when they support one clear decision. Siamak’s work is to build that coherence: precise, restrained, trustworthy.",
       },
       signature: {
         kicker: "02 / Signature",
-        title: "Strategy with a cinematic eye. Film with brand logic.",
+        title: "Strategy with a visual eye. Film with brand logic.",
         items: [
           {
             label: "Brand",
@@ -379,34 +402,34 @@ const languages = {
           {
             label: "Perception",
             title: "Perception Design",
-            body: "Connecting image, words, and experience into one recognizable feeling.",
+            body: "Connecting image, words, and experience into one clearer impression.",
           },
         ],
       },
       work: {
         kicker: "03 / Projects",
-        title: "Work built to be clear: not louder, not scattered, not decorative.",
+        title: "Work made for clearer perception, not louder surfaces.",
         open: "View case",
       },
       capabilities: {
         kicker: "04 / Exact Capabilities",
-        title: "Capabilities that make the brand clearer, more trusted, and easier to recognize.",
+        title: "Capabilities that help the brand be seen, understood, and chosen with more precision.",
         items: [
           {
             title: "Brand Strategy",
-            body: "Position, audience, difference, core message, and the brand’s decision map.",
+            body: "Defining position, audience, difference, and core message, so the brand knows what to say and what to remove.",
           },
           {
             title: "Visual Identity",
-            body: "Visual language, typography, color, imagery, and rules that keep execution consistent.",
+            body: "Building a visual language that keeps executions consistent, recognizable, and controlled.",
           },
           {
             title: "Advertising Film",
-            body: "Concept, script, rhythm, framing, and direction that serve the brand feeling.",
+            body: "Turning brand advantage into story, frame, and rhythm that clarify the reason to choose.",
           },
           {
             title: "Campaign & Launch",
-            body: "Campaign idea, release order, social content, and one narrative across all outputs.",
+            body: "Designing release, message, and content flow so the campaign does not feel scattered.",
           },
         ],
       },
@@ -421,16 +444,32 @@ const languages = {
       },
       identity: {
         kicker: "06 / Creative Identity Statement",
-        title: "A brand is not decoration. It has to be understood, trusted, and remembered.",
+        title: "A brand is not decoration. It has to be understood, chosen, and remembered.",
         paragraphs: [
-          "Siamak Dehbokri works between brand strategy and advertising direction, where precise decisions become image, tone, and experience.",
-          "Instead of adding more signs, he makes meaning cleaner. Every frame, word, and movement has to serve perception.",
-          "His eye is cinematic, but not theatrical: minimal, controlled, and built around what remains after seeing.",
+          "Siamak Dehbokri works where brand strategy, image, film, and execution meet. His focus is not only making a brand visible, but making it seen correctly.",
+          "His experience spans industrial holdings, consumer brands, online education, tools, AI products, content production, and sales campaigns.",
+          "Instead of adding more signs, he sharpens meaning. Every word, frame, and movement has to support a clearer brand impression.",
+        ],
+        experienceKicker: "Selected Roles & Collaborations",
+        experienceItems: [
+          { name: "Sanaye Tose'e Shahd Azarbaijan", role: "Holding Brand Director" },
+          { name: "Kurdia Online School", role: "Brand Director, Strategist & Videographer" },
+          { name: "Niaz Kala", role: "Brand Director & Strategist" },
+          { name: "Makeup Roz / Araz Zagros", role: "Brand Artist & Sales Campaign Designer" },
+          { name: "Zebra Cat AI", role: "UI Motion Designer & Editor" },
+          { name: "Ronix", role: "Editor" },
+          { name: "Gusscoinc", role: "Editor & Advertising Director" },
+          { name: "Elegant Hoopoe", role: "Editor & Motion Designer" },
+          { name: "Finland Q", role: "Editor" },
+          { name: "Rupak Production", role: "Editor" },
+          { name: "Litama", role: "Brand Artist" },
+          { name: "Morgh Hooger", role: "Brand Artist" },
         ],
       },
       contact: {
         kicker: "07 / Contact",
         title: "If the brand needs to be seen more clearly, start here.",
+        note: "Message for collaboration, brand introduction, or commercial film production.",
         phone: "+989129376847",
       },
       case: {
@@ -443,7 +482,7 @@ const languages = {
       },
       footer: {
         name: "Siamak Dehbokri",
-        role: "Brand Director & Advertising Film Director",
+        role: "Brand Director & Commercial Film Director",
       },
     },
   },
@@ -451,151 +490,173 @@ const languages = {
 
 const projects = [
   {
-    id: "positioning-systems",
-    image: "assets/project-nocturne.svg",
-    year: "2026",
+    id: "golfam-brand-direction",
+    cover: "assets/project-cover-golfam.svg",
+    image: "assets/project-golfam-tomato.jpg",
+    imageWidth: 1280,
+    imageHeight: 1600,
+    gallery: ["assets/project-golfam-balsamic.jpg"],
+    imageLayout: "portrait",
+    year: "2024",
     tags: {
-      fa: ["جایگاه", "لحن", "هویت"],
-      ku: ["جێگە", "تۆن", "ناسنامە"],
-      en: ["Position", "Tone", "Identity"],
+      fa: ["گلفام", "مدیریت برند", "FMCG"],
+      ku: ["گۆلفام", "بەڕێوەبردنی براند", "FMCG"],
+      en: ["Golfam", "Brand Direction", "FMCG"],
     },
     copy: {
       fa: {
-        title: "جایگاه، قبل از ظاهر",
-        category: "استراتژی و هویت برند",
-        summary: "تعریف دلیل انتخاب برند و تبدیل آن به لحن، تصویر و ساختار ارتباطی.",
-        intro: "برند نشانه‌های زیادی داشت، اما در ذهن مخاطب جای مشخصی نداشت.",
-        challenge: "نشانه‌ها زیاد بودند، اما جایگاه روشن نبود؛ مخاطب برند را می‌دید، اما دلیل انتخاب را حس نمی‌کرد.",
-        strategy: "پیام‌ها بازچیده شدند تا یک وعده مرکزی، لحن و ساختار محتوا همه در یک جهت کار کنند.",
-        direction: "زبان تصویری کم‌اضافه شد تا برند روشن‌تر و قابل تشخیص‌تر دیده شود.",
-        execution: "لحن، پیام، ساختار محتوا و قواعد هویت در یک سیستم واحد قرار گرفت.",
-        outcome: "نتیجه، برندی روشن‌تر و قابل تشخیص‌تر بود.",
+        title: "گلفام؛ نظم برند در مقیاس هلدینگ",
+        category: "مدیریت برند صنایع توسعه شهد آذربایجان",
+        summary: "یکپارچه‌سازی لحن، تصویر و مسیر ارتباطی برای گلفام و برندهای غذایی هلدینگ.",
+        intro: "سیامک دهبکری به مدت یک سال مدیر برند صنایع توسعه شهد آذربایجان بود؛ هلدینگی شامل گلفام، قند ارومیه، قند خوی، قند پیرانشهر، توتیا، شفاژن و فروشگاه‌های زنجیره‌ای ترقی.",
+        challenge: "چند برند فعال، چند بازار و چند نوع مخاطب وجود داشت؛ اما زبان ارتباطی باید منظم‌تر و قابل تشخیص‌تر می‌شد.",
+        strategy: "تمرکز روی معماری پیام، کنترل لحن تصویری و ساختن نظمی بود که هر خروجی را هم مستقل نشان بدهد و هم به اعتبار مجموعه اضافه کند.",
+        direction: "برای گلفام، تصویر محصول باید مستقیم، اشتهابرانگیز و قابل اعتماد می‌بود؛ کمتر شلوغ، بیشتر متکی بر کیفیت، ماده اولیه و تشخیص سریع برند.",
+        execution: "خروجی‌های تصویری، مسیر محتوا، زبان کمپین و ارائه محصول در کنار نیازهای فروش و ارتباطات سازمانی هماهنگ شد.",
+        outcome: "برند منظم‌تر و حرفه‌ای‌تر دیده شد؛ به‌خصوص در دسته‌هایی مثل رب گوجه‌فرنگی گلفام و سرکه بالزامیک ترقی.",
       },
       ku: {
-        title: "جێگە، پێش ڕووکار",
-        category: "ستراتیژی و ناسنامەی براند",
-        summary: "دیاریکردنی هۆکاری هەڵبژاردنی براند و گۆڕینی بۆ تۆن، وێنە و پێکهاتەی پەیوەندی.",
-        intro: "براند نیشانەی زۆری هەبوو، بەڵام لە مێشکی بینەردا جێگەیەکی ڕوونی نەبوو.",
-        challenge: "نیشانەکان زۆر بوون، بەڵام جێگە ڕوون نەبوو؛ بینەر براندی دەبینی، بەڵام هۆکاری هەڵبژاردنی هەست نەدەکرد.",
-        strategy: "پەیامەکان لە دەوری بەڵێنێک، تۆنێک و پێکهاتەیەکی ناوەڕۆک ڕێکخرانەوە.",
-        direction: "زمانی بینراو کەم‌زیادەتر کرا تا براند ڕوونتر و ناسراوتر ببینرێت.",
-        execution: "تۆن، پەیام، پێکهاتەی ناوەڕۆک و ڕێساکانی ناسنامە لە سیستەمێکی یەکدا دانران.",
-        outcome: "ئەنجامەکە جێگەیەکی ڕوونتر و ناسراوتر بوو.",
+        title: "گۆلفام؛ ڕێکخستنی براند لە ئاستی هۆڵدینگ",
+        category: "بەڕێوەبردنی براندی صنایع توسعه شهد آذربایجان",
+        summary: "یەکخستنی تۆن، وێنە و ڕێڕەوی پەیوەندی بۆ گۆلفام و براندە خۆراکییەکانی هۆڵدینگ.",
+        intro: "سیامه‌ک دیبوکری بۆ ماوەی ساڵێک بەڕێوەبەری براندی صنایع توسعه شهد آذربایجان بوو؛ هۆڵدینگێک کە گۆلفام، قەندی ورمێ، قەندی خۆی، قەندی پیرانشار، توتیا، شفاژن و فرۆشگاکانی زنجیرەیی ترقی لەخۆدەگرێت.",
+        challenge: "چەند براند، چەند بازاڕ و چەند جۆر بینەر هەبوو؛ بەڵام زمانی پەیوەندی پێویستی بە ڕێکخستن و ناسراوبوونی زیاتر هەبوو.",
+        strategy: "سەرنج لەسەر پێکهاتەی پەیام، کۆنترۆڵی تۆنی بینراو و ڕێکخستنێک بوو کە هەر دەرچوونێک سەربەخۆ ببینرێت و هاوکات متمانەی کۆمەڵەکە زیاد بکات.",
+        direction: "بۆ گۆلفام، وێنەی بەرهەم دەبوو ڕاستەوخۆ، ئارەزووبەخش و متمانەپێکراو بێت؛ کەمتر شلوغ و زیاتر پشت بە کوالیتی، مادەی سەرەکی و ناسینەوەی خێرای براند ببەستێت.",
+        execution: "دەرچوونە بینراوەکان، ڕێڕەوی ناوەڕۆک، زمانی کەمپەین و پێشکەشکردنی بەرهەم لەگەڵ پێویستییەکانی فرۆشتن و پەیوەندیی ڕێکخراویدا هاوهەنگ کران.",
+        outcome: "براند ڕێکخراوتر و پیشەیی‌تر بینرا؛ بە تایبەتی لە بەشەکانی وەک رب گوجه‌فرنگی گۆلفام و سرکەی بالزامیکی ترقی.",
       },
       en: {
-        title: "Position Before Appearance",
-        category: "Brand Strategy & Identity",
-        summary: "Defining the reason to choose, then turning it into tone, image, and communication structure.",
-        intro: "The brand had many signs, but no clear place in the audience’s mind.",
-        challenge: "There were many signals, but no clear position; people saw the brand without feeling a reason to choose.",
-        strategy: "Its messages were rebuilt around one promise, one tone, and one content structure.",
-        direction: "The visual language was restrained so the brand could feel clearer and easier to recognize.",
-        execution: "Tone, message, content structure, and identity rules were organized into one system.",
-        outcome: "The result was a clearer, more recognizable position.",
+        title: "Golfam; Brand Discipline at Holding Scale",
+        category: "Brand Direction for Sanaye Tose'e Shahd Azarbaijan",
+        summary: "Unifying tone, imagery, and communication flow across Golfam and the holding’s food brands.",
+        intro: "Siamak Dehbokri served for one year as Brand Director of Sanaye Tose'e Shahd Azarbaijan, a holding including Golfam, Qand Urmia, Qand Khoy, Qand Piranshahr, Tootia, Shafazhen, and Taraghi chain stores.",
+        challenge: "Several active brands, markets, and audiences were involved; the communication language needed to become more disciplined and recognizable.",
+        strategy: "The work focused on message architecture, visual tone control, and a system where every output could stand alone while strengthening the holding’s credibility.",
+        direction: "For Golfam, product imagery had to feel direct, appetizing, and trustworthy; less noise, more quality, ingredient clarity, and instant brand recognition.",
+        execution: "Visual outputs, content direction, campaign language, and product presentation were coordinated alongside sales and corporate communication needs.",
+        outcome: "The brand appeared more disciplined and professional, especially across products such as Golfam tomato paste and Taraghi balsamic vinegar.",
       },
     },
   },
   {
-    id: "ad-film-direction",
-    image: "assets/project-aural.svg",
-    year: "2026",
+    id: "niaz-brand-art-house",
+    cover: "assets/project-cover-niaz.svg",
+    image: "assets/project-niaz-cover.jpg",
+    imageWidth: 1440,
+    imageHeight: 1000,
+    gallery: ["assets/project-niaz-packaging.jpg"],
+    year: "2024",
     tags: {
-      fa: ["فیلم", "اعتماد", "ریتم"],
-      ku: ["فیلم", "متمانە", "ڕیتم"],
-      en: ["Film", "Trust", "Rhythm"],
+      fa: ["نیاز", "برندینگ", "آرت‌هاوس"],
+      ku: ["نیاز", "براندینگ", "ئارت‌هاوس"],
+      en: ["Niaz", "Branding", "Art House"],
     },
     copy: {
       fa: {
-        title: "فروش، بدون فشار فروش",
-        category: "کارگردانی تبلیغاتی",
-        summary: "تبدیل مزیت محصول به موقعیتی که اعتماد را با حس می‌سازد.",
-        intro: "محصول قابل توضیح بود، اما حس انتخاب نمی‌ساخت.",
-        challenge: "پیام فروش مستقیم بود و محصول را توضیح می‌داد، اما سطح ادراک برند را بالا نمی‌برد.",
-        strategy: "پیام فروش به موقعیتی دراماتیک تبدیل شد: اول فضا، بعد مزیت.",
-        direction: "قاب‌ها، سکوت‌ها و ریتم بازی‌ها طوری کنترل شدند که اعتماد قبل از توضیح ساخته شود.",
-        execution: "ایده، سناریو، استوری‌بورد، دکوپاژ، ریتم تدوین و خروجی‌های کمپین در یک لحن واحد اجرا شدند.",
-        outcome: "فیلم به جای توضیح محصول، سطح ادراک برند را بالا برد.",
+        title: "نیاز؛ لوکس‌سازی یک برداشت",
+        category: "مدیریت برندینگ، طراحی و عکاسی محصول",
+        summary: "هدایت برندینگ، بسته‌بندی، آرت‌هاوس و عکاسی محصول برای ساخت تصویری آرام و قابل تشخیص.",
+        intro: "نیاز برای ساخت یک زبان دیداری لوکس در دسته عطر و پرفیوم شکل گرفت؛ جایی که بسته‌بندی، فرم، رنگ و عکاسی باید یک برداشت واحد بسازند.",
+        challenge: "در عطر، برداشت از کیفیت قبل از بو شکل می‌گیرد. بسته‌بندی و تصویر باید سطح برند را پیش از تجربه فیزیکی محصول منتقل می‌کردند.",
+        strategy: "مسیر کار روی یک کد تصویری مشخص بنا شد: آبی عمیق، طلایی کنترل‌شده، فرم‌های نرم و فضایی آرام که محصول را دقیق، نه پر سر و صدا، نشان دهد.",
+        direction: "آرت‌هاوس پروژه با تمرکز روی خویشتن‌داری لوکس، نورپردازی آرام، قاب‌های تمیز و جزئیات بسته‌بندی هدایت شد.",
+        execution: "مسیر برندینگ، هماهنگی طراحی، کنترل خروجی‌های بسته‌بندی، ران‌کردن تیم آرت‌هاوس و عکاسی محصول در یک زبان مشترک انجام شد.",
+        outcome: "خروجی نهایی به نیاز حضوری آرام، لوکس و قابل اعتماد داد؛ تصویری که در بسته‌بندی و عکاسی، یک زبان مشترک دارد.",
       },
       ku: {
-        title: "فرۆشتن، بەبێ فشاری فرۆشتن",
-        category: "دەرهێنانی ڕیکلامی",
-        summary: "گۆڕینی سوودی بەرهەم بۆ دۆخێک کە متمانە بە هەست دروست دەکات.",
-        intro: "بەرهەم دەکرا ڕوون بکرێتەوە، بەڵام هەستی هەڵبژاردن دروست نەدەکرد.",
-        challenge: "پەیامی فرۆشتن ڕاستەوخۆ بوو و بەرهەمی ڕوون دەکردەوە، بەڵام ئاستی هەستپێکردنی براندی بەرز نەدەکرد.",
-        strategy: "پەیامی فرۆشتن بوو بە دۆخێکی دراماتیکی: یەکەم فضا، دواتر سوود.",
-        direction: "چوارچێوە، بێدەنگی و ڕیتمی یارییەکان کۆنترۆڵ کران تا متمانە پێش ڕوونکردنەوە دروست ببێت.",
-        execution: "بیرۆکە، سیناریۆ، ستۆریبۆرد، دێکۆپاژ، ڕیتمی مۆنتاژ و دەرچوونەکانی کەمپەین بە تۆنێکی یەکگرتوو جێبەجێ کران.",
-        outcome: "فیلمەکە لە جیاتی ڕوونکردنەوەی بەرهەم، ئاستی هەستپێکردنی براندی بەرزتر کرد.",
+        title: "نیاز؛ شێوەدانی وەرگرتنێکی لوکس",
+        category: "بەڕێوەبردنی براندینگ، دیزاین و وێنەگرتنی بەرهەم",
+        summary: "ڕێبەری براندینگ، پاکێجینگ، ئارت‌هاوس و وێنەگرتنی بەرهەم بۆ دروستکردنی وێنەیەکی هێمن و ناسراو.",
+        intro: "نیاز بۆ دروستکردنی زمانێکی بینراوی لوکس لە جۆری عەتر و پرفیومدا شکل گرت؛ ئەو شوێنەی پاکێجینگ، فۆرم، ڕەنگ و وێنە دەبێت وەرگرتنێکی یەکگرتوو بسازن.",
+        challenge: "لە عەتر، وەرگرتنی کوالیتی پێش بۆن دروست دەبێت. پاکێجینگ و وێنە دەبوو ئاستی براند پێش ئەزموونی فیزیکی بەرهەم بگوازنەوە.",
+        strategy: "ڕێڕەوی کار لەسەر کۆدێکی بینراوی دیاریکراو دانرا: شینی قووڵ، زێڕی کۆنترۆڵکراو، فۆرمە نەرمان و فضاییەکی هێمن کە بەرهەم بە وردی، نە بە دەنگی زۆر، نیشان بدات.",
+        direction: "ئارت‌هاوسی پروژه بە سەرنج لەسەر خۆڕاگریی لوکس، ڕووناکیی هێمن، قابی پاک و وردەکاریی پاکێجینگ ڕێبەری کرا.",
+        execution: "ڕێڕەوی براندینگ، هاوهەنگی دیزاین، کۆنترۆڵی دەرچوونەکانی پاکێجینگ، ڕانکردنی تیمی ئارت‌هاوس و وێنەگرتنی بەرهەم لە زمانێکی هاوبەشدا ئەنجام درا.",
+        outcome: "دەرچوونی کۆتایی بە نیاز ئامادەبوونێکی هێمن، لوکس و متمانەپێکراو دا؛ وێنەیەک کە لە پاکێجینگ و وێنەگرتندا زمانێکی هاوبەشی هەیە.",
       },
       en: {
-        title: "Selling Without the Sales Pressure",
-        category: "Advertising Direction",
-        summary: "Turning a product benefit into a situation that builds trust through feeling.",
-        intro: "The product could be explained, but it did not create the feeling of choice.",
-        challenge: "The sales message was direct and informative, but it did not raise the brand’s perceived level.",
-        strategy: "The sales message became a dramatic situation: atmosphere first, benefit second.",
-        direction: "Frames, silences, and performance rhythm were controlled so trust could arrive before explanation.",
-        execution: "Concept, script, storyboard, shot logic, edit rhythm, and campaign outputs were shaped in one tone.",
-        outcome: "The film raised the brand’s perceived level instead of merely explaining the product.",
+        title: "Niaz; Shaping a Premium Impression",
+        category: "Branding Direction, Design & Product Photography",
+        summary: "Directing branding, packaging, art house production, and product photography into a calm, recognizable image.",
+        intro: "Niaz was shaped to build a premium visual language for perfume, where packaging, form, color, and photography had to create one controlled impression.",
+        challenge: "In fragrance, perceived quality begins before scent. The packaging and imagery had to communicate the brand’s level before the product was physically experienced.",
+        strategy: "The system was built around a clear visual code: deep blue, restrained gold, soft forms, and a quiet space that lets the product feel precise rather than loud.",
+        direction: "The art house direction focused on luxury restraint, calm lighting, clean framing, and packaging details.",
+        execution: "Branding direction, design coordination, packaging output control, art house production, and product photography were guided through one shared language.",
+        outcome: "The final work gave Niaz a calm, premium, and trustworthy presence, with one shared language across packaging and photography.",
       },
     },
   },
   {
-    id: "campaign-as-world",
-    image: "assets/project-vanta.svg",
-    year: "2026",
+    id: "makeuproz-sales-campaign",
+    cover: "assets/project-cover-makeuproz.svg",
+    image: "assets/project-makeuproz-blue.jpg",
+    imageWidth: 1200,
+    imageHeight: 1200,
+    gallery: ["assets/project-makeuproz-gold.jpg", "assets/project-makeuproz-pink.jpg"],
+    year: "2024",
     tags: {
-      fa: ["کمپین", "روایت", "لانچ"],
-      ku: ["کەمپەین", "گێڕانەوە", "لانچ"],
-      en: ["Campaign", "Narrative", "Launch"],
+      fa: ["میکاپ رز", "کمپین فروش", "بهداشت"],
+      ku: ["میکاپ ڕۆز", "کەمپەینی فرۆشتن", "تەندروستی"],
+      en: ["Makeup Roz", "Sales Campaign", "Health"],
     },
     copy: {
       fa: {
-        title: "یک کمپین، یک جهان",
-        category: "رهبری خلاق کمپین",
-        summary: "هم‌راستا کردن فیلم، محتوا، شبکه‌های اجتماعی و لانچ در یک روایت قابل پیگیری.",
-        intro: "کمپین چند خروجی داشت، اما هنوز یک حس واحد نداشت.",
-        challenge: "فیلم، محتوا و شبکه‌های اجتماعی کنار هم بودند، اما پراکنده دیده می‌شدند.",
-        strategy: "یک جهان مرکزی تعریف شد و هر خروجی به بخشی از همان روایت تبدیل شد.",
-        direction: "ریتم، رنگ، کپی، قاب و ترتیب انتشار برای یک تجربه آرام و قابل پیگیری کنترل شدند.",
-        execution: "تقویم کمپین، ساختار محتوا، فیلم اصلی، برش‌های اجتماعی و پیام‌های کلیدی در یک مسیر واحد اجرا شدند.",
-        outcome: "نتیجه، کمپینی بود که پراکنده دیده نمی‌شد.",
+        title: "میکاپ رز؛ فروش بدون افت برند",
+        category: "طراحی کمپین فروش برندینگ‌محور",
+        summary: "طراحی کمپین فروش برای آراز زاگرس با تمرکز بر وضوح پیشنهاد، نظم بسته‌بندی و حفظ تصویر سلامت‌محور برند.",
+        intro: "میکاپ رز در حوزه بهداشتی و سلامتی به کمپینی نیاز داشت که فروش را فعال کند، اما برند را به یک پیشنهاد ارزان یا صرفاً تخفیفی تقلیل ندهد.",
+        challenge: "کمپین‌های فروش معمولاً با عدد و پیشنهاد شروع می‌شوند و برند را عقب می‌برند. چالش این بود که ارزش بیشتر دیده شود، بدون اینکه تصویر سلامت‌محور محصول آسیب ببیند.",
+        strategy: "پیشنهاد فروش در مرکز کار بود، اما زبان بصری اجازه نداد برند فقط به تخفیف تقلیل پیدا کند.",
+        direction: "رنگ‌بندی، بسته‌بندی، قاب محصول و زبان پیام طوری هدایت شد که حس بهداشت، نظم، هدیه و دسترسی سریع را منتقل کند.",
+        execution: "طراحی کمپین، ساختار پیام، بسته‌بندی، نسخه‌های رنگی محصول و خروجی‌های فروش در یک مسیر برندینگ‌محور هماهنگ شد.",
+        outcome: "کمپین پیشنهاد فروش را واضح‌تر کرد و هم‌زمان میکاپ رز را منظم‌تر، قابل اعتمادتر و سلامت‌محورتر نشان داد.",
       },
       ku: {
-        title: "یەک کەمپەین، یەک جیهان",
-        category: "ڕێبەری داهێنەرانەی کەمپەین",
-        summary: "هاوهەنگکردنی فیلم، ناوەڕۆک، تۆڕە کۆمەڵایەتییەکان و لانچ لە گێڕانەوەیەکی یەکگرتوودا.",
-        intro: "کەمپەین چەند دەرچوونی هەبوو، بەڵام هەستێکی یەکگرتووی نەبوو.",
-        challenge: "فیلم، ناوەڕۆک و تۆڕەکان پێکەوە بوون، بەڵام پەرشوباڵاو دەبینران.",
-        strategy: "جیهانێکی ناوەندی دیاری کرا و هەر دەرچوونێک بوو بە بەشێک لە هەمان گێڕانەوە.",
-        direction: "ڕیتم، ڕەنگ، کۆپی، چوارچێوە و ڕیزبەندی بڵاوکردنەوە بۆ ئەزموونێکی هێمن و ڕێکخراو کۆنترۆڵ کران.",
-        execution: "کالێندەری کەمپەین، پێکهاتەی ناوەڕۆک، فیلمی سەرەکی، بڕاوە کۆمەڵایەتییەکان و پەیامە سەرەکییەکان لە ڕێڕەوێکی یەکدا جێبەجێ کران.",
-        outcome: "ئەنجامەکە کەمپەینێک بوو کە پەرشوباڵاو نەدەبینرا.",
+        title: "میکاپ ڕۆز؛ فرۆشتن بەبێ کەمبوونی بەهای براند",
+        category: "دیزاینی کەمپەینی فرۆشتنی براندینگ‌محور",
+        summary: "کەمپەینی فرۆشتن بۆ ئاڕاز زاگرس بە سەرنج لەسەر ڕوونیی پێشنیار، ڕێکخستنی پاکێجینگ و پاراستنی وێنەی تەندروستی‌محوری براند.",
+        intro: "میکاپ ڕۆز لە بواری پاکوخاوێنی و تەندروستیدا پێویستی بە کەمپەینێک هەبوو کە فرۆشتن چالاک بکات، بەڵام براند نەکاتە پێشنیارێکی هەرزان یان تەنها داشکاندن.",
+        challenge: "کەمپەینەکانی فرۆشتن زۆرجار بە ژمارە و پێشنیار دەست پێدەکەن و براند لە دواوە دەهێڵن. کێشە ئەوە بوو بەهای زیاتر ڕوون بێت، بەبێ ئەوەی وێنەی تەندروستی‌محوری بەرهەم زیان ببینێت.",
+        strategy: "پێشنیاری فرۆشتن لە ناوەنددا بوو، بەڵام زمانی بینراو ڕێی نەدا براند تەنها ببێتە داشکاندن.",
+        direction: "ڕەنگ، پاکێجینگ، قابی بەرهەم و زمانی پەیام وەها ڕێبەری کران کە هەستی پاکوخاوێنی، ڕێکخستن، دیاری و دەستگەیشتنی خێرا بگوازنەوە.",
+        execution: "دیزاینی کەمپەین، پێکهاتەی پەیام، پاکێجینگ، وەشانە ڕەنگاوڕەنگەکانی بەرهەم و دەرچوونەکانی فرۆشتن لە ڕێڕەوێکی براندینگ‌محوردا هاوهەنگ کران.",
+        outcome: "کەمپەینەکە پێشنیاری فرۆشتن ڕوونتر کرد و هاوکات میکاپ ڕۆز ڕێکخراوتر، متمانەپێکراوتر و تەندروستی‌محورتر نیشان دا.",
       },
       en: {
-        title: "One Campaign, One World",
-        category: "Creative Campaign Leadership",
-        summary: "Aligning film, content, social media, and launch into one trackable narrative.",
-        intro: "The campaign had many outputs, but not one feeling.",
-        challenge: "Film, content, and social channels existed together, but they still felt scattered.",
-        strategy: "A central world was defined, and every asset became part of the same narrative.",
-        direction: "Rhythm, color, copy, framing, and release order were controlled for a calm, trackable experience.",
-        execution: "Campaign calendar, content structure, hero film, social cuts, and key messages were released through one path.",
-        outcome: "The result was a campaign that no longer felt scattered.",
+        title: "Makeup Roz; Sales Without Losing Brand Value",
+        category: "Brand-Led Sales Campaign Design",
+        summary: "A sales campaign for Araz Zagros focused on offer clarity, packaging order, and protecting the brand’s health-led perception.",
+        intro: "Makeup Roz needed a campaign that could activate sales without reducing the brand to a cheap offer or a purely discount-led message.",
+        challenge: "Sales campaigns often begin with numbers and offers, pushing brand perception into the background. The challenge was to make the extra value visible without damaging the product’s health-led image.",
+        strategy: "The sales offer was central, but the visual language prevented the brand from being reduced to a discount.",
+        direction: "Color, packaging, product framing, and message hierarchy were directed to communicate hygiene, order, gifting, and quick access.",
+        execution: "Campaign design, message structure, packaging, product color versions, and sales outputs were aligned into one brand-led system.",
+        outcome: "The campaign made the offer clearer while presenting Makeup Roz as more organized, trustworthy, and health-led.",
       },
     },
   },
 ];
 
+const mediaDimensions = {
+  "assets/project-golfam-tomato.jpg": [1280, 1600],
+  "assets/project-golfam-balsamic.jpg": [1120, 1400],
+  "assets/project-niaz-cover.jpg": [1440, 1000],
+  "assets/project-niaz-packaging.jpg": [760, 2649],
+  "assets/project-makeuproz-blue.jpg": [1200, 1200],
+  "assets/project-makeuproz-gold.jpg": [1200, 1200],
+  "assets/project-makeuproz-pink.jpg": [1200, 1200],
+};
+
 const accessibilityText = {
   fa: {
     navigation: "ناوبری اصلی",
     closeCase: "بستن کیس‌استادی",
-    themeToLight: "تغییر به حالت روشن",
-    themeToDark: "تغییر به حالت تاریک",
-    themeLight: "روشن",
-    themeDark: "تاریک",
-    brandWhisper: "او فقط نام نمی‌سازد؛ مسیر دیدن را عوض می‌کند.",
+    brandWhisper: "نام کافی نیست؛ باید درست دیده شد.",
+    galleryPrev: "تصویر قبلی",
+    galleryNext: "تصویر بعدی",
+    galleryGo: "نمایش تصویر",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
@@ -604,11 +665,10 @@ const accessibilityText = {
   ku: {
     navigation: "ناوبەری سەرەکی",
     closeCase: "داخستنی کیس",
-    themeToLight: "گۆڕین بۆ دۆخی ڕووناک",
-    themeToDark: "گۆڕین بۆ دۆخی تاریک",
-    themeLight: "ڕوون",
-    themeDark: "تاریک",
-    brandWhisper: "ناو دروست ناکات؛ ڕێگای بینین دەگۆڕێت.",
+    brandWhisper: "ناو بەس نییە؛ دەبێت بە دروستی ببینرێت.",
+    galleryPrev: "وێنەی پێشوو",
+    galleryNext: "وێنەی دواتر",
+    galleryGo: "پیشاندانی وێنە",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
@@ -617,11 +677,10 @@ const accessibilityText = {
   en: {
     navigation: "Primary navigation",
     closeCase: "Close case study",
-    themeToLight: "Switch to light mode",
-    themeToDark: "Switch to dark mode",
-    themeLight: "Light",
-    themeDark: "Dark",
-    brandWhisper: "Not a name. A way of being seen.",
+    brandWhisper: "A name is not enough. It has to be seen right.",
+    galleryPrev: "Previous image",
+    galleryNext: "Next image",
+    galleryGo: "Show image",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
@@ -633,6 +692,8 @@ let activeLanguage = "fa";
 let lenis;
 let hasRenderedOnce = false;
 let lastFocusedElement = null;
+let activeCaseGalleryIndex = 0;
+let activeCaseGallerySlides = [];
 let refreshActiveNavigation = () => {};
 let refreshScrollProgress = () => {};
 let refreshSectionMood = () => {};
@@ -640,7 +701,6 @@ let currentActiveNavHash = "";
 let enhancementsRequested = false;
 let enhancedMotionReady = false;
 let mobileRevealObserver = null;
-let activeTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -684,6 +744,7 @@ function renderCards() {
   const capabilityGrid = $("[data-capability-grid]");
   const methodList = $("[data-method-list]");
   const identityCopy = $("[data-identity-copy]");
+  const experienceList = $("[data-experience-list]");
 
   if (reelTrack) {
     reelTrack.innerHTML = content.reel.items
@@ -745,6 +806,24 @@ function renderCards() {
       .map((paragraph) => `<p data-reveal>${escapeHTML(paragraph)}</p>`)
       .join("");
   }
+
+  if (experienceList) {
+    experienceList.innerHTML = `
+      <p class="experience-kicker" data-reveal>${escapeHTML(content.identity.experienceKicker)}</p>
+      <div class="experience-grid">
+        ${content.identity.experienceItems
+          .map(
+            (item) => `
+              <article data-reveal>
+                <h3>${escapeHTML(item.name)}</h3>
+                <p>${escapeHTML(item.role)}</p>
+              </article>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
 }
 
 function renderProjects() {
@@ -759,10 +838,13 @@ function renderProjects() {
         .map((tag) => `<span>${escapeHTML(tag)}</span>`)
         .join("");
       const title = escapeHTML(copy.title);
+      const cover = escapeHTML((project.cover || project.image).replace(/['"()\\]/g, ""));
+      const layoutClass = project.imageLayout === "portrait" ? "is-portrait" : "";
       return `
         <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
-          <button class="project-media" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
-            <img loading="lazy" decoding="async" width="1800" height="1040" src="${project.image}" alt="${title}" />
+          <button class="project-media ${layoutClass}" type="button" data-project-id="${project.id}" style="--project-cover-art: url('${cover}')" aria-label="${escapeHTML(content.work.open)}: ${title}">
+            <img class="project-image" loading="lazy" decoding="async" width="${project.imageWidth || 1800}" height="${project.imageHeight || 1040}" src="${project.image}" alt="${title}" />
+            <span class="project-cover-layer" aria-hidden="true"></span>
           </button>
           <div class="project-copy">
             <p class="project-eyebrow">${escapeHTML(copy.category)} / ${escapeHTML(project.year)}</p>
@@ -805,8 +887,6 @@ function updateA11yLabels() {
     const label = socialLabels[link.textContent.trim()];
     if (label) link.setAttribute("aria-label", label);
   });
-
-  syncThemeToggle();
 }
 
 function updateLanguage(lang) {
@@ -989,42 +1069,6 @@ function initLanguage() {
   });
 
   updateLanguage(storedLanguage);
-}
-
-function syncThemeToggle() {
-  const toggle = $("[data-theme-toggle]");
-  const label = $("[data-theme-label]");
-  const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
-  if (!toggle) return;
-
-  toggle.setAttribute("aria-pressed", activeTheme === "light" ? "true" : "false");
-  toggle.setAttribute("aria-label", activeTheme === "light" ? labels.themeToDark : labels.themeToLight);
-  if (label) label.textContent = activeTheme === "light" ? labels.themeLight : labels.themeDark;
-}
-
-function applyTheme(theme, persist = false) {
-  activeTheme = theme === "light" ? "light" : "dark";
-  document.documentElement.dataset.theme = activeTheme;
-  const themeColor = $("[data-theme-color]");
-  if (themeColor) themeColor.content = activeTheme === "light" ? "#fffaf1" : "#090807";
-  syncThemeToggle();
-  requestAnimationFrame(refreshSectionMood);
-
-  if (!persist) return;
-
-  try {
-    localStorage.setItem("site-theme", activeTheme);
-  } catch {
-    // Ignore storage failures in private browsing.
-  }
-}
-
-function initThemeToggle() {
-  applyTheme(activeTheme);
-
-  $("[data-theme-toggle]")?.addEventListener("click", () => {
-    applyTheme(activeTheme === "light" ? "dark" : "light", true);
-  });
 }
 
 function initSmoothScroll() {
@@ -1254,7 +1298,6 @@ function initMobileRevealSystem() {
 
 function applySectionMood(section, mood) {
   if (!section || !mood) return;
-  const themeMood = activeTheme === "light" ? mood.light || mood : mood;
 
   $$(".section-shell.is-focused-section").forEach((item) => {
     if (item !== section) item.classList.remove("is-focused-section");
@@ -1263,8 +1306,8 @@ function applySectionMood(section, mood) {
   section.classList.add("is-focused-section");
   document.body.style.setProperty("--mood-x", mood.x);
   document.body.style.setProperty("--mood-y", mood.y);
-  document.body.style.setProperty("--mood-a", themeMood.a);
-  document.body.style.setProperty("--mood-b", themeMood.b);
+  document.body.style.setProperty("--mood-a", mood.a);
+  document.body.style.setProperty("--mood-b", mood.b);
 }
 
 function initSectionMood() {
@@ -1276,7 +1319,6 @@ function initSectionMood() {
 
   let ticking = false;
   let activeSection = null;
-  let activeMoodTheme = null;
 
   const update = () => {
     const headerHeight = $(".site-header")?.getBoundingClientRect().height || 0;
@@ -1289,9 +1331,8 @@ function initSectionMood() {
       }
     });
 
-    if (next.section !== activeSection || activeMoodTheme !== activeTheme) {
+    if (next.section !== activeSection) {
       activeSection = next.section;
-      activeMoodTheme = activeTheme;
       applySectionMood(next.section, next.mood);
     }
 
@@ -1456,10 +1497,10 @@ function initMotion(refreshOnly = false) {
 
   if (!isCompact) {
     $$(".project-card").forEach((card) => {
-      const image = $("img", card);
-      if (!image) return;
+      const images = $$(".project-image", card);
+      if (!images.length) return;
       gsap.fromTo(
-        image,
+        images,
         { scale: 1.08, yPercent: 3 },
         {
           scale: 1.015,
@@ -1507,6 +1548,109 @@ function getCaseFocusables() {
   ).filter((node) => !node.disabled && node.offsetParent !== null);
 }
 
+function getMediaDimensions(src, fallback = [1800, 1040]) {
+  return mediaDimensions[src] || fallback;
+}
+
+function updateCaseGallery(index) {
+  const gallery = $("[data-case-gallery]");
+  const track = gallery ? $("[data-case-gallery-track]", gallery) : null;
+  if (!gallery || !track || !activeCaseGallerySlides.length) return;
+
+  activeCaseGalleryIndex = (index + activeCaseGallerySlides.length) % activeCaseGallerySlides.length;
+  track.style.transform = `translate3d(${-activeCaseGalleryIndex * 100}%, 0, 0)`;
+
+  $$("[data-case-slide-dot]", gallery).forEach((dot, dotIndex) => {
+    const isActive = dotIndex === activeCaseGalleryIndex;
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-current", isActive ? "true" : "false");
+  });
+
+  setText($("[data-case-gallery-count]", gallery), `${activeCaseGalleryIndex + 1} / ${activeCaseGallerySlides.length}`);
+}
+
+function renderCaseGallery(project, copy) {
+  const gallery = $("[data-case-gallery]");
+  if (!gallery) return;
+
+  const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
+  activeCaseGalleryIndex = 0;
+  activeCaseGallerySlides = [
+    {
+      src: project.image,
+      width: project.imageWidth || getMediaDimensions(project.image)[0],
+      height: project.imageHeight || getMediaDimensions(project.image)[1],
+    },
+    ...(project.gallery || []).map((src) => {
+      const [width, height] = getMediaDimensions(src);
+      return { src, width, height };
+    }),
+  ];
+
+  gallery.className = "case-gallery";
+  gallery.innerHTML = `
+    <div class="case-gallery-viewport">
+      <div class="case-gallery-track" data-case-gallery-track>
+        ${activeCaseGallerySlides
+          .map(
+            (slide, index) => `
+              <figure class="case-slide">
+                <img
+                  src="${escapeHTML(slide.src)}"
+                  width="${slide.width}"
+                  height="${slide.height}"
+                  alt="${index === 0 ? escapeHTML(copy.title) : `${escapeHTML(copy.title)} ${index + 1}`}"
+                  loading="${index === 0 ? "eager" : "lazy"}"
+                  decoding="async"
+                />
+              </figure>
+            `,
+          )
+          .join("")}
+      </div>
+    </div>
+    ${
+      activeCaseGallerySlides.length > 1
+        ? `
+          <div class="case-gallery-controls">
+            <button class="case-gallery-nav" type="button" data-case-slide-action="prev" aria-label="${escapeHTML(labels.galleryPrev)}">‹</button>
+            <div class="case-gallery-dots">
+              ${activeCaseGallerySlides
+                .map(
+                  (_, index) => `
+                    <button
+                      class="case-gallery-dot"
+                      type="button"
+                      data-case-slide-dot="${index}"
+                      aria-label="${escapeHTML(labels.galleryGo)} ${index + 1}"
+                    ></button>
+                  `,
+                )
+                .join("")}
+            </div>
+            <button class="case-gallery-nav" type="button" data-case-slide-action="next" aria-label="${escapeHTML(labels.galleryNext)}">›</button>
+            <span class="case-gallery-count" data-case-gallery-count></span>
+          </div>
+        `
+        : ""
+    }
+  `;
+
+  $$("[data-case-slide-action]", gallery).forEach((button) => {
+    button.addEventListener("click", () => {
+      updateCaseGallery(activeCaseGalleryIndex + (button.dataset.caseSlideAction === "next" ? 1 : -1));
+    });
+  });
+
+  $$("[data-case-slide-dot]", gallery).forEach((button) => {
+    button.addEventListener("click", () => {
+      updateCaseGallery(Number(button.dataset.caseSlideDot || 0));
+    });
+  });
+
+  updateCaseGallery(0);
+}
+
 function openCaseStudy(projectId) {
   const project = projects.find((item) => item.id === projectId);
   if (!project) return;
@@ -1526,11 +1670,7 @@ function openCaseStudy(projectId) {
   setText("[data-case-intro]", copy.intro);
   setText("[data-case-year]", project.year);
 
-  const image = $("[data-case-image]");
-  if (image) {
-    image.src = project.image;
-    image.alt = copy.title;
-  }
+  renderCaseGallery(project, copy);
   panel.scrollTop = 0;
 
   caseGrid.innerHTML = [
@@ -1578,6 +1718,8 @@ function closeCaseStudy() {
     lenis?.start();
     lastFocusedElement?.focus?.({ preventScroll: true });
     lastFocusedElement = null;
+    activeCaseGalleryIndex = 0;
+    activeCaseGallerySlides = [];
   };
 
   if (window.gsap && !prefersReducedMotion) {
@@ -1658,6 +1800,12 @@ function initCaseStudy() {
       return;
     }
 
+    if (activeCaseGallerySlides.length > 1 && (event.key === "ArrowRight" || event.key === "ArrowLeft")) {
+      event.preventDefault();
+      updateCaseGallery(activeCaseGalleryIndex + (event.key === "ArrowRight" ? 1 : -1));
+      return;
+    }
+
     if (event.key !== "Tab") return;
 
     const focusables = getCaseFocusables();
@@ -1676,7 +1824,6 @@ function initCaseStudy() {
   });
 }
 
-initThemeToggle();
 initSmoothScroll();
 initScrollProgress();
 initCaseStudy();

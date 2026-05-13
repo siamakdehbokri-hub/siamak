@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1f120b"/>
+      <stop offset=".48" stop-color="#050504"/>
+      <stop offset="1" stop-color="#7d1d12"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="68%" cy="32%" r="62%">
+      <stop stop-color="#ffb45e" stop-opacity=".35"/>
+      <stop offset=".62" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1800" height="1040" fill="url(#bg)"/>
+  <rect width="1800" height="1040" fill="url(#glow)"/>
+  <path d="M0 710C250 520 450 588 690 450c286-164 485-282 1110-198" fill="none" stroke="#f7f1e6" stroke-opacity=".13" stroke-width="2"/>
+  <rect x="120" y="112" width="1560" height="816" fill="none" stroke="#f7f1e6" stroke-opacity=".1"/>
+  <rect x="180" y="170" width="1440" height="700" fill="none" stroke="#ffb45e" stroke-opacity=".14"/>
+  <circle cx="1040" cy="468" r="248" fill="none" stroke="#ffb45e" stroke-opacity=".28"/>
+  <text x="130" y="820" fill="#f7f1e6" fill-opacity=".62" font-family="serif" font-size="112" letter-spacing="-7">GOLFAM SYSTEM</text>
+  <text x="138" y="884" fill="#ffb45e" fill-opacity=".82" font-family="sans-serif" font-size="24" letter-spacing="8">HOLDING BRAND DIRECTION / SIAMAK DEHBOKRI</text>
+</svg>

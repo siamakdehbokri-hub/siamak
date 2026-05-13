@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0b1820"/>
+      <stop offset=".5" stop-color="#050504"/>
+      <stop offset="1" stop-color="#345f77"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="66%" cy="34%" r="70%">
+      <stop stop-color="#67c4ee" stop-opacity=".25"/>
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1800" height="1040" fill="url(#bg)"/>
+  <rect width="1800" height="1040" fill="url(#glow)"/>
+  <g stroke="#f7f1e6" stroke-opacity=".07">
+    <path d="M0 280h1800M0 400h1800M0 520h1800M0 640h1800M0 760h1800"/>
+    <path d="M260 0v1040M520 0v1040M900 0v1040M1280 0v1040M1540 0v1040"/>
+  </g>
+  <path d="M250 518c150-128 292-128 426 0s278 128 428 0 286-128 446 0" fill="none" stroke="#f7f1e6" stroke-opacity=".45" stroke-width="3"/>
+  <path d="M250 570c150-80 292-80 426 0s278 80 428 0 286-80 446 0" fill="none" stroke="#ffb45e" stroke-opacity=".28" stroke-width="2"/>
+  <text x="130" y="820" fill="#f7f1e6" fill-opacity=".62" font-family="serif" font-size="112" letter-spacing="-7">MAKEUP ROZ</text>
+  <text x="138" y="884" fill="#ffb45e" fill-opacity=".82" font-family="sans-serif" font-size="24" letter-spacing="8">BRAND-LED SALES CAMPAIGN / HEALTH CATEGORY</text>
+</svg>

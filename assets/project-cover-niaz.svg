@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#071d25"/>
+      <stop offset=".5" stop-color="#050504"/>
+      <stop offset="1" stop-color="#1d7187"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="70%" cy="30%" r="74%">
+      <stop stop-color="#4dc6df" stop-opacity=".25"/>
+      <stop offset=".58" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1800" height="1040" fill="url(#bg)"/>
+  <rect width="1800" height="1040" fill="url(#glow)"/>
+  <g fill="none" stroke="#ffe0a3" stroke-opacity=".24" stroke-width="2">
+    <path d="M220 820C470 250 790 250 1040 820"/>
+    <path d="M440 820C690 190 1110 190 1360 820"/>
+    <path d="M660 820C910 280 1230 280 1580 820"/>
+  </g>
+  <rect x="118" y="110" width="1564" height="820" fill="none" stroke="#f7f1e6" stroke-opacity=".1"/>
+  <text x="130" y="818" fill="#f7f1e6" fill-opacity=".66" font-family="serif" font-size="120" letter-spacing="-8">NIAZ ART HOUSE</text>
+  <text x="138" y="884" fill="#ffe0a3" fill-opacity=".82" font-family="sans-serif" font-size="24" letter-spacing="8">BRANDING / PACKAGING / PRODUCT PHOTOGRAPHY</text>
+</svg>

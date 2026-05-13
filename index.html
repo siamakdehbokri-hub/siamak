@@ -5,27 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="سیامک دهبکری مدیر برند"
+      content="سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی"
     />
     <meta name="robots" content="index, follow" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="سیامک دهبکری مدیر برند" />
+    <meta property="og:title" content="سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی" />
     <meta
       property="og:description"
-      content="سیامک دهبکری مدیر برند"
+      content="سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی"
     />
     <meta property="og:image" content="assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#090807" data-theme-color />
-    <title>سیامک دهبکری مدیر برند</title>
-    <script>
-      try {
-        document.documentElement.dataset.theme = localStorage.getItem("site-theme") || "dark";
-      } catch {
-        document.documentElement.dataset.theme = "dark";
-      }
-    </script>
+    <meta name="theme-color" content="#090807" />
+    <title>سیامک دهبکری، مدیر برند و کارگردان تبلیغاتی</title>
     <link rel="preload" href="assets/hero-perception.svg" as="image" />
     <link rel="preload" href="assets/fonts/iransans/IRANSans-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="assets/fonts/iransans/IRANSans-Medium.ttf" as="font" type="font/ttf" crossorigin />
@@ -35,9 +28,9 @@
     <div class="loading-screen" aria-hidden="true">
       <div class="loading-mark">SD</div>
       <p>
-        <span dir="rtl">ادراک، پیش از توضیح آغاز می‌شود.&rlm;</span>
-        <span dir="ltr">Perception begins before explanation.</span>
-        <span dir="rtl">هەستپێکردن پێش ڕوونکردنەوە دەست پێدەکات.&rlm;</span>
+        <span dir="rtl">ادراک، قبل از توضیح شکل می‌گیرد.&rlm;</span>
+        <span dir="ltr">Perception is shaped before explanation.</span>
+        <span dir="rtl">هەستپێکردن پێش ڕوونکردنەوە شێوە دەگرێت.&rlm;</span>
       </p>
     </div>
     <div class="grain" aria-hidden="true"></div>
@@ -62,10 +55,6 @@
       </nav>
 
       <div class="header-actions">
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle light mode" aria-pressed="false">
-          <span data-theme-label>Dark</span>
-          <i aria-hidden="true"></i>
-        </button>
         <div class="language-switcher" aria-label="Language switcher">
           <button type="button" data-lang="fa" aria-label="فارسی">فا</button>
           <button type="button" data-lang="ku" aria-label="کوردی">KU</button>
@@ -166,11 +155,13 @@
           <h2 id="about-title" data-reveal data-i18n="identity.title"></h2>
           <div class="about-copy" data-identity-copy></div>
         </div>
+        <div class="experience-list" data-experience-list></div>
       </section>
 
       <section id="contact" class="contact section-shell" aria-labelledby="contact-title">
         <p class="section-kicker" data-reveal data-i18n="contact.kicker"></p>
         <h2 id="contact-title" data-reveal data-i18n="contact.title"></h2>
+        <p class="contact-note" data-reveal data-i18n="contact.note"></p>
         <div class="contact-panel" data-reveal>
           <div class="contact-list">
             <a class="contact-link" href="mailto:siamakdehbokri@gmail.com">siamakdehbokri@gmail.com</a>
@@ -184,7 +175,7 @@
           <div class="contact-signature" data-signature-draw aria-hidden="true">
             <span>Siamak Dehbokri</span>
             <i></i>
-            <small>Brand Direction / Advertising Film</small>
+            <small>Brand Direction / Commercial Film</small>
           </div>
         </div>
       </section>
@@ -204,16 +195,7 @@
           <h2 id="case-title" data-case-title></h2>
           <p data-case-intro></p>
         </div>
-        <img
-          class="case-image"
-          data-case-image
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-          width="1800"
-          height="1040"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
+        <div class="case-gallery" data-case-gallery aria-live="polite"></div>
         <div class="case-meta">
           <span data-case-year></span>
           <span data-i18n="case.inPage"></span>
