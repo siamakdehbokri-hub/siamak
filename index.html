@@ -39,6 +39,11 @@
     <div class="ambient ambient-b" aria-hidden="true"></div>
     <div class="mood-light" aria-hidden="true"></div>
     <div class="cursor-orb" aria-hidden="true"></div>
+    <div class="desktop-surprise-field" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 
     <header class="site-header" data-reveal>
       <a class="brand" href="#top" aria-label="Siamak Dehbokri home">
@@ -143,7 +148,13 @@
           <p class="section-kicker" data-i18n="capabilities.kicker"></p>
           <h2 id="capabilities-title" data-i18n="capabilities.title"></h2>
         </div>
-        <div class="capability-grid" data-capability-grid></div>
+        <div class="capability-carousel-shell">
+          <div class="capability-grid" data-capability-grid></div>
+          <div class="capability-carousel-arrows">
+            <button class="capability-carousel-arrow" type="button" data-capability-slide-left aria-label="حرکت به خدمت سمت چپ">‹</button>
+            <button class="capability-carousel-arrow" type="button" data-capability-slide-right aria-label="حرکت به خدمت سمت راست">›</button>
+          </div>
+        </div>
       </section>
 
       <section id="method" class="process section-shell" aria-label="Creative method">

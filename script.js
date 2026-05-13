@@ -633,6 +633,8 @@ const accessibilityText = {
     projectSlideRight: "حرکت به کارت سمت راست",
     methodSlideLeft: "حرکت به مرحله سمت چپ",
     methodSlideRight: "حرکت به مرحله سمت راست",
+    capabilitySlideLeft: "حرکت به خدمت سمت چپ",
+    capabilitySlideRight: "حرکت به خدمت سمت راست",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
@@ -649,6 +651,8 @@ const accessibilityText = {
     projectSlideRight: "چوون بۆ کارتی لای ڕاست",
     methodSlideLeft: "چوون بۆ قۆناغی لای چەپ",
     methodSlideRight: "چوون بۆ قۆناغی لای ڕاست",
+    capabilitySlideLeft: "چوون بۆ خزمەتی لای چەپ",
+    capabilitySlideRight: "چوون بۆ خزمەتی لای ڕاست",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
@@ -665,6 +669,8 @@ const accessibilityText = {
     projectSlideRight: "Move to the project on the right",
     methodSlideLeft: "Move to the method step on the left",
     methodSlideRight: "Move to the method step on the right",
+    capabilitySlideLeft: "Move to the capability on the left",
+    capabilitySlideRight: "Move to the capability on the right",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
@@ -691,9 +697,31 @@ function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
 }
 
+const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+const arabicDigits = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+
+function toEnglishDigits(value = "") {
+  return String(value).replace(/[۰-۹٠-٩]/g, (digit) => {
+    const persianIndex = persianDigits.indexOf(digit);
+    if (persianIndex >= 0) return String(persianIndex);
+    const arabicIndex = arabicDigits.indexOf(digit);
+    return arabicIndex >= 0 ? String(arabicIndex) : digit;
+  });
+}
+
+function localizeDigits(value = "") {
+  const normalized = toEnglishDigits(value);
+  if (activeLanguage === "en") return normalized;
+  return normalized.replace(/\d/g, (digit) => persianDigits[Number(digit)]);
+}
+
+function escapeLocalizedHTML(value = "") {
+  return escapeHTML(localizeDigits(value));
+}
+
 function setText(selector, value) {
   const node = typeof selector === "string" ? $(selector) : selector;
-  if (node) node.textContent = value || "";
+  if (node) node.textContent = localizeDigits(value || "");
 }
 
 function escapeHTML(value = "") {
@@ -722,7 +750,7 @@ function renderStaticText() {
 
   $$("[data-i18n-lines]").forEach((node) => {
     const lines = getPath(content, node.dataset.i18nLines) || [];
-    node.innerHTML = lines.map((line, index) => `<span style="--line-index: ${index}">${escapeHTML(line)}</span>`).join("");
+    node.innerHTML = lines.map((line, index) => `<span style="--line-index: ${index}">${escapeLocalizedHTML(line)}</span>`).join("");
   });
 }
 
@@ -739,9 +767,9 @@ function renderCards() {
       .map(
         (item, index) => `
           <article data-reveal>
-            <span class="signature-index">${String(index + 1).padStart(2, "0")} / ${escapeHTML(item.label)}</span>
-            <h3>${escapeHTML(item.title)}</h3>
-            <p>${escapeHTML(item.body)}</p>
+            <span class="signature-index">${localizeDigits(String(index + 1).padStart(2, "0"))} / ${escapeLocalizedHTML(item.label)}</span>
+            <h3>${escapeLocalizedHTML(item.title)}</h3>
+            <p>${escapeLocalizedHTML(item.body)}</p>
           </article>
         `,
       )
@@ -752,10 +780,11 @@ function renderCards() {
     capabilityGrid.innerHTML = content.capabilities.items
       .map(
         (item, index) => `
-          <article data-reveal>
-            <span class="capability-index">${String(index + 1).padStart(2, "0")}</span>
-            <h3>${escapeHTML(item.title)}</h3>
-            <p>${escapeHTML(item.body)}</p>
+          <article data-reveal data-capability-card data-card-index="${String(index + 1).padStart(2, "0")}" style="--capability-order: ${index}">
+            <span class="capability-index">${localizeDigits(String(index + 1).padStart(2, "0"))}</span>
+            <b class="capability-ghost" aria-hidden="true">${localizeDigits(String(index + 1).padStart(2, "0"))}</b>
+            <h3>${escapeLocalizedHTML(item.title)}</h3>
+            <p>${escapeLocalizedHTML(item.body)}</p>
           </article>
         `,
       )
@@ -765,10 +794,10 @@ function renderCards() {
   if (methodList) {
     methodList.innerHTML = content.method.items
       .map(
-        (item) => `
-          <div class="process-step" data-reveal>
-            <h3>${escapeHTML(item.title)}</h3>
-            <p>${escapeHTML(item.body)}</p>
+        (item, index) => `
+          <div class="process-step" data-reveal data-step="${localizeDigits(String(index + 1).padStart(2, "0"))}">
+            <h3>${escapeLocalizedHTML(item.title)}</h3>
+            <p>${escapeLocalizedHTML(item.body)}</p>
           </div>
         `,
       )
@@ -777,7 +806,7 @@ function renderCards() {
 
   if (identityCopy) {
     identityCopy.innerHTML = content.identity.paragraphs
-      .map((paragraph) => `<p data-reveal>${escapeHTML(paragraph)}</p>`)
+      .map((paragraph) => `<p data-reveal>${escapeLocalizedHTML(paragraph)}</p>`)
       .join("");
   }
 
@@ -786,8 +815,8 @@ function renderCards() {
       .map(
         (item) => `
           <article data-reveal>
-            <h3>${escapeHTML(item.name)}</h3>
-            <p>${escapeHTML(item.role)}</p>
+            <h3>${escapeLocalizedHTML(item.name)}</h3>
+            <p>${escapeLocalizedHTML(item.role)}</p>
           </article>
         `,
       )
@@ -796,15 +825,15 @@ function renderCards() {
       .map(
         (item) => `
           <article aria-hidden="true">
-            <h3>${escapeHTML(item.name)}</h3>
-            <p>${escapeHTML(item.role)}</p>
+            <h3>${escapeLocalizedHTML(item.name)}</h3>
+            <p>${escapeLocalizedHTML(item.role)}</p>
           </article>
         `,
       )
       .join("");
 
     experienceList.innerHTML = `
-      <p class="experience-kicker" data-reveal>${escapeHTML(content.identity.experienceKicker)}</p>
+      <p class="experience-kicker" data-reveal>${escapeLocalizedHTML(content.identity.experienceKicker)}</p>
       <div class="experience-viewport" data-experience-viewport>
         <div class="experience-grid" data-experience-ticker>
           ${experienceCards}
@@ -824,24 +853,25 @@ function renderProjects() {
     .map((project, index) => {
       const copy = project.copy[activeLanguage];
       const tags = (project.tags[activeLanguage] || project.tags.en)
-        .map((tag) => `<span>${escapeHTML(tag)}</span>`)
+        .map((tag) => `<span>${escapeLocalizedHTML(tag)}</span>`)
         .join("");
-      const title = escapeHTML(copy.title);
+      const title = escapeLocalizedHTML(copy.title);
+      const openLabel = escapeLocalizedHTML(content.work.open);
       const cover = safeCSSUrl(project.cover || project.image);
       const layoutClass = project.imageLayout === "portrait" ? "is-portrait" : "";
       return `
         <article class="project-card ${index % 2 ? "is-offset" : ""}" data-reveal>
-          <button class="project-media ${layoutClass}" type="button" data-project-id="${project.id}" style="--project-cover-art: url('${cover}')" aria-label="${escapeHTML(content.work.open)}: ${title}">
+          <button class="project-media ${layoutClass}" type="button" data-project-id="${project.id}" style="--project-cover-art: url('${cover}')" aria-label="${openLabel}: ${title}">
             <img class="project-image" loading="lazy" decoding="async" width="${project.imageWidth || 1800}" height="${project.imageHeight || 1040}" src="${project.image}" alt="${title}" />
             <span class="project-cover-layer" aria-hidden="true"></span>
           </button>
           <div class="project-copy">
-            <p class="project-eyebrow">${escapeHTML(copy.category)} / ${escapeHTML(project.year)}</p>
+            <p class="project-eyebrow">${escapeLocalizedHTML(copy.category)} / ${escapeLocalizedHTML(project.year)}</p>
             <h3>${title}</h3>
-            <p class="project-summary">${escapeHTML(copy.summary)}</p>
-            <div class="project-meta">${tags}<span>${escapeHTML(content.work.open)}</span></div>
-            <button class="project-open" type="button" data-project-id="${project.id}" aria-label="${escapeHTML(content.work.open)}: ${title}">
-              ${escapeHTML(content.work.open)}
+            <p class="project-summary">${escapeLocalizedHTML(copy.summary)}</p>
+            <div class="project-meta">${tags}<span>${openLabel}</span></div>
+            <button class="project-open" type="button" data-project-id="${project.id}" aria-label="${openLabel}: ${title}">
+              ${openLabel}
             </button>
           </div>
         </article>
@@ -857,23 +887,28 @@ function renderProjects() {
 function updateA11yLabels() {
   const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
   const nav = $("[data-main-nav]");
-  if (nav) nav.setAttribute("aria-label", labels.navigation);
+  if (nav) nav.setAttribute("aria-label", localizeDigits(labels.navigation));
 
   const brandWhisper = $("[data-brand-whisper]");
-  if (brandWhisper) brandWhisper.textContent = labels.brandWhisper;
+  if (brandWhisper) brandWhisper.textContent = localizeDigits(labels.brandWhisper);
 
   const slideLeft = $("[data-project-slide-left]");
   const slideRight = $("[data-project-slide-right]");
-  if (slideLeft) slideLeft.setAttribute("aria-label", labels.projectSlideLeft);
-  if (slideRight) slideRight.setAttribute("aria-label", labels.projectSlideRight);
+  if (slideLeft) slideLeft.setAttribute("aria-label", localizeDigits(labels.projectSlideLeft));
+  if (slideRight) slideRight.setAttribute("aria-label", localizeDigits(labels.projectSlideRight));
 
   const methodSlideLeft = $("[data-method-slide-left]");
   const methodSlideRight = $("[data-method-slide-right]");
-  if (methodSlideLeft) methodSlideLeft.setAttribute("aria-label", labels.methodSlideLeft);
-  if (methodSlideRight) methodSlideRight.setAttribute("aria-label", labels.methodSlideRight);
+  if (methodSlideLeft) methodSlideLeft.setAttribute("aria-label", localizeDigits(labels.methodSlideLeft));
+  if (methodSlideRight) methodSlideRight.setAttribute("aria-label", localizeDigits(labels.methodSlideRight));
+
+  const capabilitySlideLeft = $("[data-capability-slide-left]");
+  const capabilitySlideRight = $("[data-capability-slide-right]");
+  if (capabilitySlideLeft) capabilitySlideLeft.setAttribute("aria-label", localizeDigits(labels.capabilitySlideLeft));
+  if (capabilitySlideRight) capabilitySlideRight.setAttribute("aria-label", localizeDigits(labels.capabilitySlideRight));
 
   $$("[data-close-case]").forEach((button) => {
-    button.setAttribute("aria-label", labels.closeCase);
+    button.setAttribute("aria-label", localizeDigits(labels.closeCase));
   });
 
   const socialLabels = {
@@ -884,7 +919,7 @@ function updateA11yLabels() {
 
   $$(".socials a").forEach((link) => {
     const label = socialLabels[link.textContent.trim()];
-    if (label) link.setAttribute("aria-label", label);
+    if (label) link.setAttribute("aria-label", localizeDigits(label));
   });
 }
 
@@ -906,8 +941,8 @@ function updateLanguage(lang) {
   document.documentElement.dir = language.dir;
   document.body.classList.remove("lang-fa", "lang-ku", "lang-en");
   document.body.classList.add(`lang-${activeLanguage}`);
-  document.title = language.title;
-  if (metaDescription) metaDescription.content = language.meta;
+  document.title = localizeDigits(language.title);
+  if (metaDescription) metaDescription.content = localizeDigits(language.meta);
 
   $$("[data-lang]").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.lang === activeLanguage);
@@ -1203,6 +1238,58 @@ function initPointerGlow() {
   });
 }
 
+function initDesktopSurpriseField() {
+  if (prefersReducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const field = $(".desktop-surprise-field");
+  if (!field) return;
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  let active = false;
+  let frame = null;
+
+  const activate = () => {
+    active = true;
+    field.classList.add("is-live");
+  };
+
+  const deactivate = () => {
+    active = false;
+    field.classList.remove("is-live");
+  };
+
+  const render = () => {
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    document.documentElement.style.setProperty("--surprise-x", `${currentX}px`);
+    document.documentElement.style.setProperty("--surprise-y", `${currentY}px`);
+    frame = active || Math.abs(targetX - currentX) + Math.abs(targetY - currentY) > 0.5 ? requestAnimationFrame(render) : null;
+  };
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+
+      const target = event.target instanceof Element ? event.target : null;
+      const shouldGlow = Boolean(
+        target?.closest(".capability-grid article, .project-media, .hero-frame, .contact-panel, .signature-grid article"),
+      );
+
+      if (shouldGlow) activate();
+      else deactivate();
+      if (!frame) frame = requestAnimationFrame(render);
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("pointerleave", deactivate);
+}
+
 function initScrollProgress() {
   const progress = $(".scroll-progress");
   if (!progress) return;
@@ -1395,6 +1482,10 @@ function initProjectCarouselControls() {
 
 function initMethodCarouselControls() {
   initCarouselControls("[data-method-list]", "[data-method-slide-left]", "[data-method-slide-right]", 0.78);
+}
+
+function initCapabilityCarouselControls() {
+  initCarouselControls("[data-capability-grid]", "[data-capability-slide-left]", "[data-capability-slide-right]", 0.78);
 }
 
 function applySectionMood(section, mood) {
@@ -1706,13 +1797,17 @@ function renderCaseGallery(project, copy) {
             (slide, index) => {
               const slideArt = safeCSSUrl(slide.src);
               const orientation = getMediaOrientation(slide.width, slide.height);
+              const slideAlt =
+                index === 0
+                  ? escapeLocalizedHTML(copy.title)
+                  : `${escapeLocalizedHTML(copy.title)} ${localizeDigits(index + 1)}`;
               return `
               <figure class="case-slide ${orientation}" style="--slide-art: url('${slideArt}')">
                 <img
                   src="${escapeHTML(slide.src)}"
                   width="${slide.width}"
                   height="${slide.height}"
-                  alt="${index === 0 ? escapeHTML(copy.title) : `${escapeHTML(copy.title)} ${index + 1}`}"
+                  alt="${slideAlt}"
                   loading="${index === 0 ? "eager" : "lazy"}"
                   decoding="async"
                 />
@@ -1727,7 +1822,7 @@ function renderCaseGallery(project, copy) {
       activeCaseGallerySlides.length > 1
         ? `
           <div class="case-gallery-controls">
-            <button class="case-gallery-nav" type="button" data-case-slide-action="prev" aria-label="${escapeHTML(labels.galleryPrev)}">‹</button>
+            <button class="case-gallery-nav" type="button" data-case-slide-action="prev" aria-label="${escapeLocalizedHTML(labels.galleryPrev)}">‹</button>
             <div class="case-gallery-dots">
               ${activeCaseGallerySlides
                 .map(
@@ -1736,13 +1831,13 @@ function renderCaseGallery(project, copy) {
                       class="case-gallery-dot"
                       type="button"
                       data-case-slide-dot="${index}"
-                      aria-label="${escapeHTML(labels.galleryGo)} ${index + 1}"
+                      aria-label="${escapeLocalizedHTML(labels.galleryGo)} ${localizeDigits(index + 1)}"
                     ></button>
                   `,
                 )
                 .join("")}
             </div>
-            <button class="case-gallery-nav" type="button" data-case-slide-action="next" aria-label="${escapeHTML(labels.galleryNext)}">›</button>
+            <button class="case-gallery-nav" type="button" data-case-slide-action="next" aria-label="${escapeLocalizedHTML(labels.galleryNext)}">›</button>
             <span class="case-gallery-count" data-case-gallery-count></span>
           </div>
         `
@@ -1794,7 +1889,7 @@ function openCaseStudy(projectId) {
     ["execution", copy.execution],
     ["outcome", copy.outcome],
   ]
-    .map(([key, value]) => `<section class="case-item"><h3>${escapeHTML(labels[key])}</h3><p>${escapeHTML(value)}</p></section>`)
+    .map(([key, value]) => `<section class="case-item"><h3>${escapeLocalizedHTML(labels[key])}</h3><p>${escapeLocalizedHTML(value)}</p></section>`)
     .join("");
 
   drawer.classList.add("is-open");
@@ -1878,7 +1973,7 @@ function initEasterEgg() {
 
   const showMessage = () => {
     const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
-    message.textContent = labels.egg;
+    message.textContent = localizeDigits(labels.egg);
     message.classList.add("is-visible");
     document.body.classList.add("egg-active");
 
@@ -1948,9 +2043,11 @@ initCaseStudy();
 initLanguage();
 initProjectCarouselControls();
 initMethodCarouselControls();
+initCapabilityCarouselControls();
 initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
+initDesktopSurpriseField();
 initMobileRevealSystem();
 initSectionMood();
 initSignatureDraw();
