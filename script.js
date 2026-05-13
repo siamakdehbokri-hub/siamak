@@ -7,15 +7,78 @@ const ENHANCEMENT_SCRIPTS = [
   "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js",
 ];
 const sectionMoods = [
-  { selector: ".hero", x: "18%", y: "17%", a: "rgba(255, 180, 94, 0.2)", b: "rgba(57, 213, 192, 0.06)" },
-  { selector: ".reel", x: "82%", y: "24%", a: "rgba(255, 224, 163, 0.15)", b: "rgba(255, 180, 94, 0.09)" },
-  { selector: ".manifesto", x: "24%", y: "48%", a: "rgba(57, 213, 192, 0.1)", b: "rgba(255, 224, 163, 0.09)" },
-  { selector: ".signature", x: "72%", y: "42%", a: "rgba(255, 180, 94, 0.17)", b: "rgba(255, 224, 163, 0.08)" },
-  { selector: ".work", x: "18%", y: "58%", a: "rgba(255, 180, 94, 0.22)", b: "rgba(57, 213, 192, 0.07)" },
-  { selector: ".capabilities", x: "80%", y: "56%", a: "rgba(255, 224, 163, 0.14)", b: "rgba(57, 213, 192, 0.1)" },
-  { selector: ".process", x: "28%", y: "68%", a: "rgba(57, 213, 192, 0.11)", b: "rgba(255, 180, 94, 0.08)" },
-  { selector: ".about", x: "74%", y: "70%", a: "rgba(255, 224, 163, 0.16)", b: "rgba(255, 180, 94, 0.08)" },
-  { selector: ".contact", x: "50%", y: "82%", a: "rgba(255, 180, 94, 0.2)", b: "rgba(255, 224, 163, 0.09)" },
+  {
+    selector: ".hero",
+    x: "18%",
+    y: "17%",
+    a: "rgba(255, 180, 94, 0.2)",
+    b: "rgba(57, 213, 192, 0.06)",
+    light: { a: "rgba(184, 112, 38, 0.13)", b: "rgba(48, 137, 124, 0.055)" },
+  },
+  {
+    selector: ".reel",
+    x: "82%",
+    y: "24%",
+    a: "rgba(255, 224, 163, 0.15)",
+    b: "rgba(255, 180, 94, 0.09)",
+    light: { a: "rgba(255, 247, 232, 0.5)", b: "rgba(181, 112, 42, 0.075)" },
+  },
+  {
+    selector: ".manifesto",
+    x: "24%",
+    y: "48%",
+    a: "rgba(57, 213, 192, 0.1)",
+    b: "rgba(255, 224, 163, 0.09)",
+    light: { a: "rgba(43, 137, 124, 0.075)", b: "rgba(255, 247, 232, 0.48)" },
+  },
+  {
+    selector: ".signature",
+    x: "72%",
+    y: "42%",
+    a: "rgba(255, 180, 94, 0.17)",
+    b: "rgba(255, 224, 163, 0.08)",
+    light: { a: "rgba(181, 112, 42, 0.105)", b: "rgba(255, 255, 255, 0.42)" },
+  },
+  {
+    selector: ".work",
+    x: "18%",
+    y: "58%",
+    a: "rgba(255, 180, 94, 0.22)",
+    b: "rgba(57, 213, 192, 0.07)",
+    light: { a: "rgba(174, 96, 28, 0.13)", b: "rgba(43, 137, 124, 0.055)" },
+  },
+  {
+    selector: ".capabilities",
+    x: "80%",
+    y: "56%",
+    a: "rgba(255, 224, 163, 0.14)",
+    b: "rgba(57, 213, 192, 0.1)",
+    light: { a: "rgba(255, 255, 255, 0.45)", b: "rgba(43, 137, 124, 0.08)" },
+  },
+  {
+    selector: ".process",
+    x: "28%",
+    y: "68%",
+    a: "rgba(57, 213, 192, 0.11)",
+    b: "rgba(255, 180, 94, 0.08)",
+    light: { a: "rgba(43, 137, 124, 0.075)", b: "rgba(181, 112, 42, 0.07)" },
+  },
+  {
+    selector: ".about",
+    x: "74%",
+    y: "70%",
+    a: "rgba(255, 224, 163, 0.16)",
+    b: "rgba(255, 180, 94, 0.08)",
+    light: { a: "rgba(255, 255, 255, 0.5)", b: "rgba(181, 112, 42, 0.07)" },
+  },
+  {
+    selector: ".contact",
+    x: "50%",
+    y: "82%",
+    a: "rgba(255, 180, 94, 0.2)",
+    b: "rgba(255, 224, 163, 0.09)",
+    light: { a: "rgba(174, 96, 28, 0.12)", b: "rgba(255, 255, 255, 0.48)" },
+  },
 ];
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -533,6 +596,7 @@ const accessibilityText = {
     closeCase: "بستن کیس‌استادی",
     themeToLight: "تغییر به حالت روشن",
     themeToDark: "تغییر به حالت تاریک",
+    brandWhisper: "او فقط نام نمی‌سازد؛ مسیر دیدن را عوض می‌کند.",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
@@ -543,6 +607,7 @@ const accessibilityText = {
     closeCase: "داخستنی کیس",
     themeToLight: "گۆڕین بۆ دۆخی ڕووناک",
     themeToDark: "گۆڕین بۆ دۆخی تاریک",
+    brandWhisper: "ناو دروست ناکات؛ ڕێگای بینین دەگۆڕێت.",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
@@ -553,6 +618,7 @@ const accessibilityText = {
     closeCase: "Close case study",
     themeToLight: "Switch to light mode",
     themeToDark: "Switch to dark mode",
+    brandWhisper: "Not a name. A way of being seen.",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
@@ -718,6 +784,9 @@ function updateA11yLabels() {
   const labels = accessibilityText[activeLanguage] || accessibilityText.fa;
   const nav = $("[data-main-nav]");
   if (nav) nav.setAttribute("aria-label", labels.navigation);
+
+  const brandWhisper = $("[data-brand-whisper]");
+  if (brandWhisper) brandWhisper.textContent = labels.brandWhisper;
 
   $$("[data-close-case]").forEach((button) => {
     button.setAttribute("aria-label", labels.closeCase);
@@ -936,6 +1005,7 @@ function applyTheme(theme, persist = false) {
   const themeColor = $("[data-theme-color]");
   if (themeColor) themeColor.content = activeTheme === "light" ? "#fffaf1" : "#090807";
   syncThemeToggle();
+  requestAnimationFrame(refreshSectionMood);
 
   if (!persist) return;
 
@@ -1181,6 +1251,7 @@ function initMobileRevealSystem() {
 
 function applySectionMood(section, mood) {
   if (!section || !mood) return;
+  const themeMood = activeTheme === "light" ? mood.light || mood : mood;
 
   $$(".section-shell.is-focused-section").forEach((item) => {
     if (item !== section) item.classList.remove("is-focused-section");
@@ -1189,8 +1260,8 @@ function applySectionMood(section, mood) {
   section.classList.add("is-focused-section");
   document.body.style.setProperty("--mood-x", mood.x);
   document.body.style.setProperty("--mood-y", mood.y);
-  document.body.style.setProperty("--mood-a", mood.a);
-  document.body.style.setProperty("--mood-b", mood.b);
+  document.body.style.setProperty("--mood-a", themeMood.a);
+  document.body.style.setProperty("--mood-b", themeMood.b);
 }
 
 function initSectionMood() {
@@ -1202,6 +1273,7 @@ function initSectionMood() {
 
   let ticking = false;
   let activeSection = null;
+  let activeMoodTheme = null;
 
   const update = () => {
     const headerHeight = $(".site-header")?.getBoundingClientRect().height || 0;
@@ -1214,8 +1286,9 @@ function initSectionMood() {
       }
     });
 
-    if (next.section !== activeSection) {
+    if (next.section !== activeSection || activeMoodTheme !== activeTheme) {
       activeSection = next.section;
+      activeMoodTheme = activeTheme;
       applySectionMood(next.section, next.mood);
     }
 
