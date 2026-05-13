@@ -87,9 +87,8 @@ const languages = {
   fa: {
     lang: "fa",
     dir: "rtl",
-    title: "سیامک دهبکری | مدیر برند و کارگردان تبلیغاتی",
-    meta:
-      "وب‌سایت سه‌زبانه سیامک دهبکری؛ مدیر برند و کارگردان تبلیغاتی در پیوند استراتژی، تصویر و ادراک برند.",
+    title: "سیامک دهبکری مدیر برند",
+    meta: "سیامک دهبکری مدیر برند",
     content: {
       brand: { name: "سیامک دهبکری" },
       nav: { work: "کارها", method: "روش", identity: "نگاه", contact: "تماس" },
@@ -209,9 +208,8 @@ const languages = {
   ku: {
     lang: "ku",
     dir: "rtl",
-    title: "سیامه‌ک دیبوکری | بەڕێوەبەری براند و دەرهێنەری فیلمی ڕیکلامی",
-    meta:
-      "ماڵپەڕی سێ زمانەی سیامه‌ک دیبوکری؛ بەڕێوەبەری براند و دەرهێنەری فیلمی ڕیکلامی لە نێوان ستراتیژی، وێنە و هەستپێکردنی برانددا.",
+    title: "سیامه‌ک دیبوکری بەڕێوەبەری براند",
+    meta: "سیامه‌ک دیبوکری بەڕێوەبەری براند",
     content: {
       brand: { name: "سیامه‌ک دیبوکری" },
       nav: { work: "کارەکان", method: "ڕێباز", identity: "دید", contact: "پەیوەندی" },
@@ -331,9 +329,8 @@ const languages = {
   en: {
     lang: "en",
     dir: "ltr",
-    title: "Siamak Dehbokri | Brand Director & Advertising Film Director",
-    meta:
-      "Siamak Dehbokri works between brand strategy and advertising direction, shaping image, tone, and brand perception.",
+    title: "Siamak Dehbokri Brand Director",
+    meta: "Siamak Dehbokri Brand Director",
     content: {
       brand: { name: "Siamak Dehbokri" },
       nav: { work: "Work", method: "Method", identity: "View", contact: "Contact" },
