@@ -814,12 +814,14 @@ body.lang-en .reel-card p {
   margin-bottom: 0.5rem;
 }
 
-.project-carousel-shell {
+.project-carousel-shell,
+.method-carousel-shell {
   position: relative;
   min-width: 0;
 }
 
-.mobile-carousel-arrows {
+.mobile-carousel-arrows,
+.method-carousel-arrows {
   display: none;
 }
 
@@ -1050,18 +1052,30 @@ body.lang-en .process::before {
 }
 
 .experience-grid {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  gap: 0.62rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.experience-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .experience-grid article {
   display: grid;
+  flex: 0 0 min(78vw, 18rem);
   gap: 0.22rem;
   min-width: 0;
   padding: 0.78rem 0.9rem;
   border: 1px solid var(--line);
   border-radius: 0.9rem;
   background: rgba(247, 241, 230, 0.032);
+  scroll-snap-align: center;
 }
 
 .experience-grid h3,
@@ -1505,6 +1519,7 @@ body.egg-active .mood-light {
 
 @media (max-width: 899px) {
   .project-list,
+  .process-line,
   .experience-grid {
     display: flex;
     gap: 0.78rem;
@@ -1526,19 +1541,28 @@ body.egg-active .mood-light {
   }
 
   .mobile-carousel-arrows {
+    display: flex;
+  }
+
+  .mobile-carousel-arrows,
+  .method-carousel-arrows {
     position: absolute;
     top: 50%;
     right: max(0.72rem, env(safe-area-inset-right));
     left: max(0.72rem, env(safe-area-inset-left));
     z-index: 8;
-    display: flex;
     justify-content: space-between;
     direction: ltr;
     pointer-events: none;
     transform: translate3d(0, -50%, 0);
   }
 
-  .mobile-carousel-arrow {
+  .method-carousel-arrows {
+    display: flex;
+  }
+
+  .mobile-carousel-arrow,
+  .method-carousel-arrow {
     display: grid;
     width: 2.2rem;
     height: 2.2rem;
@@ -1560,7 +1584,8 @@ body.egg-active .mood-light {
       transform 0.28s var(--ease);
   }
 
-  .mobile-carousel-arrow:active {
+  .mobile-carousel-arrow:active,
+  .method-carousel-arrow:active {
     border-color: rgba(255, 224, 163, 0.42);
     background: rgba(255, 180, 94, 0.16);
     transform: scale(0.94);
@@ -1571,17 +1596,33 @@ body.egg-active .mood-light {
   }
 
   .project-list::-webkit-scrollbar,
+  .process-line::-webkit-scrollbar,
   .experience-grid::-webkit-scrollbar {
     display: none;
   }
 
   .project-list,
+  .process-line,
   .experience-grid {
     scrollbar-width: none;
   }
 
   .project-card {
     flex: 0 0 min(82vw, 23rem);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .process-line {
+    counter-reset: step;
+    padding-bottom: 0.2rem;
+    scroll-padding-inline: var(--gutter);
+  }
+
+  .process-step {
+    flex: 0 0 min(78vw, 20rem);
+    min-height: 9rem;
+    align-content: start;
     scroll-snap-align: center;
     scroll-snap-stop: always;
   }
@@ -1599,6 +1640,7 @@ body.egg-active .mood-light {
   }
 
   .experience-list::after,
+  .process::after,
   .work::after {
     display: block;
     margin-top: 0.62rem;
@@ -1611,16 +1653,19 @@ body.egg-active .mood-light {
   }
 
   body.lang-fa .experience-list::after,
+  body.lang-fa .process::after,
   body.lang-fa .work::after {
     content: "برای دیدن بیشتر، به کنار بکشید";
   }
 
   body.lang-ku .experience-list::after,
+  body.lang-ku .process::after,
   body.lang-ku .work::after {
     content: "بۆ بینینی زیاتر، بۆ لا بکێشە";
   }
 
   body.lang-en .experience-list::after,
+  body.lang-en .process::after,
   body.lang-en .work::after {
     content: "Swipe sideways for more";
     font-family: var(--font-latin);
@@ -2038,11 +2083,13 @@ body.egg-active .mood-light {
   }
 
   .experience-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.7rem;
+    gap: 0.72rem;
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
 
   .experience-grid article {
+    flex-basis: clamp(14rem, 22vw, 19rem);
     padding: 0.9rem 1rem;
   }
 

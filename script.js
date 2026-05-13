@@ -15,13 +15,6 @@ const sectionMoods = [
     b: "rgba(57, 213, 192, 0.06)",
   },
   {
-    selector: ".reel",
-    x: "82%",
-    y: "24%",
-    a: "rgba(255, 224, 163, 0.15)",
-    b: "rgba(255, 180, 94, 0.09)",
-  },
-  {
     selector: ".manifesto",
     x: "24%",
     y: "48%",
@@ -97,13 +90,6 @@ const languages = {
         metricTwo: "حس کنترل‌شده",
         metricThreeLabel: "اثر",
         metricThree: "یادآوری ماندگار",
-      },
-      reel: {
-        items: [
-          { index: "01", title: "منطق برند", body: "جایگاه، پیام و لحن وقتی ارزش دارند که تصمیم‌های روزمره برند را دقیق‌تر کنند." },
-          { index: "02", title: "کارگردانی تبلیغاتی", body: "فیلمی که با فشار نمی‌فروشد؛ انتخاب را طبیعی‌تر و قابل‌باورتر می‌کند." },
-          { index: "03", title: "طراحی برداشت", body: "هماهنگ کردن تصویر، کلمه و تجربه تا برند یک برداشت روشن بسازد." },
-        ],
       },
       manifesto: {
         kicker: "01 / اصل کار",
@@ -235,13 +221,6 @@ const languages = {
         metricThreeLabel: "کاریگەری",
         metricThree: "لەبیرماندنی ماوەدار",
       },
-      reel: {
-        items: [
-          { index: "01", title: "لۆژیکی براند", body: "جێگە، پەیام و تۆن کاتێک بەهادارن کە بڕیارە ڕۆژانەکانی براند وردتر بکەن." },
-          { index: "02", title: "دەرهێنانی ڕیکلامی", body: "فیلمێک کە بە فشار نافرۆشێت؛ هەڵبژاردن ڕوونتر و باوەڕپێکراوتر دەکات." },
-          { index: "03", title: "داڕشتنی وەرگرتن", body: "هاوهەنگکردنی وێنە، وشە و ئەزموون بۆ ئەوەی براند وەرگرتنێکی ڕوون دروست بکات." },
-        ],
-      },
       manifesto: {
         kicker: "01 / بنەمای کار",
         title: "براند کاتێک جدی دەبێت کە هەر دەرچوونێک بگاتە هەمان وەرگرتن.",
@@ -371,13 +350,6 @@ const languages = {
         metricTwo: "Controlled feeling",
         metricThreeLabel: "Effect",
         metricThree: "Lasting memory",
-      },
-      reel: {
-        items: [
-          { index: "01", title: "Brand Logic", body: "Position, message, and tone matter when they make daily brand decisions sharper." },
-          { index: "02", title: "Commercial Direction", body: "Film that does not pressure the sale; it makes the choice feel clearer and more believable." },
-          { index: "03", title: "Perception Design", body: "Aligning image, words, and experience so the brand leaves a clear impression." },
-        ],
       },
       manifesto: {
         kicker: "01 / Principle",
@@ -659,6 +631,8 @@ const accessibilityText = {
     galleryGo: "نمایش تصویر",
     projectSlideLeft: "حرکت به کارت سمت چپ",
     projectSlideRight: "حرکت به کارت سمت راست",
+    methodSlideLeft: "حرکت به مرحله سمت چپ",
+    methodSlideRight: "حرکت به مرحله سمت راست",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
@@ -673,6 +647,8 @@ const accessibilityText = {
     galleryGo: "پیشاندانی وێنە",
     projectSlideLeft: "چوون بۆ کارتی لای چەپ",
     projectSlideRight: "چوون بۆ کارتی لای ڕاست",
+    methodSlideLeft: "چوون بۆ قۆناغی لای چەپ",
+    methodSlideRight: "چوون بۆ قۆناغی لای ڕاست",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
@@ -687,6 +663,8 @@ const accessibilityText = {
     galleryGo: "Show image",
     projectSlideLeft: "Move to the project on the left",
     projectSlideRight: "Move to the project on the right",
+    methodSlideLeft: "Move to the method step on the left",
+    methodSlideRight: "Move to the method step on the right",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
@@ -750,26 +728,11 @@ function renderStaticText() {
 
 function renderCards() {
   const { content } = languages[activeLanguage];
-  const reelTrack = $("[data-reel-track]");
   const signatureGrid = $("[data-signature-grid]");
   const capabilityGrid = $("[data-capability-grid]");
   const methodList = $("[data-method-list]");
   const identityCopy = $("[data-identity-copy]");
   const experienceList = $("[data-experience-list]");
-
-  if (reelTrack) {
-    reelTrack.innerHTML = content.reel.items
-      .map(
-        (item) => `
-          <article class="reel-card" data-reveal>
-            <span>${escapeHTML(item.index)}</span>
-            <h3>${escapeHTML(item.title)}</h3>
-            <p>${escapeHTML(item.body)}</p>
-          </article>
-        `,
-      )
-      .join("");
-  }
 
   if (signatureGrid) {
     signatureGrid.innerHTML = content.signature.items
@@ -888,6 +851,11 @@ function updateA11yLabels() {
   const slideRight = $("[data-project-slide-right]");
   if (slideLeft) slideLeft.setAttribute("aria-label", labels.projectSlideLeft);
   if (slideRight) slideRight.setAttribute("aria-label", labels.projectSlideRight);
+
+  const methodSlideLeft = $("[data-method-slide-left]");
+  const methodSlideRight = $("[data-method-slide-right]");
+  if (methodSlideLeft) methodSlideLeft.setAttribute("aria-label", labels.methodSlideLeft);
+  if (methodSlideRight) methodSlideRight.setAttribute("aria-label", labels.methodSlideRight);
 
   $$("[data-close-case]").forEach((button) => {
     button.setAttribute("aria-label", labels.closeCase);
@@ -1319,7 +1287,7 @@ function initExperienceTicker() {
   experienceTickerCleanup = () => {};
 
   const grid = $(".experience-grid");
-  if (!grid || prefersReducedMotion || !window.matchMedia("(max-width: 899px)").matches) return;
+  if (!grid || prefersReducedMotion) return;
 
   const maxScroll = () => Math.max(grid.scrollWidth - grid.clientWidth, 0);
   if (maxScroll() <= 4) return;
@@ -1385,17 +1353,17 @@ function initExperienceTicker() {
   };
 }
 
-function initProjectCarouselControls() {
-  const list = $("[data-project-list]");
-  const leftButton = $("[data-project-slide-left]");
-  const rightButton = $("[data-project-slide-right]");
+function initCarouselControls(listSelector, leftSelector, rightSelector, fallbackRatio = 0.82) {
+  const list = $(listSelector);
+  const leftButton = $(leftSelector);
+  const rightButton = $(rightSelector);
   if (!list || !leftButton || !rightButton) return;
 
   const getStep = () => {
-    const card = $(".project-card", list);
+    const card = list.firstElementChild;
     const styles = window.getComputedStyle(list);
     const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
-    return (card?.getBoundingClientRect().width || list.clientWidth * 0.82) + gap;
+    return (card?.getBoundingClientRect().width || list.clientWidth * fallbackRatio) + gap;
   };
 
   const move = (direction) => {
@@ -1407,6 +1375,14 @@ function initProjectCarouselControls() {
 
   leftButton.addEventListener("click", () => move(-1));
   rightButton.addEventListener("click", () => move(1));
+}
+
+function initProjectCarouselControls() {
+  initCarouselControls("[data-project-list]", "[data-project-slide-left]", "[data-project-slide-right]");
+}
+
+function initMethodCarouselControls() {
+  initCarouselControls("[data-method-list]", "[data-method-slide-left]", "[data-method-slide-right]", 0.78);
 }
 
 function applySectionMood(section, mood) {
@@ -1959,6 +1935,7 @@ initScrollProgress();
 initCaseStudy();
 initLanguage();
 initProjectCarouselControls();
+initMethodCarouselControls();
 initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
