@@ -101,6 +101,8 @@
   --radius-lg: 1.5rem;
   --gutter: clamp(1rem, 4.8vw, 1.35rem);
   --section: clamp(3rem, 10vw, 4.9rem);
+  --heading-flow-gap: clamp(1.3rem, 5.7vw, 2.05rem);
+  --heading-flow-gap-desktop: clamp(1.8rem, 2.7vw, 2.55rem);
   --max: 35rem;
   --font-rtl: "IRANSans", Tahoma, sans-serif;
   --font-latin: "Gilroy", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
@@ -307,12 +309,6 @@ body.is-language-switching .site-footer {
   }
 }
 
-@keyframes surprise-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes capability-pulse {
   0%,
   100% {
@@ -340,8 +336,7 @@ body.is-language-switching .site-footer {
 .grain,
 .ambient,
 .mood-light,
-.cursor-orb,
-.desktop-surprise-field {
+.cursor-orb {
   position: fixed;
   pointer-events: none;
 }
@@ -379,10 +374,6 @@ body.is-language-switching .site-footer {
 }
 
 .cursor-orb {
-  display: none;
-}
-
-.desktop-surprise-field {
   display: none;
 }
 
@@ -575,7 +566,6 @@ main {
 .manifesto-grid,
 .about-inner,
 .project-list,
-.reel-track,
 .signature-grid,
 .capability-grid,
 .process-line,
@@ -642,7 +632,6 @@ body.lang-en .project-eyebrow {
 .case-hero h2,
 .process::before,
 .project-copy h3,
-.reel-card h3,
 .signature-grid h3,
 .capability-grid h3,
 .process-step h3 {
@@ -704,8 +693,7 @@ body.lang-en .case-hero h2 {
 .signature-grid p,
 .process-step p,
 .case-hero p,
-.case-item p,
-.reel-card p {
+.case-item p {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -724,8 +712,7 @@ body.lang-en .about-copy p,
 body.lang-en .project-summary,
 body.lang-en .capability-grid p,
 body.lang-en .signature-grid p,
-body.lang-en .process-step p,
-body.lang-en .reel-card p {
+body.lang-en .process-step p {
   line-height: 1.72;
 }
 
@@ -800,7 +787,6 @@ body.lang-en .reel-card p {
 }
 
 .manifesto-grid,
-.reel-card,
 .signature-grid article,
 .capability-grid article,
 .process-step,
@@ -818,14 +804,12 @@ body.lang-en .reel-card p {
     var(--panel);
 }
 
-.reel-track,
 .signature-grid,
 .capability-grid,
 .process-line {
   gap: 0.9rem;
 }
 
-.reel-card span,
 .signature-index,
 .capability-index {
   display: inline-block;
@@ -840,7 +824,6 @@ body.lang-en .reel-card p {
   display: none;
 }
 
-.reel-card h3,
 .signature-grid h3,
 .capability-grid h3,
 .process-step h3 {
@@ -850,7 +833,7 @@ body.lang-en .reel-card p {
 }
 
 .section-heading {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--heading-flow-gap);
 }
 
 .project-carousel-shell,
@@ -858,6 +841,12 @@ body.lang-en .reel-card p {
 .method-carousel-shell {
   position: relative;
   min-width: 0;
+}
+
+.section-heading + .project-carousel-shell,
+.section-heading + .capability-carousel-shell,
+.section-heading + .signature-grid {
+  margin-top: 0;
 }
 
 .mobile-carousel-arrows,
@@ -1728,13 +1717,13 @@ body.egg-active .mood-light {
 
   .section-heading {
     gap: 0.78rem;
-    margin-bottom: clamp(1.15rem, 5.6vw, 2rem);
+    margin-bottom: var(--heading-flow-gap);
   }
 
   .work .section-heading,
   .capabilities .section-heading,
   .signature .section-heading {
-    margin-bottom: clamp(1.35rem, 6.4vw, 2.35rem);
+    margin-bottom: var(--heading-flow-gap);
   }
 
   body:not(.lang-en) .manifesto h2,
@@ -1761,13 +1750,12 @@ body.egg-active .mood-light {
     margin-bottom: clamp(1.45rem, 7vw, 2.2rem);
   }
 
-  .section-heading + .project-list,
-  .section-heading + .capability-grid,
+  .section-heading + .project-carousel-shell,
+  .section-heading + .capability-carousel-shell,
   .section-heading + .signature-grid {
-    margin-top: 0.35rem;
+    margin-top: 0;
   }
 
-  .reel-card,
   .signature-grid article,
   .capability-grid article,
   .process-step,
@@ -1808,7 +1796,6 @@ body.egg-active .mood-light {
     transform: translate3d(0, 0, 0);
   }
 
-  .reel-card::after,
   .signature-grid article::after,
   .capability-grid article::after,
   .process-step::after,
@@ -1829,7 +1816,6 @@ body.egg-active .mood-light {
       transform 0.72s var(--ease) 0.16s;
   }
 
-  body.lang-en .reel-card::after,
   body.lang-en .signature-grid article::after,
   body.lang-en .capability-grid article::after,
   body.lang-en .process-step::after,
@@ -1840,7 +1826,6 @@ body.egg-active .mood-light {
     transform-origin: left center;
   }
 
-  .reel-card.is-revealed::after,
   .signature-grid article.is-revealed::after,
   .capability-grid article.is-revealed::after,
   .process-step.is-revealed::after,
@@ -1947,29 +1932,6 @@ body.egg-active .mood-light {
     width: 26rem;
     height: 26rem;
     background: radial-gradient(circle, rgba(57, 213, 192, 0.07), transparent 68%);
-  }
-
-  .cursor-orb {
-    top: 0;
-    left: 0;
-    z-index: 2;
-    display: block;
-    width: 21rem;
-    height: 21rem;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 46% 44%, rgba(255, 224, 163, 0.24), transparent 0 15%),
-      radial-gradient(circle, rgba(255, 180, 94, 0.16), rgba(57, 213, 192, 0.06) 34%, transparent 68%);
-    filter: blur(14px);
-    mix-blend-mode: screen;
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0);
-    transition: opacity 0.55s var(--ease);
-    will-change: transform, opacity;
-  }
-
-  .cursor-orb.is-active {
-    opacity: 0.58;
   }
 
   .site-header {
@@ -2115,7 +2077,6 @@ body.egg-active .mood-light {
     text-transform: uppercase;
   }
 
-  .reel-track,
   .signature-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2131,6 +2092,10 @@ body.egg-active .mood-light {
     grid-template-columns: 0.9fr 1.1fr;
     gap: clamp(1.5rem, 4vw, 4rem);
     align-items: start;
+  }
+
+  .section-heading {
+    margin-bottom: var(--heading-flow-gap-desktop);
   }
 
   .experience-list {
@@ -2192,7 +2157,6 @@ body.egg-active .mood-light {
       filter 0.55s var(--ease);
   }
 
-  .reel-card,
   .signature-grid article,
   .capability-grid article,
   .process-step,
@@ -2202,28 +2166,6 @@ body.egg-active .mood-light {
     overflow: hidden;
   }
 
-  .reel-card::before,
-  .signature-grid article::before,
-  .capability-grid article::before,
-  .project-copy::before,
-  .project-media::before,
-  .contact-panel::before {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle at var(--hover-x, 50%) var(--hover-y, 50%),
-      rgba(255, 224, 163, 0.12),
-      transparent 35%
-    );
-    content: "";
-    opacity: 0;
-    transition: opacity 0.42s var(--ease);
-    pointer-events: none;
-  }
-
-  .reel-card::after,
   .signature-grid article::after,
   .capability-grid article::after,
   .process-step::after,
@@ -2251,7 +2193,6 @@ body.egg-active .mood-light {
       transform 0.95s var(--ease);
   }
 
-  .reel-card > *,
   .signature-grid article > *,
   .capability-grid article > *,
   .process-step > *,
@@ -2262,16 +2203,6 @@ body.egg-active .mood-light {
     z-index: 1;
   }
 
-  .reel-card:hover::before,
-  .signature-grid article:hover::before,
-  .capability-grid article:hover::before,
-  .project-copy:hover::before,
-  .project-media:hover::before,
-  .contact-panel:hover::before {
-    opacity: 1;
-  }
-
-  .reel-card:hover::after,
   .signature-grid article:hover::after,
   .capability-grid article:hover::after,
   .process-step:hover::after,
@@ -2280,11 +2211,6 @@ body.egg-active .mood-light {
   .contact-panel:hover::after {
     opacity: 1;
     transform: translate3d(-72%, 0, 0);
-  }
-
-  .project-media::before {
-    z-index: 3;
-    mix-blend-mode: screen;
   }
 
   .project-media::after {
@@ -2399,46 +2325,27 @@ body.egg-active .mood-light {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .desktop-surprise-field {
-    top: var(--surprise-y, 50vh);
-    left: var(--surprise-x, 50vw);
-    z-index: 3;
+  .cursor-orb {
+    top: 0;
+    left: 0;
+    z-index: 2;
     display: block;
-    width: 27rem;
-    height: 27rem;
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0);
-    transition: opacity 0.65s var(--ease);
-  }
-
-  .desktop-surprise-field.is-live {
-    opacity: 1;
-  }
-
-  .desktop-surprise-field span {
-    position: absolute;
-    inset: 12%;
-    border: 1px solid rgba(255, 224, 163, 0.08);
+    width: 15rem;
+    height: 15rem;
     border-radius: 50%;
     background:
-      conic-gradient(from 20deg, transparent 0 28%, rgba(255, 180, 94, 0.18), transparent 46% 100%),
-      radial-gradient(circle, rgba(255, 224, 163, 0.12), transparent 58%);
-    filter: blur(0.2px);
+      radial-gradient(circle at 48% 44%, rgba(255, 224, 163, 0.16), transparent 0 14%),
+      radial-gradient(circle, rgba(255, 180, 94, 0.1), rgba(57, 213, 192, 0.035) 36%, transparent 68%);
+    filter: blur(18px);
     mix-blend-mode: screen;
-    animation: surprise-spin 18s linear infinite;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity 0.55s var(--ease);
+    will-change: transform, opacity;
   }
 
-  .desktop-surprise-field span:nth-child(2) {
-    inset: 26%;
-    border-color: rgba(57, 213, 192, 0.08);
-    animation-duration: 12s;
-    animation-direction: reverse;
-  }
-
-  .desktop-surprise-field span:nth-child(3) {
-    inset: 38%;
-    border-color: rgba(255, 180, 94, 0.14);
-    animation-duration: 8s;
+  .cursor-orb.is-active {
+    opacity: 0.34;
   }
 
   .button,
@@ -2459,7 +2366,6 @@ body.egg-active .mood-light {
   .brand small,
   .hero-frame,
   .project-copy,
-  .reel-card,
   .signature-grid article,
   .capability-grid article {
     transition:
@@ -2484,25 +2390,21 @@ body.egg-active .mood-light {
   }
 
   .capability-grid article[data-capability-card] {
-    min-height: clamp(13rem, 19vw, 17rem);
+    min-height: clamp(10.2rem, 14vw, 12.8rem);
+    align-content: end;
+    padding: clamp(1rem, 1.55vw, 1.25rem);
     border-color: rgba(255, 224, 163, 0.12);
     background:
-      radial-gradient(circle at var(--hover-x, 50%) var(--hover-y, 50%), rgba(255, 180, 94, 0.13), transparent 34%),
       linear-gradient(145deg, rgba(255, 224, 163, 0.06), rgba(255, 180, 94, 0.02) 42%, rgba(57, 213, 192, 0.035)),
       var(--panel);
     transform: translate3d(0, 0, calc(var(--capability-order, 0) * 0.01rem)) rotateX(0deg) rotateY(0deg);
     transform-style: preserve-3d;
   }
 
-  .capability-grid article[data-capability-card]::before {
-    background:
-      radial-gradient(circle at var(--hover-x, 50%) var(--hover-y, 50%), rgba(255, 224, 163, 0.2), transparent 28%),
-      linear-gradient(120deg, transparent, rgba(57, 213, 192, 0.05), transparent);
-  }
-
   .capability-grid article[data-capability-card] h3 {
     position: relative;
-    max-width: 10ch;
+    max-width: 12ch;
+    margin-top: 0.7rem;
     transform: translateZ(2.2rem);
   }
 
@@ -2527,15 +2429,33 @@ body.egg-active .mood-light {
     transform: translateZ(1.4rem);
   }
 
+  .capability-grid article[data-capability-card] p {
+    max-width: 24rem;
+  }
+
+  .capability-grid article[data-capability-card] .capability-index {
+    position: absolute;
+    top: 1rem;
+    right: 1.05rem;
+    z-index: 1;
+    margin: 0;
+    opacity: 0.62;
+  }
+
+  body.lang-en .capability-grid article[data-capability-card] .capability-index {
+    right: auto;
+    left: 1.05rem;
+  }
+
   .capability-ghost {
     position: absolute;
-    top: 0.7rem;
-    left: 0.9rem;
+    top: 0.15rem;
+    left: 0.62rem;
     z-index: 0;
     display: block;
     color: rgba(255, 224, 163, 0.045);
     font-family: var(--font-latin);
-    font-size: clamp(4.8rem, 8vw, 8.4rem);
+    font-size: clamp(5.8rem, 9vw, 8.8rem);
     font-weight: 800;
     line-height: 0.8;
     pointer-events: none;
@@ -2543,13 +2463,13 @@ body.egg-active .mood-light {
   }
 
   body:not(.lang-en) .capability-ghost {
-    right: 0.9rem;
+    right: 0.62rem;
     left: auto;
   }
 
   .capability-grid:hover article[data-capability-card] {
-    opacity: 0.72;
-    filter: saturate(0.9);
+    opacity: 0.82;
+    filter: saturate(0.96);
   }
 
   .capability-grid article[data-capability-card]:hover {
@@ -2624,7 +2544,6 @@ body.egg-active .mood-light {
     filter: saturate(1.08) contrast(1.04);
   }
 
-  .reel-card:hover,
   .signature-grid article:hover,
   .capability-grid article:hover {
     border-color: rgba(255, 180, 94, 0.28);
@@ -2648,10 +2567,6 @@ body.egg-active .mood-light {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .cursor-orb {
-    display: none !important;
   }
 
   .loading-screen {

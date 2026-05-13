@@ -1197,10 +1197,10 @@ function initPointerGlow() {
     const deltaX = targetX - currentX;
     const deltaY = targetY - currentY;
 
-    currentX += deltaX * 0.14;
-    currentY += deltaY * 0.14;
+    currentX += deltaX * 0.11;
+    currentY += deltaY * 0.11;
     orb.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate3d(-50%, -50%, 0)`;
-    frame = isActive && Math.abs(deltaX) + Math.abs(deltaY) > 0.24 ? requestAnimationFrame(render) : null;
+    frame = isActive && Math.abs(deltaX) + Math.abs(deltaY) > 0.28 ? requestAnimationFrame(render) : null;
   };
 
   window.addEventListener(
@@ -1217,17 +1217,6 @@ function initPointerGlow() {
       }
 
       if (!frame) frame = requestAnimationFrame(render);
-
-      const eventTarget = event.target instanceof Element ? event.target : null;
-      const hoverTarget = eventTarget?.closest(
-        ".reel-card, .signature-grid article, .capability-grid article, .process-step, .project-copy, .project-media, .contact-panel",
-      );
-
-      if (hoverTarget) {
-        const rect = hoverTarget.getBoundingClientRect();
-        hoverTarget.style.setProperty("--hover-x", `${event.clientX - rect.left}px`);
-        hoverTarget.style.setProperty("--hover-y", `${event.clientY - rect.top}px`);
-      }
     },
     { passive: true },
   );
@@ -1236,58 +1225,6 @@ function initPointerGlow() {
     isActive = false;
     orb.classList.remove("is-active");
   });
-}
-
-function initDesktopSurpriseField() {
-  if (prefersReducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-
-  const field = $(".desktop-surprise-field");
-  if (!field) return;
-
-  let targetX = window.innerWidth / 2;
-  let targetY = window.innerHeight / 2;
-  let currentX = targetX;
-  let currentY = targetY;
-  let active = false;
-  let frame = null;
-
-  const activate = () => {
-    active = true;
-    field.classList.add("is-live");
-  };
-
-  const deactivate = () => {
-    active = false;
-    field.classList.remove("is-live");
-  };
-
-  const render = () => {
-    currentX += (targetX - currentX) * 0.12;
-    currentY += (targetY - currentY) * 0.12;
-    document.documentElement.style.setProperty("--surprise-x", `${currentX}px`);
-    document.documentElement.style.setProperty("--surprise-y", `${currentY}px`);
-    frame = active || Math.abs(targetX - currentX) + Math.abs(targetY - currentY) > 0.5 ? requestAnimationFrame(render) : null;
-  };
-
-  window.addEventListener(
-    "pointermove",
-    (event) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-
-      const target = event.target instanceof Element ? event.target : null;
-      const shouldGlow = Boolean(
-        target?.closest(".capability-grid article, .project-media, .hero-frame, .contact-panel, .signature-grid article"),
-      );
-
-      if (shouldGlow) activate();
-      else deactivate();
-      if (!frame) frame = requestAnimationFrame(render);
-    },
-    { passive: true },
-  );
-
-  window.addEventListener("pointerleave", deactivate);
 }
 
 function initScrollProgress() {
@@ -1562,7 +1499,7 @@ function initMotion(refreshOnly = false) {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf("[data-reveal], .split-title span, .project-media img, section, .ambient, .hero-frame img, .reel-card, .signature-grid article, .capability-grid article");
+  gsap.killTweensOf("[data-reveal], .split-title span, .project-media img, section, .ambient, .hero-frame img, .signature-grid article, .capability-grid article");
 
   const isMobile = window.matchMedia(MOBILE_QUERY).matches;
   const isCompact = window.matchMedia("(max-width: 900px)").matches;
@@ -1708,7 +1645,7 @@ function initMotion(refreshOnly = false) {
       );
     });
 
-    $$(".reel-card, .signature-grid article, .capability-grid article").forEach((card) => {
+    $$(".signature-grid article, .capability-grid article").forEach((card) => {
       gsap.fromTo(
         card,
         { y: 22, autoAlpha: 0.82 },
@@ -2047,7 +1984,6 @@ initCapabilityCarouselControls();
 initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
-initDesktopSurpriseField();
 initMobileRevealSystem();
 initSectionMood();
 initSignatureDraw();
