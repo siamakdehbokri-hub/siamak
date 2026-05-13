@@ -1194,6 +1194,10 @@ body.lang-en .process::before {
   min-height: 0;
 }
 
+.contact h2 {
+  margin-bottom: clamp(1.15rem, 5.2vw, 1.9rem);
+}
+
 .contact-panel {
   gap: 0.9rem;
 }
@@ -1474,6 +1478,10 @@ body.egg-active .mood-light {
   body.lang-ku .process::before {
     font-size: clamp(1.08rem, 4.75vw, 1.42rem);
     line-height: 1.8;
+  }
+
+  .contact h2 {
+    margin-bottom: clamp(1.45rem, 7vw, 2.2rem);
   }
 
   .section-heading + .project-list,
