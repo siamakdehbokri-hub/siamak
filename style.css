@@ -920,6 +920,16 @@ body.lang-en .process::before {
 }
 
 @media (max-width: 899px) {
+  .reel-card,
+  .signature-grid article,
+  .capability-grid article,
+  .process-step,
+  .project-card,
+  .contact-panel {
+    position: relative;
+    overflow: hidden;
+  }
+
   body.mobile-motion-ready main [data-reveal],
   body.mobile-motion-ready main [data-split-title] {
     opacity: 0;
@@ -949,6 +959,48 @@ body.lang-en .process::before {
   body.mobile-motion-ready .split-title.is-revealed span {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+
+  .reel-card::after,
+  .signature-grid article::after,
+  .capability-grid article::after,
+  .process-step::after,
+  .project-card::after,
+  .contact-panel::after {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    width: 34%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 224, 163, 0.68), transparent);
+    content: "";
+    opacity: 0;
+    transform: scaleX(0.35);
+    transform-origin: right center;
+    transition:
+      opacity 0.72s var(--ease) 0.16s,
+      transform 0.72s var(--ease) 0.16s;
+  }
+
+  body.lang-en .reel-card::after,
+  body.lang-en .signature-grid article::after,
+  body.lang-en .capability-grid article::after,
+  body.lang-en .process-step::after,
+  body.lang-en .project-card::after,
+  body.lang-en .contact-panel::after {
+    right: auto;
+    left: 1rem;
+    transform-origin: left center;
+  }
+
+  .reel-card.is-revealed::after,
+  .signature-grid article.is-revealed::after,
+  .capability-grid article.is-revealed::after,
+  .process-step.is-revealed::after,
+  .project-card.is-revealed::after,
+  .contact-panel.is-revealed::after {
+    opacity: 0.78;
+    transform: scaleX(1);
   }
 
   .project-media,
@@ -1289,7 +1341,6 @@ body.lang-en .process::before {
   .reel-card::before,
   .signature-grid article::before,
   .capability-grid article::before,
-  .process-step::before,
   .project-copy::before,
   .project-media::before,
   .contact-panel::before {
@@ -1350,7 +1401,6 @@ body.lang-en .process::before {
   .reel-card:hover::before,
   .signature-grid article:hover::before,
   .capability-grid article:hover::before,
-  .process-step:hover::before,
   .project-copy:hover::before,
   .project-media:hover::before,
   .contact-panel:hover::before {
@@ -1371,14 +1421,6 @@ body.lang-en .process::before {
   .project-media::before {
     z-index: 2;
     mix-blend-mode: screen;
-  }
-
-  .project-card:hover .project-copy,
-  .reel-card:hover,
-  .signature-grid article:hover,
-  .capability-grid article:hover,
-  .process-step:hover {
-    transform: translate3d(0, -0.18rem, 0);
   }
 
   .project-media:hover,

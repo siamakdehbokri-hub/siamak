@@ -6,6 +6,17 @@ const ENHANCEMENT_SCRIPTS = [
   "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js",
   "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js",
 ];
+const sectionMoods = [
+  { selector: ".hero", x: "18%", y: "17%", a: "rgba(255, 180, 94, 0.2)", b: "rgba(57, 213, 192, 0.06)" },
+  { selector: ".reel", x: "82%", y: "24%", a: "rgba(255, 224, 163, 0.15)", b: "rgba(255, 180, 94, 0.09)" },
+  { selector: ".manifesto", x: "24%", y: "48%", a: "rgba(57, 213, 192, 0.1)", b: "rgba(255, 224, 163, 0.09)" },
+  { selector: ".signature", x: "72%", y: "42%", a: "rgba(255, 180, 94, 0.17)", b: "rgba(255, 224, 163, 0.08)" },
+  { selector: ".work", x: "18%", y: "58%", a: "rgba(255, 180, 94, 0.22)", b: "rgba(57, 213, 192, 0.07)" },
+  { selector: ".capabilities", x: "80%", y: "56%", a: "rgba(255, 224, 163, 0.14)", b: "rgba(57, 213, 192, 0.1)" },
+  { selector: ".process", x: "28%", y: "68%", a: "rgba(57, 213, 192, 0.11)", b: "rgba(255, 180, 94, 0.08)" },
+  { selector: ".about", x: "74%", y: "70%", a: "rgba(255, 224, 163, 0.16)", b: "rgba(255, 180, 94, 0.08)" },
+  { selector: ".contact", x: "50%", y: "82%", a: "rgba(255, 180, 94, 0.2)", b: "rgba(255, 224, 163, 0.09)" },
+];
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
@@ -1118,6 +1129,48 @@ function initMobileRevealSystem() {
   });
 }
 
+function applySectionMood(section, mood) {
+  if (!section || !mood) return;
+
+  $$(".section-shell.is-focused-section").forEach((item) => {
+    if (item !== section) item.classList.remove("is-focused-section");
+  });
+
+  section.classList.add("is-focused-section");
+  document.body.style.setProperty("--mood-x", mood.x);
+  document.body.style.setProperty("--mood-y", mood.y);
+  document.body.style.setProperty("--mood-a", mood.a);
+  document.body.style.setProperty("--mood-b", mood.b);
+}
+
+function initSectionMood() {
+  const entries = sectionMoods
+    .map((mood) => ({ mood, section: $(mood.selector) }))
+    .filter(({ section }) => section);
+
+  if (!entries.length) return;
+
+  applySectionMood(entries[0].section, entries[0].mood);
+
+  if (!("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver(
+    (observed) => {
+      const visible = observed
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+
+      const next = entries.find(({ section }) => section === visible.target);
+      if (next) applySectionMood(next.section, next.mood);
+    },
+    { rootMargin: "-24% 0px -48% 0px", threshold: [0.16, 0.32, 0.48, 0.64] },
+  );
+
+  entries.forEach(({ section }) => observer.observe(section));
+}
+
 function initMotion(refreshOnly = false) {
   if (!window.gsap || !window.ScrollTrigger || prefersReducedMotion) {
     if (isMobileRevealEnabled()) {
@@ -1432,4 +1485,5 @@ initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
 initMobileRevealSystem();
+initSectionMood();
 initDeferredEnhancements();
