@@ -657,6 +657,8 @@ const accessibilityText = {
     galleryPrev: "تصویر قبلی",
     galleryNext: "تصویر بعدی",
     galleryGo: "نمایش تصویر",
+    projectSlideLeft: "حرکت به کارت سمت چپ",
+    projectSlideRight: "حرکت به کارت سمت راست",
     instagram: "اینستاگرام سیامک دهبکری",
     telegram: "تلگرام سیامک دهبکری",
     linkedin: "لینکدین سیامک دهبکری",
@@ -669,6 +671,8 @@ const accessibilityText = {
     galleryPrev: "وێنەی پێشوو",
     galleryNext: "وێنەی دواتر",
     galleryGo: "پیشاندانی وێنە",
+    projectSlideLeft: "چوون بۆ کارتی لای چەپ",
+    projectSlideRight: "چوون بۆ کارتی لای ڕاست",
     instagram: "ئینستاگرامی سیامه‌ک دیبوکری",
     telegram: "تێلەگرامی سیامه‌ک دیبوکری",
     linkedin: "لینکدینی سیامه‌ک دیبوکری",
@@ -681,6 +685,8 @@ const accessibilityText = {
     galleryPrev: "Previous image",
     galleryNext: "Next image",
     galleryGo: "Show image",
+    projectSlideLeft: "Move to the project on the left",
+    projectSlideRight: "Move to the project on the right",
     instagram: "Siamak Dehbokri on Instagram",
     telegram: "Siamak Dehbokri on Telegram",
     linkedin: "Siamak Dehbokri on LinkedIn",
@@ -701,6 +707,7 @@ let currentActiveNavHash = "";
 let enhancementsRequested = false;
 let enhancedMotionReady = false;
 let mobileRevealObserver = null;
+let experienceTickerCleanup = () => {};
 
 function getPath(source, path) {
   return path.split(".").reduce((value, key) => value?.[key], source);
@@ -877,6 +884,11 @@ function updateA11yLabels() {
   const brandWhisper = $("[data-brand-whisper]");
   if (brandWhisper) brandWhisper.textContent = labels.brandWhisper;
 
+  const slideLeft = $("[data-project-slide-left]");
+  const slideRight = $("[data-project-slide-right]");
+  if (slideLeft) slideLeft.setAttribute("aria-label", labels.projectSlideLeft);
+  if (slideRight) slideRight.setAttribute("aria-label", labels.projectSlideRight);
+
   $$("[data-close-case]").forEach((button) => {
     button.setAttribute("aria-label", labels.closeCase);
   });
@@ -923,6 +935,7 @@ function updateLanguage(lang) {
   renderCards();
   renderProjects();
   updateA11yLabels();
+  initExperienceTicker();
   initAnchorNavigation();
   initMotion(hasRenderedOnce);
   setActiveNav(location.hash || "#top");
@@ -1296,8 +1309,104 @@ function initMobileRevealSystem() {
     requestAnimationFrame(() => {
       ticking = false;
       refreshMobileReveal();
+      initExperienceTicker();
     });
   });
+}
+
+function initExperienceTicker() {
+  experienceTickerCleanup();
+  experienceTickerCleanup = () => {};
+
+  const grid = $(".experience-grid");
+  if (!grid || prefersReducedMotion || !window.matchMedia("(max-width: 899px)").matches) return;
+
+  const maxScroll = () => Math.max(grid.scrollWidth - grid.clientWidth, 0);
+  if (maxScroll() <= 4) return;
+
+  const speed = 0.26;
+  let direction = document.documentElement.dir === "rtl" ? -speed : speed;
+  let paused = false;
+  let frame = null;
+  let resumeTimer = null;
+
+  const pause = () => {
+    paused = true;
+    window.clearTimeout(resumeTimer);
+  };
+
+  const resumeSoon = () => {
+    window.clearTimeout(resumeTimer);
+    resumeTimer = window.setTimeout(() => {
+      paused = false;
+    }, 720);
+  };
+
+  const tick = () => {
+    const limit = maxScroll();
+
+    if (!paused && limit > 4) {
+      const before = grid.scrollLeft;
+      grid.scrollLeft += direction;
+      const moved = Math.abs(grid.scrollLeft - before) > 0.01;
+      const distance = Math.abs(grid.scrollLeft);
+
+      if (!moved) {
+        direction *= -1;
+      } else if (distance >= limit - 1) {
+        direction = grid.scrollLeft < 0 ? speed : -speed;
+      } else if (distance <= 1) {
+        direction = document.documentElement.dir === "rtl" ? -speed : speed;
+      }
+    }
+
+    frame = requestAnimationFrame(tick);
+  };
+
+  grid.addEventListener("pointerenter", pause);
+  grid.addEventListener("pointerleave", resumeSoon);
+  grid.addEventListener("focusin", pause);
+  grid.addEventListener("focusout", resumeSoon);
+  grid.addEventListener("touchstart", pause, { passive: true });
+  grid.addEventListener("touchend", resumeSoon, { passive: true });
+  grid.addEventListener("touchcancel", resumeSoon, { passive: true });
+
+  frame = requestAnimationFrame(tick);
+  experienceTickerCleanup = () => {
+    window.cancelAnimationFrame(frame);
+    window.clearTimeout(resumeTimer);
+    grid.removeEventListener("pointerenter", pause);
+    grid.removeEventListener("pointerleave", resumeSoon);
+    grid.removeEventListener("focusin", pause);
+    grid.removeEventListener("focusout", resumeSoon);
+    grid.removeEventListener("touchstart", pause);
+    grid.removeEventListener("touchend", resumeSoon);
+    grid.removeEventListener("touchcancel", resumeSoon);
+  };
+}
+
+function initProjectCarouselControls() {
+  const list = $("[data-project-list]");
+  const leftButton = $("[data-project-slide-left]");
+  const rightButton = $("[data-project-slide-right]");
+  if (!list || !leftButton || !rightButton) return;
+
+  const getStep = () => {
+    const card = $(".project-card", list);
+    const styles = window.getComputedStyle(list);
+    const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+    return (card?.getBoundingClientRect().width || list.clientWidth * 0.82) + gap;
+  };
+
+  const move = (direction) => {
+    list.scrollBy({
+      left: direction * getStep(),
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  };
+
+  leftButton.addEventListener("click", () => move(-1));
+  rightButton.addEventListener("click", () => move(1));
 }
 
 function applySectionMood(section, mood) {
@@ -1793,6 +1902,10 @@ function initEasterEgg() {
   };
 
   brand.addEventListener("click", () => {
+    if (window.matchMedia("(hover: none), (pointer: coarse)").matches) {
+      requestAnimationFrame(() => brand.blur());
+    }
+
     clickCount += 1;
     window.clearTimeout(resetTimer);
     resetTimer = window.setTimeout(() => {
@@ -1845,6 +1958,7 @@ initSmoothScroll();
 initScrollProgress();
 initCaseStudy();
 initLanguage();
+initProjectCarouselControls();
 initAnchorNavigation();
 initActiveNavigation();
 initPointerGlow();
