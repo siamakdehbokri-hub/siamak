@@ -1051,19 +1051,20 @@ body.lang-en .process::before {
   text-transform: uppercase;
 }
 
+.experience-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
 .experience-grid {
   display: flex;
   gap: 0.62rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.experience-grid::-webkit-scrollbar {
-  display: none;
+  width: max-content;
+  min-width: 100%;
+  will-change: transform;
 }
 
 .experience-grid article {
@@ -1075,7 +1076,6 @@ body.lang-en .process::before {
   border: 1px solid var(--line);
   border-radius: 0.9rem;
   background: rgba(247, 241, 230, 0.032);
-  scroll-snap-align: center;
 }
 
 .experience-grid h3,
@@ -1519,8 +1519,7 @@ body.egg-active .mood-light {
 
 @media (max-width: 899px) {
   .project-list,
-  .process-line,
-  .experience-grid {
+  .process-line {
     display: flex;
     gap: 0.78rem;
     margin-inline: calc(var(--gutter) * -1);
@@ -1531,6 +1530,10 @@ body.egg-active .mood-light {
     scroll-padding-inline: var(--gutter);
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .experience-viewport {
+    margin-inline: calc(var(--gutter) * -1);
   }
 
   .project-list {
@@ -1591,19 +1594,13 @@ body.egg-active .mood-light {
     transform: scale(0.94);
   }
 
-  .experience-grid {
-    padding-bottom: 0.2rem;
-  }
-
   .project-list::-webkit-scrollbar,
-  .process-line::-webkit-scrollbar,
-  .experience-grid::-webkit-scrollbar {
+  .process-line::-webkit-scrollbar {
     display: none;
   }
 
   .project-list,
-  .process-line,
-  .experience-grid {
+  .process-line {
     scrollbar-width: none;
   }
 
@@ -1632,11 +1629,9 @@ body.egg-active .mood-light {
   }
 
   .experience-grid article {
-    flex: 0 0 min(72vw, 18rem);
+    flex-basis: min(72vw, 18rem);
     min-height: 7rem;
     align-content: center;
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
   }
 
   .experience-list::after,
@@ -2084,8 +2079,6 @@ body.egg-active .mood-light {
 
   .experience-grid {
     gap: 0.72rem;
-    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
 
   .experience-grid article {

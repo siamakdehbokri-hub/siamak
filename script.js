@@ -782,19 +782,34 @@ function renderCards() {
   }
 
   if (experienceList) {
+    const experienceCards = content.identity.experienceItems
+      .map(
+        (item) => `
+          <article data-reveal>
+            <h3>${escapeHTML(item.name)}</h3>
+            <p>${escapeHTML(item.role)}</p>
+          </article>
+        `,
+      )
+      .join("");
+    const duplicateExperienceCards = content.identity.experienceItems
+      .map(
+        (item) => `
+          <article aria-hidden="true">
+            <h3>${escapeHTML(item.name)}</h3>
+            <p>${escapeHTML(item.role)}</p>
+          </article>
+        `,
+      )
+      .join("");
+
     experienceList.innerHTML = `
       <p class="experience-kicker" data-reveal>${escapeHTML(content.identity.experienceKicker)}</p>
-      <div class="experience-grid">
-        ${content.identity.experienceItems
-          .map(
-            (item) => `
-              <article data-reveal>
-                <h3>${escapeHTML(item.name)}</h3>
-                <p>${escapeHTML(item.role)}</p>
-              </article>
-            `,
-          )
-          .join("")}
+      <div class="experience-viewport" data-experience-viewport>
+        <div class="experience-grid" data-experience-ticker>
+          ${experienceCards}
+          ${duplicateExperienceCards}
+        </div>
       </div>
     `;
   }
@@ -1286,16 +1301,19 @@ function initExperienceTicker() {
   experienceTickerCleanup();
   experienceTickerCleanup = () => {};
 
-  const grid = $(".experience-grid");
-  if (!grid || prefersReducedMotion) return;
+  const viewport = $("[data-experience-viewport]");
+  const track = $("[data-experience-ticker]");
+  if (!viewport || !track || prefersReducedMotion) return;
 
-  const maxScroll = () => Math.max(grid.scrollWidth - grid.clientWidth, 0);
-  if (maxScroll() <= 4) return;
+  const getCycleWidth = () => Math.max(track.scrollWidth / 2, 0);
+  if (getCycleWidth() <= viewport.clientWidth + 4) return;
 
-  const speed = 0.26;
-  let direction = document.documentElement.dir === "rtl" ? -speed : speed;
+  const speed = 0.024;
+  const direction = document.documentElement.dir === "rtl" ? 1 : -1;
+  let offset = 0;
   let paused = false;
   let frame = null;
+  let lastTime = performance.now();
   let resumeTimer = null;
 
   const pause = () => {
@@ -1307,49 +1325,43 @@ function initExperienceTicker() {
     window.clearTimeout(resumeTimer);
     resumeTimer = window.setTimeout(() => {
       paused = false;
+      lastTime = performance.now();
     }, 720);
   };
 
-  const tick = () => {
-    const limit = maxScroll();
+  const tick = (time) => {
+    const cycleWidth = getCycleWidth();
 
-    if (!paused && limit > 4) {
-      const before = grid.scrollLeft;
-      grid.scrollLeft += direction;
-      const moved = Math.abs(grid.scrollLeft - before) > 0.01;
-      const distance = Math.abs(grid.scrollLeft);
-
-      if (!moved) {
-        direction *= -1;
-      } else if (distance >= limit - 1) {
-        direction = grid.scrollLeft < 0 ? speed : -speed;
-      } else if (distance <= 1) {
-        direction = document.documentElement.dir === "rtl" ? -speed : speed;
-      }
+    if (!paused && cycleWidth > viewport.clientWidth + 4) {
+      const delta = Math.min(time - lastTime, 64);
+      offset = (offset + delta * speed) % cycleWidth;
+      track.style.transform = `translate3d(${direction * offset}px, 0, 0)`;
     }
 
-    frame = requestAnimationFrame(tick);
+    lastTime = time;
+    frame = window.requestAnimationFrame(tick);
   };
 
-  grid.addEventListener("pointerenter", pause);
-  grid.addEventListener("pointerleave", resumeSoon);
-  grid.addEventListener("focusin", pause);
-  grid.addEventListener("focusout", resumeSoon);
-  grid.addEventListener("touchstart", pause, { passive: true });
-  grid.addEventListener("touchend", resumeSoon, { passive: true });
-  grid.addEventListener("touchcancel", resumeSoon, { passive: true });
+  viewport.addEventListener("pointerenter", pause);
+  viewport.addEventListener("pointerleave", resumeSoon);
+  viewport.addEventListener("focusin", pause);
+  viewport.addEventListener("focusout", resumeSoon);
+  viewport.addEventListener("touchstart", pause, { passive: true });
+  viewport.addEventListener("touchend", resumeSoon, { passive: true });
+  viewport.addEventListener("touchcancel", resumeSoon, { passive: true });
 
-  frame = requestAnimationFrame(tick);
+  frame = window.requestAnimationFrame(tick);
   experienceTickerCleanup = () => {
     window.cancelAnimationFrame(frame);
     window.clearTimeout(resumeTimer);
-    grid.removeEventListener("pointerenter", pause);
-    grid.removeEventListener("pointerleave", resumeSoon);
-    grid.removeEventListener("focusin", pause);
-    grid.removeEventListener("focusout", resumeSoon);
-    grid.removeEventListener("touchstart", pause);
-    grid.removeEventListener("touchend", resumeSoon);
-    grid.removeEventListener("touchcancel", resumeSoon);
+    viewport.removeEventListener("pointerenter", pause);
+    viewport.removeEventListener("pointerleave", resumeSoon);
+    viewport.removeEventListener("focusin", pause);
+    viewport.removeEventListener("focusout", resumeSoon);
+    viewport.removeEventListener("touchstart", pause);
+    viewport.removeEventListener("touchend", resumeSoon);
+    viewport.removeEventListener("touchcancel", resumeSoon);
+    track.style.transform = "";
   };
 }
 
